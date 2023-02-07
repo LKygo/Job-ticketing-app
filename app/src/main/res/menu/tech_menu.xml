@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/mnuSignOut"
+        android:title="Sign out"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/logout_outline"/>
+
+    <item
+        android:id="@+id/mnuHelp"
+        android:title="Help and Feedback"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/outline_help_outline_24"/>
+
+    <item
+        android:id="@+id/mnuPrivacy"
+        android:title="Data and privacy"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/outline_privacy_tip_24"/>
+
+</menu>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cdvCardView"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="8dp"
+    android:elevation="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/txvTicketNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:text="Ticket No:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txvTicketValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toEndOf="@+id/txvTicketNo"
+            app:layout_constraintTop_toTopOf="@+id/txvTicketNo"
+            tools:text="123456789" />
+
+        <TextView
+            android:id="@+id/txvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Date:"
+            app:layout_constraintEnd_toEndOf="@+id/txvTicketNo"
+            app:layout_constraintTop_toBottomOf="@+id/txvTicketNo" />
+
+        <TextView
+            android:id="@+id/txvDateValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/txvTicketValue"
+            app:layout_constraintTop_toTopOf="@+id/txvDate"
+            tools:text="31/01/2023" />
+
+        <TextView
+            android:id="@+id/txvKsh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Ksh:"
+            app:layout_constraintEnd_toEndOf="@+id/txvDate"
+            app:layout_constraintTop_toBottomOf="@+id/txvDate" />
+
+        <TextView
+            android:id="@+id/txvKshValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/txvDateValue"
+            app:layout_constraintTop_toTopOf="@+id/txvKsh"
+            tools:text="kes 40,000" />
+
+        <TextView
+            android:id="@+id/txvCustomer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Customer:"
+            app:layout_constraintEnd_toEndOf="@+id/txvKsh"
+            app:layout_constraintTop_toBottomOf="@+id/txvKsh" />
+
+        <TextView
+            android:id="@+id/txvCustomerValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/txvKshValue"
+            app:layout_constraintTop_toTopOf="@+id/txvCustomer"
+            app:layout_constraintTop_toBottomOf="@+id/txvKshValue"
+            tools:text="KCB" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
