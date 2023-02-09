@@ -1,4 +1,10 @@
 package com.symphony.symphony
 
-class ItemsViewModel(val ticket: String, val date: String, val ksh: Int, val customer: String) {
+data class ItemsViewModel(
+    val ticket: String,
+    val date: String,
+    val faultReported: String,
+    val customer: String
+
+) {
 }
