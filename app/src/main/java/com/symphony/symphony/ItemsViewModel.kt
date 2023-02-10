@@ -4,7 +4,8 @@ data class ItemsViewModel(
     val ticket: String,
     val date: String,
     val faultReported: String,
-    val customer: String
+    val customer: String,
+    val state: Int
 
 ) {
 }

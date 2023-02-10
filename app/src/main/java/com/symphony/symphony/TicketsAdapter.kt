@@ -3,6 +3,7 @@ package com.symphony.symphony
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -19,6 +20,7 @@ class TicketsAdapter(private var ticketsList: ArrayList<ItemsViewModel>) :
         val date: TextView = itemView.findViewById(R.id.txvDateValue)
         val ksh: TextView = itemView.findViewById(R.id.txvFaultValue)
         val customer: TextView = itemView.findViewById(R.id.txvCustomerValue)
+        val state : ImageView = itemView.findViewById(R.id.imgCircularStatus)
     }
 
 
@@ -27,11 +29,12 @@ class TicketsAdapter(private var ticketsList: ArrayList<ItemsViewModel>) :
         holder.date.text = ticketsList.get(position).date
         holder.customer.text = ticketsList.get(position).customer
         holder.ksh.text = ticketsList.get(position).faultReported
-
+        holder.state.setImageResource(ticketsList.get(position).state)
 
     }
 
     override fun getItemCount(): Int {
         return ticketsList.size
     }
+
 }

@@ -34,6 +34,15 @@
             app:layout_constraintTop_toTopOf="@+id/txvTicketNo"
             tools:text="123456789" />
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgCircularStatus"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:src="@drawable/green_circle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="8dp"/>
+
         <TextView
             android:id="@+id/txvDate"
             android:layout_width="wrap_content"
