@@ -85,6 +85,8 @@ class TechnicianDashboard : AppCompatActivity() {
         queue.add(request)
 
     }
+
+    fun search(view: View) {}
 }
 
 private fun urgencyControl(urgency:String) :Int {
