@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 
 class TicketsAdapter(private var ticketsList: ArrayList<ItemsViewModel>) :
@@ -20,7 +21,23 @@ class TicketsAdapter(private var ticketsList: ArrayList<ItemsViewModel>) :
         val date: TextView = itemView.findViewById(R.id.txvDateValue)
         val ksh: TextView = itemView.findViewById(R.id.txvFaultValue)
         val customer: TextView = itemView.findViewById(R.id.txvCustomerValue)
-        val state : ImageView = itemView.findViewById(R.id.imgCircularStatus)
+        val state: ImageView = itemView.findViewById(R.id.imgCircularStatus)
+        val openedOn: TextView = itemView.findViewById(R.id.txvOpenedOnValue)
+        val updatedOn: TextView = itemView.findViewById(R.id.txvUpdatedOnValue)
+        val status: TextView = itemView.findViewById(R.id.txvStatusValue)
+        val consLayout2: ConstraintLayout = itemView.findViewById(R.id.cnsConstraint2)
+        val opened: TextView = itemView.findViewById(R.id.txvOpenedOn)
+        val updated: TextView = itemView.findViewById(R.id.txvUpdatedOn)
+        val stats: TextView = itemView.findViewById(R.id.txvStatus)
+
+        fun collapseExpandedView() {
+            openedOn.visibility = View.GONE
+            updatedOn.visibility = View.GONE
+            status.visibility = View.GONE
+            opened.visibility = View.GONE
+            updated.visibility = View.GONE
+            stats.visibility = View.GONE
+        }
     }
 
 
@@ -30,7 +47,42 @@ class TicketsAdapter(private var ticketsList: ArrayList<ItemsViewModel>) :
         holder.customer.text = ticketsList.get(position).customer
         holder.ksh.text = ticketsList.get(position).faultReported
         holder.state.setImageResource(ticketsList.get(position).state)
+        holder.openedOn.text = ticketsList.get(position).openedOn
+        holder.updatedOn.text = ticketsList.get(position).updatedOn
+        holder.status.text = ticketsList.get(position).status
 
+        val isExpandable: Boolean = ticketsList.get(position).isExpandable
+
+        holder.openedOn.visibility = if (isExpandable) View.VISIBLE else View.GONE
+        holder.updatedOn.visibility = if (isExpandable) View.VISIBLE else View.GONE
+        holder.status.visibility = if (isExpandable) View.VISIBLE else View.GONE
+        holder.opened.visibility = if (isExpandable) View.VISIBLE else View.GONE
+        holder.updated.visibility = if (isExpandable) View.VISIBLE else View.GONE
+        holder.stats.visibility = if (isExpandable) View.VISIBLE else View.GONE
+
+        holder.consLayout2.setOnClickListener {
+            isAnyItemExpanded(position)
+            ticketsList.get(position).isExpandable = !ticketsList.get(position).isExpandable
+            notifyItemChanged(position, Unit)
+        }
+    }
+
+    private fun isAnyItemExpanded(position: Int) {
+        val expanded = ticketsList.indexOfFirst {
+            it.isExpandable
+        }
+        if (expanded >= 0 && expanded != position) {
+            ticketsList[expanded].isExpandable = false
+            notifyItemChanged(expanded, 0)
+        }
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isNotEmpty() && payloads[0] == 0) {
+            holder.collapseExpandedView()
+        } else {
+            super.onBindViewHolder(holder, position, payloads)
+        }
     }
 
     override fun getItemCount(): Int {

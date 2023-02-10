@@ -64,8 +64,11 @@ class TechnicianDashboard : AppCompatActivity() {
                         val location = ticket.getString("location")
                         val urgency = ticket.getString("urgency")
                         val state = urgencyControl(urgency)
+                        val createdAt = ticket.getString("created_at")
+                        val openedOn = ticket.getString("updated_at")
+                        val status = ticket.getString("status")
 
-                        tickets.add(ItemsViewModel(ticketNo, date, faultReported, location, state))
+                        tickets.add(ItemsViewModel(ticketNo, date, faultReported, location, state, createdAt,openedOn,status))
                         tAdapter.notifyDataSetChanged()
 
                         Log.d("tickets", ticket.toString().trim())
