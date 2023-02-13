@@ -1,22 +1,39 @@
 package com.symphony.symphony
 
+import android.app.Application
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.NonDisposableHandle.parent
 
 class TicketsAdapter(private var ticketsList: ArrayList<ItemsViewModel>) :
     RecyclerView.Adapter<TicketsAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TicketsAdapter.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.card_view, parent, false)
-        return ViewHolder(view)
+    private lateinit var tListener : onItemClickListener
+    interface onItemClickListener{
+
+        fun onItemClick(position: Int)
+    }
+    fun setOnItemClickListener(listener: onItemClickListener){
+        tListener = listener
     }
 
-    class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TicketsAdapter.ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.card_view, parent, false)
+        return ViewHolder(view, tListener)
+
+
+
+    }
+
+    class ViewHolder(ItemView: View, listener: onItemClickListener) : RecyclerView.ViewHolder(ItemView) {
         val ticketValue: TextView = itemView.findViewById(R.id.txvTicketValue)
         val date: TextView = itemView.findViewById(R.id.txvDateValue)
         val ksh: TextView = itemView.findViewById(R.id.txvFaultValue)
@@ -29,6 +46,7 @@ class TicketsAdapter(private var ticketsList: ArrayList<ItemsViewModel>) :
         val opened: TextView = itemView.findViewById(R.id.txvOpenedOn)
         val updated: TextView = itemView.findViewById(R.id.txvUpdatedOn)
         val stats: TextView = itemView.findViewById(R.id.txvStatus)
+        val startTicket :View = itemView.findViewById(R.id.btnStartTicket)
 
         fun collapseExpandedView() {
             openedOn.visibility = View.GONE
@@ -37,6 +55,13 @@ class TicketsAdapter(private var ticketsList: ArrayList<ItemsViewModel>) :
             opened.visibility = View.GONE
             updated.visibility = View.GONE
             stats.visibility = View.GONE
+            startTicket.visibility = View.GONE
+        }
+
+        init {
+            startTicket.setOnClickListener {
+                listener.onItemClick(adapterPosition)
+            }
         }
     }
 
@@ -59,12 +84,14 @@ class TicketsAdapter(private var ticketsList: ArrayList<ItemsViewModel>) :
         holder.opened.visibility = if (isExpandable) View.VISIBLE else View.GONE
         holder.updated.visibility = if (isExpandable) View.VISIBLE else View.GONE
         holder.stats.visibility = if (isExpandable) View.VISIBLE else View.GONE
+        holder.startTicket.visibility = if (isExpandable) View.VISIBLE else View.GONE
 
         holder.consLayout2.setOnClickListener {
             isAnyItemExpanded(position)
             ticketsList.get(position).isExpandable = !ticketsList.get(position).isExpandable
             notifyItemChanged(position, Unit)
         }
+
     }
 
     private fun isAnyItemExpanded(position: Int) {

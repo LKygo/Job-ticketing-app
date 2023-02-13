@@ -1,9 +1,11 @@
 package com.symphony.symphony
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -37,6 +39,24 @@ class TechnicianDashboard : AppCompatActivity() {
 
         tickets = ArrayList()
         tAdapter = TicketsAdapter(tickets)
+
+
+
+
+    tAdapter.setOnItemClickListener(object: TicketsAdapter.onItemClickListener{
+        override fun onItemClick(position: Int) {
+            val intent = Intent(this@TechnicianDashboard, TicketActivity::class.java)
+            intent.putExtra("ticketNo", tickets[position].ticket)
+            intent.putExtra("customer", tickets[position].customer)
+            intent.putExtra("faultReported", tickets[position].faultReported)
+            intent.putExtra("date", tickets[position].date)
+            startActivity(intent)
+
+
+
+        }
+
+    })
         recyclerView.adapter = tAdapter
 
         getData()
@@ -58,6 +78,7 @@ class TechnicianDashboard : AppCompatActivity() {
 
                     for (i in 0..response.length()) {
                         val ticket = response.getJSONObject(i)
+                        val id = ticket.getString("id")
                         val ticketNo = ticket.getString("ticketno")
                         val date = ticket.getString("ticketdate")
                         val faultReported = ticket.getString("faultreported")
@@ -68,7 +89,7 @@ class TechnicianDashboard : AppCompatActivity() {
                         val openedOn = ticket.getString("updated_at")
                         val status = ticket.getString("status")
 
-                        tickets.add(ItemsViewModel(ticketNo, date, faultReported, location, state, createdAt,openedOn,status))
+                        tickets.add(ItemsViewModel(id, ticketNo, date, faultReported, location, state, createdAt,openedOn,status))
                         tAdapter.notifyDataSetChanged()
 
                         Log.d("tickets", ticket.toString().trim())

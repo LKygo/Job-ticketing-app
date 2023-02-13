@@ -1,6 +1,7 @@
 package com.symphony.symphony
 
 data class ItemsViewModel(
+    val id :String,
     val ticket: String,
     val date: String,
     val faultReported: String,
