@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,4 +8,370 @@
     android:layout_height="match_parent"
     tools:context=".TicketActivity">
 
+    <TextView
+        android:id="@+id/txvTicketDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="Ticket Details"
+        android:textColor="#CE000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/dvdTicketDivider"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/dvdTicketDivider"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="56dp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/dvdTicketDivider"
+        app:layout_constraintTop_toTopOf="@id/dvdTicketDivider">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp">
+
+            <TextView
+                android:id="@+id/txvTDTicketNO"
+                style="@style/subheadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:text="Ticket No"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/txvTDTicketNOValue"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/edit_text2"
+                android:gravity="center_vertical"
+                android:text="202222121313241"
+                app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDTicketNO" />
+
+            <TextView
+                android:id="@+id/txvTDClient"
+                style="@style/subheadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:text="Client"
+                app:layout_constraintBaseline_toBaselineOf="@id/txvTDTicketNO"
+                app:layout_constraintStart_toStartOf="@id/guideline3"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txvTDClientValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/edit_text2"
+                android:gravity="center_vertical"
+                android:text="KCB"
+                android:minHeight="48dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/txvTDClient"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDTicketNO" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintGuide_begin="190dp"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/txvTDFaultReported"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Fault reported"
+                android:textColor="#99000000"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/txvTDTicketNO"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDClientValue" />
+
+
+            <TextView
+                android:id="@+id/txvTDFaultReportedValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edit_text2"
+                android:gravity="center_vertical"
+                android:minHeight="48dp"
+                android:text="UPS Battery Drained needs replacement."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDFaultReported" />
+
+            <TextView
+                android:id="@+id/txvTDServiceDate"
+                style="@style/subheadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:text="Service Date"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDFaultReportedValue" />
+
+            <TextView
+                android:id="@+id/txvTDServiceDateValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/edit_text2"
+                android:gravity="center_vertical"
+                android:text="14/02/2023"
+                app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDServiceDate" />
+
+            <TextView
+                android:id="@+id/txvTDCity"
+                style="@style/subheadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:text="City"
+                app:layout_constraintBaseline_toBaselineOf="@id/txvTDServiceDate"
+                app:layout_constraintStart_toStartOf="@id/guideline3"
+                app:layout_constraintTop_toTopOf="@id/txvTDServiceDate" />
+
+            <TextView
+                android:id="@+id/txvTDCityValue"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/edit_text2"
+                android:gravity="center_vertical"
+                android:text="Nairobi"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/txvTDCity"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDCity" />
+
+            <TextView
+                android:id="@+id/txvTDStart"
+                style="@style/subheadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:text="Start Time"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDServiceDateValue" />
+
+            <TextView
+                android:id="@+id/txvTDStartValue"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/edit_text2"
+                android:gravity="center_vertical"
+                android:text="0900 hrs"
+                app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDStart" />
+
+            <TextView
+                android:id="@+id/txvTDEnd"
+                style="@style/subheadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:text="End Time"
+                app:layout_constraintBaseline_toBaselineOf="@id/txvTDStart"
+                app:layout_constraintStart_toStartOf="@id/guideline3" />
+
+            <TextView
+                android:id="@+id/txvTDEndValue"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/edit_text2"
+                android:gravity="center_vertical"
+                android:text="1200 hrs"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/txvTDEnd"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDEnd" />
+
+            <TextView
+                android:id="@+id/txvTDFindings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Findings"
+                android:textColor="#99000000"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/txvTDStart"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDStartValue" />
+
+            <TextView
+                android:id="@+id/txvAsteriscs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:text=" *"
+                android:textColor="#FD0000"
+                android:textSize="16sp"
+                app:layout_constraintBaseline_toBaselineOf="@id/txvTDFindings"
+                app:layout_constraintStart_toEndOf="@+id/txvTDFindings" />
+
+            <EditText
+                android:id="@+id/txvTDFindingsValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edit_text2"
+                android:gravity="center_vertical"
+                android:minHeight="48dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDFindings" />
+
+            <TextView
+                android:id="@+id/txvTDActionsTaken"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Actions taken"
+                android:textColor="#99000000"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/txvTDFindings"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDFindingsValue" />
+
+            <TextView
+                android:id="@+id/txvAsteriscs2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:text=" *"
+                android:textColor="#FD0000"
+                android:textSize="16sp"
+                app:layout_constraintBaseline_toBaselineOf="@id/txvTDActionsTaken"
+                app:layout_constraintStart_toEndOf="@+id/txvTDActionsTaken" />
+
+            <EditText
+                android:id="@+id/txvTDActionsTakenValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edit_text2"
+                android:gravity="center_vertical"
+                android:minHeight="48dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDActionsTaken" />
+
+            <TextView
+                android:id="@+id/txvTDRecommendations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Recommendations"
+                android:textColor="#99000000"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/txvTDFindings"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDActionsTakenValue" />
+
+            <TextView
+                android:id="@+id/txvAsteriscs3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:text=" *"
+                android:textColor="#FD0000"
+                android:textSize="16sp"
+                app:layout_constraintBaseline_toBaselineOf="@id/txvTDRecommendations"
+                app:layout_constraintStart_toEndOf="@+id/txvTDRecommendations" />
+
+            <EditText
+                android:id="@+id/txvTDRecommendationsValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edit_text2"
+                android:gravity="center_vertical"
+                android:minHeight="48dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDRecommendations" />
+
+            <Button
+                android:id="@+id/btnTDStartTicket"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Start"
+                app:layout_constraintStart_toStartOf="@+id/txvTDRecommendationsValue"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDRecommendationsValue" />
+
+            <Button
+                android:id="@+id/btnTDClear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#B5C60202"
+                android:text="Clear"
+                app:layout_constraintBaseline_toBaselineOf="@+id/btnTDStartTicket"
+                app:layout_constraintStart_toEndOf="@+id/btnTDStartTicket"
+                app:layout_constraintEnd_toStartOf="@+id/btnTDUpdate"/>
+
+            <Button
+                android:id="@+id/btnTDUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#C41BCA00"
+                android:text="Update"
+                app:layout_constraintEnd_toEndOf="@id/txvTDRecommendationsValue"
+                app:layout_constraintBaseline_toBaselineOf="@+id/btnTDStartTicket"/>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="76dp"
+                app:layout_constraintTop_toBottomOf="@id/btnTDClear" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+

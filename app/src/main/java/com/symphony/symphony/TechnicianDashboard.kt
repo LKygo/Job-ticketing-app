@@ -1,19 +1,16 @@
 package com.symphony.symphony
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import com.symphony.symphony.databinding.ActivityTechnicianDashboardBinding
-import de.hdodenhof.circleimageview.CircleImageView
 import java.util.Calendar
 
 
@@ -22,7 +19,7 @@ class TechnicianDashboard : AppCompatActivity() {
     private lateinit var tickets: ArrayList<ItemsViewModel>
     private lateinit var tAdapter : TicketsAdapter
     private lateinit var pBar: ProgressBar
-//    private lateinit var stateImage : CircleImageView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
