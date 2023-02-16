@@ -4,20 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0A673AB7"
     tools:context=".TechnicianDashboard">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cnsConstraintT2"
+        android:layout_width="match_parent"
+        android:background="#0A673AB7"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgProfile"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/green_circle"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/txvHello"
-        android:text="Hello "
+        android:text="Welcome back "
         android:gravity="center_vertical"
-        android:textSize="20sp"
-        android:textColor="#E8000000"
+        android:textSize="12sp"
         android:textStyle="bold"
-        android:layout_marginBottom="8dp"
-        android:layout_marginHorizontal="16dp"
-        app:layout_constraintBottom_toTopOf="@id/dvdDivider"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginHorizontal="10dp"
+        app:layout_constraintTop_toTopOf="@id/imgProfile"
+        app:layout_constraintStart_toEndOf="@id/imgProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
@@ -25,31 +39,34 @@
         android:id="@+id/txvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" Lee"
+        android:text=" Leeroy Kigo"
         android:textStyle="bold"
+        android:layout_marginHorizontal="6dp"
         android:gravity="center_vertical"
         android:textSize="20sp"
         android:textColor="#E8000000"
-        app:layout_constraintBaseline_toBaselineOf="@+id/txvHello"
-        app:layout_constraintStart_toEndOf="@+id/txvHello"/>
+        app:layout_constraintTop_toBottomOf="@id/txvHello"
+        app:layout_constraintStart_toEndOf="@+id/imgProfile"/>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="8dp"
-        android:onClick="search"
-        android:src="@drawable/baseline_search_24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/dvdDivider"/>
-
-
-    <com.google.android.material.divider.MaterialDivider
+    <EditText
+        android:id="@+id/edtSearchBox"
         android:layout_width="match_parent"
-        android:id="@+id/dvdDivider"
-        android:layout_height="1dp"
-        android:layout_marginTop="56dp"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="20dp"
+        android:hint=" Search job here"
+        android:drawableLeft="@drawable/baseline_search_24"
+        android:background="@drawable/edit_text2"
+        app:layout_constraintTop_toBottomOf="@+id/txvName"/>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dvdDivider"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/edtSearchBox"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/txvUrgencyHelp"
@@ -59,7 +76,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dvdDivider"/>
+        app:layout_constraintTop_toBottomOf="@+id/cnsConstraintT2"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="16dp"
@@ -129,8 +146,9 @@
         android:id="@+id/rcvRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/txvUrgencyHelp"
-        />
+        android:paddingBottom="84dp"
+        app:layout_constraintTop_toBottomOf="@+id/txvUrgencyHelp"/>
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"

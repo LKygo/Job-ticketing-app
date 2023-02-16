@@ -7,30 +7,46 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
-    android:elevation="12dp"
+    android:elevation="24dp"
     app:cardCornerRadius="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="8dp">
+        >
+
+        <ImageView
+            android:id="@+id/imgUrgencyColumn2"
+            android:layout_width="12dp"
+            android:layout_height="0dp"
+            android:background="@drawable/urgency_yellow"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cnsConstraint2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imgUrgencyColumn"
+                android:layout_width="12dp"
+                android:layout_height="0dp"
+                android:background="@drawable/urgency_yellow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
             <TextView
                 android:id="@+id/txvTicketNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="36dp"
                 android:layout_marginTop="8dp"
                 android:text="Ticket No:"
                 app:layout_constraintStart_toStartOf="parent"
@@ -44,15 +60,6 @@
                 app:layout_constraintStart_toEndOf="@+id/txvTicketNo"
                 app:layout_constraintTop_toTopOf="@+id/txvTicketNo"
                 tools:text="123456789" />
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imgCircularStatus"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_margin="8dp"
-                android:src="@drawable/green_circle"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/txvDate"
@@ -92,6 +99,7 @@
                 app:layout_constraintTop_toTopOf="@+id/txvFault"
                 tools:text="UPS maintenance" />
 
+
             <TextView
                 android:id="@+id/txvCustomer"
                 android:layout_width="wrap_content"
@@ -116,7 +124,7 @@
             android:id="@+id/txvOpenedOn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="28dp"
             android:text="Opened on:"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cnsConstraint2" />
@@ -176,7 +184,16 @@
             android:text="Start ticket"
             android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@id/txvStatusValue"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"/>
+
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="8dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnStartTicket"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,17 +1,12 @@
 package com.symphony.symphony
 
-import android.app.Application
-import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.NonDisposableHandle.parent
 
 class TicketsAdapter(private var ticketsList: ArrayList<ItemsViewModel>) :
     RecyclerView.Adapter<TicketsAdapter.ViewHolder>() {
@@ -38,7 +33,8 @@ class TicketsAdapter(private var ticketsList: ArrayList<ItemsViewModel>) :
         val date: TextView = itemView.findViewById(R.id.txvDateValue)
         val ksh: TextView = itemView.findViewById(R.id.txvFaultValue)
         val customer: TextView = itemView.findViewById(R.id.txvCustomerValue)
-        val state: ImageView = itemView.findViewById(R.id.imgCircularStatus)
+        val state: ImageView = itemView.findViewById(R.id.imgUrgencyColumn)
+        val state2: ImageView = itemView.findViewById(R.id.imgUrgencyColumn2)
         val openedOn: TextView = itemView.findViewById(R.id.txvOpenedOnValue)
         val updatedOn: TextView = itemView.findViewById(R.id.txvUpdatedOnValue)
         val status: TextView = itemView.findViewById(R.id.txvStatusValue)
@@ -72,6 +68,7 @@ class TicketsAdapter(private var ticketsList: ArrayList<ItemsViewModel>) :
         holder.customer.text = ticketsList.get(position).customer
         holder.ksh.text = ticketsList.get(position).faultReported
         holder.state.setImageResource(ticketsList.get(position).state)
+        holder.state2.setImageResource(ticketsList.get(position).state)
         holder.openedOn.text = ticketsList.get(position).openedOn
         holder.updatedOn.text = ticketsList.get(position).updatedOn
         holder.status.text = ticketsList.get(position).status

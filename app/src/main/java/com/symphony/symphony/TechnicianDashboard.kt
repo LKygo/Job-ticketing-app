@@ -111,11 +111,11 @@ private fun urgencyControl(urgency:String) :Int {
 
 
     return when(urgency){
-        "Moderately Urgent"-> R.drawable.yellow_circle
+        "Moderately Urgent"-> R.drawable.urgency_yellow
 
-        "Urgent"-> R.drawable.orange_circle
+        "Urgent"-> R.drawable.urgency_orange
 
-        "Very Urgent"-> R.drawable.red_circle
+        "Very Urgent"-> R.drawable.urgency_red
 
         else -> R.drawable.green_circle
     }
