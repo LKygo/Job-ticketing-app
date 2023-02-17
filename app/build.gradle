@@ -70,7 +70,7 @@ dependencies {
 //  Circular image view
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 //    okhttp
-    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    implementation("com.squareup.okhttp3:okhttp:4.9.1")
 
     // Coroutine
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
