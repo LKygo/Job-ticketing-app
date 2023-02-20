@@ -1,5 +1,6 @@
-package com.symphony.symphony
+package com.symphony.symphony.Adapter
 
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,28 +8,39 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.symphony.symphony.R
+import com.symphony.symphony.TicketItemModel
 
-class TicketsAdapter(private var ticketsList: ArrayList<TicketItemModel>) :
-    RecyclerView.Adapter<TicketsAdapter.ViewHolder>() {
+class TickAdapter(private val activity: Activity) :
+    RecyclerView.Adapter<TickAdapter.ViewHolder>() {
 
-    private lateinit var tListener : onItemClickListener
-    interface onItemClickListener{
+
+    private lateinit var ticketsList: List<TicketItemModel>
+
+    fun setTickList(ticketsList: List<TicketItemModel>){
+        this.ticketsList = ticketsList
+    }
+    private lateinit var tListener: onItemClickListener
+
+    interface onItemClickListener {
 
         fun onItemClick(position: Int)
     }
-    fun setOnItemClickListener(listener: onItemClickListener){
+
+    fun setOnItemClickListener(listener: onItemClickListener) {
         tListener = listener
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TicketsAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.card_view, parent, false)
         return ViewHolder(view, tListener)
 
 
-
     }
 
-    class ViewHolder(ItemView: View, listener: onItemClickListener) : RecyclerView.ViewHolder(ItemView) {
+    class ViewHolder(ItemView: View, listener: onItemClickListener) :
+        RecyclerView.ViewHolder(ItemView) {
+
         val ticketValue: TextView = itemView.findViewById(R.id.txvTicketValue)
         val date: TextView = itemView.findViewById(R.id.txvDateValue)
         val ksh: TextView = itemView.findViewById(R.id.txvFaultValue)
@@ -42,7 +54,18 @@ class TicketsAdapter(private var ticketsList: ArrayList<TicketItemModel>) :
         val opened: TextView = itemView.findViewById(R.id.txvOpenedOn)
         val updated: TextView = itemView.findViewById(R.id.txvUpdatedOn)
         val stats: TextView = itemView.findViewById(R.id.txvStatus)
-        val startTicket :View = itemView.findViewById(R.id.btnStartTicket)
+        val startTicket: View = itemView.findViewById(R.id.btnStartTicket)
+
+        fun bind(data: TicketItemModel, activity: Activity){
+
+            ticketValue.text = data.ticket
+            date.text = data.date
+            ksh.text = data.faultReported
+            customer.text = data.customer
+            openedOn.text = data.openedOn
+            updatedOn.text = data.updatedOn
+
+        }
 
         fun collapseExpandedView() {
             openedOn.visibility = View.GONE
@@ -62,16 +85,17 @@ class TicketsAdapter(private var ticketsList: ArrayList<TicketItemModel>) :
     }
 
 
-    override fun onBindViewHolder(holder: TicketsAdapter.ViewHolder, position: Int) {
-        holder.ticketValue.text = ticketsList.get(position).ticket
-        holder.date.text = ticketsList.get(position).date
-        holder.customer.text = ticketsList.get(position).customer
-        holder.ksh.text = ticketsList.get(position).faultReported
-        holder.state.setImageResource(ticketsList.get(position).state)
-        holder.state2.setImageResource(ticketsList.get(position).state)
-        holder.openedOn.text = ticketsList.get(position).openedOn
-        holder.updatedOn.text = ticketsList.get(position).updatedOn
-        holder.status.text = ticketsList.get(position).status
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+//        holder.ticketValue.text = ticketsList.get(position).ticket
+//        holder.date.text = ticketsList.get(position).date
+//        holder.customer.text = ticketsList.get(position).customer
+//        holder.ksh.text = ticketsList.get(position).faultReported
+//        holder.state.setImageResource(ticketsList.get(position).state)
+//        holder.state2.setImageResource(ticketsList.get(position).state)
+//        holder.openedOn.text = ticketsList.get(position).openedOn
+//        holder.updatedOn.text = ticketsList.get(position).updatedOn
+//        holder.status.text = ticketsList.get(position).status
+        holder.bind(ticketsList.get(position), activity)
 
         val isExpandable: Boolean = ticketsList.get(position).isExpandable
 

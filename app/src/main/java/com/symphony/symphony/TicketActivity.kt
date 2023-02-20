@@ -2,11 +2,18 @@ package com.symphony.symphony
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.android.volley.NetworkError
+import com.android.volley.NetworkResponse
+import com.android.volley.Response
+import com.android.volley.toolbox.HttpHeaderParser
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.symphony.symphony.databinding.ActivityTicketBinding
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.OkHttpClient
-import okhttp3.RequestBody
+import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class TicketActivity : AppCompatActivity() {
@@ -18,21 +25,17 @@ class TicketActivity : AppCompatActivity() {
 
     private lateinit var ticket_no: String
     private lateinit var jobcardno: String
-    private lateinit var servicedate:String
+    private lateinit var servicedate: String
     private lateinit var start_time: String
     private lateinit var end_time: String
     private lateinit var serialno: String
     private lateinit var city: String
-    private lateinit var findings : String
+    private lateinit var findings: String
     private lateinit var action_taken: String
     private lateinit var recommendations: String
-    private lateinit var updated_at : String
+    private lateinit var updated_at: String
     private lateinit var created_at: String
     private lateinit var updatedby: String
-
-
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,10 +47,10 @@ class TicketActivity : AppCompatActivity() {
 
         val bundle: Bundle? = intent.extras
 
-         ticketNo = bundle?.getString("ticketNo").toString()
-         customer = bundle?.getString("customer").toString()
-         faultReported = bundle?.getString("faultReported").toString()
-         date = bundle?.getString("date").toString()
+        ticketNo = bundle?.getString("ticketNo").toString()
+        customer = bundle?.getString("customer").toString()
+        faultReported = bundle?.getString("faultReported").toString()
+        date = bundle?.getString("date").toString()
 
         binding.txvTDTicketNOValue.text = ticketNo
         binding.txvTDClientValue.text = customer
@@ -58,92 +61,87 @@ class TicketActivity : AppCompatActivity() {
         ticket_no = "yesno"
         jobcardno = "kwmkwel394i34"
         servicedate = "2000-20-20T00:00:00.0000Z"
-        start_time ="09:46:45"
+        start_time = "09:46:45"
         end_time = "09:47:45"
-        serialno ="mdejnd83"
+        serialno = "mdejnd83"
         city = "nairobi"
-        findings ="ksdcksjencjniowemdimweiodmwedmioqwmOM"
-        action_taken ="installed UPS"
-        recommendations= "new battery"
-        updatedby="3"
-        updated_at ="2022-06-06 14:14:49"
-        created_at="2021-02-17 09:46:44"
+        findings = "ksdcksjencjniowemdimweiodmwedmioqwmOM"
+        action_taken = "installed UPS"
+        recommendations = "new battery"
+        updatedby = "3"
+        updated_at = "2022-06-06 14:14:49"
+        created_at = "2021-02-17 09:46:44"
 
-        if (ticketNo.isNotEmpty() && date.isNotEmpty() && customer.isNotEmpty() && faultReported.isNotEmpty()) {
-            Log.d("TicketDetails", "$ticketNo, $customer, $faultReported, $date")
-        }
-
-//        binding.btnTDUpdate.setOnClickListener {
-//
-//                try {
-//                    postTicket(ticket_no, jobcardno, servicedate, start_time)
-//                }
-//                catch (e:java.lang.Exception){
-//                    Log.d("FunPost", e.toString())
-//                }
-//
-//
-//
+//        if (ticketNo.isNotEmpty() && date.isNotEmpty() && customer.isNotEmpty() && faultReported.isNotEmpty()) {
+//            Log.d("TicketDetails", "$ticketNo, $customer, $faultReported, $date")
 //        }
 
+        binding.btnTDUpdate.setOnClickListener {
 
-
+            try {
+                sendTicketDetails()
+            } catch (e: java.lang.Exception) {
+                Log.d("FunPost", e.toString())
+            }
+        }
     }
-//    private fun sendOkHTTp(){
-//        val client = OkHttpClient()
-//        val url = "https://backend.api.symphony.co.ke/upload"
-//
-//        val jsonObject = JSONObject()
-//        jsonObject.put("ticket_no", "OkHttp incoming")
-//        jsonObject.put("jobcardno", "jobcard123")
-//        jsonObject.put("servicedate", "service today 17th")
-//
-//        val request =  RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), jsonObject.toString())
-//        val postRequest = Request.Builder()
-//            .url(url)
-//            .post(request)
-//            .build()
-//    }
 
-
-
-
-
-//    @Throws(IOException::class)
-//    private fun uploadTicket(ticketNo: String, customer: String, faultReported: String, date:String) {
-//
-//        val url = "backend.api.symphony.co.ke/upload"
-//        val client = OkHttpClient
-//        val jsTicket = "{\"ticketNo\":$ticketNo,\"customer\":$customer,\"faultReported\":$faultReported,\"date\"$date\"}"
-//        val body = RequestBody.create(
-//            "application/json".toMediaTypeOrNull(), jsTicket)
-//
-//        val request = Request.Builder()
-//            .url(url)
-//            .post(body)
-//            .build()
-//
-//        val call = client.newCall(request)
-//
-//    }
 
     private fun sendTicketDetails() {
-        val url = "backend.api.symphony.co.ke/upload"
+        val url = "https://backend.api.symphony.co.ke/upload"
 
-        val client = OkHttpClient().newBuilder()
-            .build()
-        val mediaType = "application/json".toMediaTypeOrNull();
-        val body = RequestBody.create(
-            mediaType,
-            "{\n\n\"ticket_no\":\"yesno\",\n\"jobcardno\":\"kwmkwel394i34\",\n\"servicedate\":\"2000-20-20T00:00:00.0000Z\",\n\"start_time\":\"09:46:45\",\n\"end_time\":\"09:47:45\",\n\"serialno\":\"mdejnd83\",\n\"city\":\"nairobi\",\n\"findings\":\"ksdcksjencjniowemdimweiodmwedmioqwmOM\",\n\"action_taken\":\"installed UPS\",\n\"recommendations\":\"new battery\",\n\"updatedby\":\"3\",\n\"updated_at\":\"2022-06-06 14:14:49\",\n\"created_at\":\"2021-02-17 09:46:44\"\n\n}\n\n\n"
-        )
-        val request = okhttp3.Request.Builder()
-            .url(url)
-            .method("POST", body)
-            .addHeader("Content-Type", "application/json")
-            .build()
-        val response = client.newCall(request).execute();
-        Log.d("Post", response.toString())
+        // Create a JSON object to hold your data
+        val jsonObject = JSONObject()
+        jsonObject.put("ticket_no", "dmendawod")
+        jsonObject.put("jobcardno", 2836846)
+
+
+        val dateFormat = SimpleDateFormat("2023-02-17", Locale.US)
+        val formattedDate = dateFormat.format(date)
+        jsonObject.put("servicedate", formattedDate)
+
+
+// Create a request to your server's URL
+        val request = object : StringRequest(Method.POST, url,
+            { response ->
+                // Handle successful response from server
+                Toast.makeText(this@TicketActivity, "Successfully updated Ticket", Toast.LENGTH_SHORT).show()
+
+                Log.d("Volley", "Response: $response")
+            },
+            { error ->
+                // Handle error response from server
+                Toast.makeText(this@TicketActivity, "Failed to update Ticket", Toast.LENGTH_SHORT).show()
+
+                Log.e("Volley", "Error: $error")
+            }) {
+
+            override fun parseNetworkResponse(response: NetworkResponse): Response<String> {
+                val status = response.statusCode
+                val responseBody = String(response.data)
+                Log.d("StatusCode", "Response body: $responseBody")
+                Log.d("StatusCode", "Status code: $status")
+
+                if (status == 200) {
+                    return Response.success(responseBody, HttpHeaderParser.parseCacheHeaders(response))
+                } else {
+                    return Response.error(NetworkError())
+                }
+            }
+
+            override fun getBody(): ByteArray {
+                // Convert the JSON object to a byte array
+                return jsonObject.toString().toByteArray(Charsets.UTF_8)
+            }
+
+            override fun getBodyContentType(): String {
+                // Set the content type to "application/json"
+                return "application/json"
+            }
+        }
+// Add the request to the request queue
+        Volley.newRequestQueue(this@TicketActivity).add(request)
+
     }
 }
 

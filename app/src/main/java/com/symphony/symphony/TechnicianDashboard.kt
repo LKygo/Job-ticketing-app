@@ -16,7 +16,7 @@ import java.util.Calendar
 
 class TechnicianDashboard : AppCompatActivity() {
     private lateinit var binding: ActivityTechnicianDashboardBinding
-    private lateinit var tickets: ArrayList<ItemsViewModel>
+    private lateinit var tickets: ArrayList<TicketItemModel>
     private lateinit var tAdapter : TicketsAdapter
     private lateinit var pBar: ProgressBar
 
@@ -86,7 +86,7 @@ class TechnicianDashboard : AppCompatActivity() {
                         val openedOn = ticket.getString("updated_at")
                         val status = ticket.getString("status")
 
-                        tickets.add(ItemsViewModel(id, ticketNo, date, faultReported, location, state, createdAt,openedOn,status))
+                        tickets.add(TicketItemModel(id, ticketNo, date, faultReported, location, state, createdAt,openedOn,status))
                         tAdapter.notifyDataSetChanged()
 
                         Log.d("tickets", ticket.toString().trim())
@@ -130,8 +130,7 @@ fun greeting(): String {
     return when (timeOfDay) {
         in 0..11 -> "Good Morning"
         in 12..15 -> "Good Afternoon"
-        in 16..20 -> "Good Evening"
-        in 21..23 -> "Good Night"
+        in 16..23 -> "Good Evening"
         else -> "Hello"
     }
 }

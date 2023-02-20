@@ -1,7 +1,7 @@
 package com.symphony.symphony
 
-data class ItemsViewModel(
-    val id :String,
+data class TicketItemModel(
+    val id: String,
     val ticket: String,
     val date: String,
     val faultReported: String,
@@ -9,9 +9,8 @@ data class ItemsViewModel(
     val state: Int,
     val openedOn: String,
     val updatedOn: String,
-    val status:String,
+    val status: String,
     var isExpandable: Boolean = false
 
 
-) {
-}
+)
