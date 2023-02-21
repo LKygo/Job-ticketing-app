@@ -55,7 +55,7 @@ class TicketActivity : AppCompatActivity() {
         faultReported = bundle?.getString("faultReported").toString()
         date = bundle?.getString("date").toString()
 
-        val sTime =  bundle?.getString("startTime").toString()
+        val sTime = bundle?.getString("startTime").toString()
 
         binding.txvTDTicketNOValue.text = ticketNo
         binding.txvTDClientValue.text = customer
@@ -70,28 +70,9 @@ class TicketActivity : AppCompatActivity() {
         servicedate = LocalDate.now().toString()
         start_time = sTime
         created_at = date
+        city = customer
+        updatedby = "Ronald"
 
-
-
-
-
-
-
-
-
-
-        jobcardno = "kwmkwel394i34"
-        servicedate = "2000-20-20T00:00:00.0000Z"
-        start_time = "09:46:45"
-        end_time = "09:47:45"
-        serialno = "mdejnd83"
-        city = "nairobi"
-        findings = "ksdcksjencjniowemdimweiodmwedmioqwmOM"
-        action_taken = "installed UPS"
-        recommendations = "new battery"
-        updatedby = "3"
-        updated_at = "2022-06-06 14:14:49"
-        created_at = "2021-02-17 09:46:44"
 
 //        if (ticketNo.isNotEmpty() && date.isNotEmpty() && customer.isNotEmpty() && faultReported.isNotEmpty()) {
 //            Log.d("TicketDetails", "$ticketNo, $customer, $faultReported, $date")
@@ -102,10 +83,23 @@ class TicketActivity : AppCompatActivity() {
             val currentTime = LocalTime.now()
             val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
             val endTime = currentTime.format(formatter)
-            end_time =endTime
+            end_time = endTime.toString()
 
             try {
-                sendTicketDetails()
+                sendTicketDetails(
+                    ticketNo,
+                    jobcardno,
+                    servicedate,
+                    start_time,
+                    end_time,
+                    serialNo,
+                    city,
+                    findings,
+                    action_taken,
+                    recommendations,
+                    updatedby,
+                    created_at
+                )
             } catch (e: java.lang.Exception) {
                 Log.d("FunPost", e.toString())
             }
@@ -113,37 +107,54 @@ class TicketActivity : AppCompatActivity() {
     }
 
 
-    private fun sendTicketDetails() {
+    private fun sendTicketDetails(
+        ticket_no: String,
+        jobcard_no: String,
+        service_date: String,
+        start_time: String,
+        end_time: String,
+        serial_no: String,
+        city: String,
+        findings: String,
+        action_taken: String,
+        recommendations: String,
+        updated_by: String,
+        created_at: String
+    ) {
         val url = "https://backend.api.symphony.co.ke/upload"
 
         // Create a JSON object to hold your data
         val jsonObject = JSONObject()
-        jsonObject.put("ticket_no", "dmendawod")
-        jsonObject.put("jobcardno", 2836846)
-        jsonObject.put("ticket_no", "dmendawod")
-        jsonObject.put("ticket_no", "dmendawod")
-        jsonObject.put("ticket_no", "dmendawod")
-        jsonObject.put("ticket_no", "dmendawod")
-        jsonObject.put("ticket_no", "dmendawod")
-        jsonObject.put("ticket_no", "dmendawod")
-        jsonObject.put("ticket_no", "dmendawod")
-        jsonObject.put("ticket_no", "dmendawod")
-        jsonObject.put("ticket_no", "dmendawod")
-        jsonObject.put("ticket_no", "dmendawod")
-
+        jsonObject.put("ticket_no", ticket_no)
+        jsonObject.put("jobcardno", jobcard_no)
+        jsonObject.put("service_date", service_date)
+        jsonObject.put("start_time", start_time)
+        jsonObject.put("end_time", end_time)
+        jsonObject.put("serial_no", serial_no)
+        jsonObject.put("city", city)
+        jsonObject.put("findings", findings)
+        jsonObject.put("action_taken", action_taken)
+        jsonObject.put("recommendations", recommendations)
+        jsonObject.put("updated_by", updated_by)
+        jsonObject.put("created_at", created_at)
 
 
 // Create a request to your server's URL
         val request = object : StringRequest(Method.POST, url,
             { response ->
                 // Handle successful response from server
-                Toast.makeText(this@TicketActivity, "Successfully updated Ticket", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@TicketActivity,
+                    "Successfully updated Ticket",
+                    Toast.LENGTH_SHORT
+                ).show()
 
                 Log.d("Volley", "Response: $response")
             },
             { error ->
                 // Handle error response from server
-                Toast.makeText(this@TicketActivity, "Failed to update Ticket", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@TicketActivity, "Failed to update Ticket", Toast.LENGTH_SHORT)
+                    .show()
 
                 Log.e("Volley", "Error: $error")
             }) {
@@ -155,7 +166,10 @@ class TicketActivity : AppCompatActivity() {
                 Log.d("StatusCode", "Status code: $status")
 
                 if (status == 200) {
-                    return Response.success(responseBody, HttpHeaderParser.parseCacheHeaders(response))
+                    return Response.success(
+                        responseBody,
+                        HttpHeaderParser.parseCacheHeaders(response)
+                    )
                 } else {
                     return Response.error(NetworkError())
                 }

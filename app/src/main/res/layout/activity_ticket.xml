@@ -253,7 +253,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/txvTDSJobCardNo"
                 app:layout_constraintStart_toEndOf="@+id/txvTDSJobCardNo" />
 
-            <TextView
+            <EditText
                 android:id="@+id/txvTDSJobCardNoValue"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
@@ -288,7 +288,7 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/txvTDSerialNo"
                 app:layout_constraintStart_toEndOf="@+id/txvTDSerialNo" />
 
-            <TextView
+            <EditText
                 android:id="@+id/txvTDSerialNoValue"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
