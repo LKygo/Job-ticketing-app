@@ -1,8 +1,10 @@
 package com.symphony.symphony
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.NetworkError
 import com.android.volley.NetworkResponse
@@ -12,10 +14,9 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.symphony.symphony.databinding.ActivityTicketBinding
 import org.json.JSONObject
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 
 class TicketActivity : AppCompatActivity() {
@@ -39,6 +40,7 @@ class TicketActivity : AppCompatActivity() {
     private lateinit var updatedby: String
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -53,6 +55,8 @@ class TicketActivity : AppCompatActivity() {
         faultReported = bundle?.getString("faultReported").toString()
         date = bundle?.getString("date").toString()
 
+        val sTime =  bundle?.getString("startTime").toString()
+
         binding.txvTDTicketNOValue.text = ticketNo
         binding.txvTDClientValue.text = customer
         binding.txvTDFaultReportedValue.text = faultReported
@@ -63,9 +67,10 @@ class TicketActivity : AppCompatActivity() {
         findings = binding.txvTDFindingsValue.text.toString().trim()
         action_taken = binding.txvTDActionsTakenValue.text.toString().trim()
         recommendations = binding.txvTDRecommendationsValue.text.toString().trim()
+        servicedate = LocalDate.now().toString()
+        start_time = sTime
+        created_at = date
 
-        val date = getCurrentDateTime()
-        servicedate = date.toString()
 
 
 
@@ -94,6 +99,11 @@ class TicketActivity : AppCompatActivity() {
 
         binding.btnTDUpdate.setOnClickListener {
 
+            val currentTime = LocalTime.now()
+            val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+            val endTime = currentTime.format(formatter)
+            end_time =endTime
+
             try {
                 sendTicketDetails()
             } catch (e: java.lang.Exception) {
@@ -110,11 +120,17 @@ class TicketActivity : AppCompatActivity() {
         val jsonObject = JSONObject()
         jsonObject.put("ticket_no", "dmendawod")
         jsonObject.put("jobcardno", 2836846)
+        jsonObject.put("ticket_no", "dmendawod")
+        jsonObject.put("ticket_no", "dmendawod")
+        jsonObject.put("ticket_no", "dmendawod")
+        jsonObject.put("ticket_no", "dmendawod")
+        jsonObject.put("ticket_no", "dmendawod")
+        jsonObject.put("ticket_no", "dmendawod")
+        jsonObject.put("ticket_no", "dmendawod")
+        jsonObject.put("ticket_no", "dmendawod")
+        jsonObject.put("ticket_no", "dmendawod")
+        jsonObject.put("ticket_no", "dmendawod")
 
-
-        val dateFormat = SimpleDateFormat("2023-02-17", Locale.US)
-        val formattedDate = dateFormat.format(date)
-        jsonObject.put("servicedate", formattedDate)
 
 
 // Create a request to your server's URL

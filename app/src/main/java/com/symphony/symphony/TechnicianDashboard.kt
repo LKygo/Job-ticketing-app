@@ -1,16 +1,20 @@
 package com.symphony.symphony
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import com.symphony.symphony.databinding.ActivityTechnicianDashboardBinding
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
 
@@ -41,12 +45,19 @@ class TechnicianDashboard : AppCompatActivity() {
 
 
     tAdapter.setOnItemClickListener(object: TicketsAdapter.onItemClickListener{
+        @RequiresApi(Build.VERSION_CODES.O)
         override fun onItemClick(position: Int) {
             val intent = Intent(this@TechnicianDashboard, TicketActivity::class.java)
             intent.putExtra("ticketNo", tickets[position].ticket)
             intent.putExtra("customer", tickets[position].customer)
             intent.putExtra("faultReported", tickets[position].faultReported)
             intent.putExtra("date", tickets[position].date)
+
+            val currentTime = LocalTime.now()
+            val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+            val startTime = currentTime.format(formatter)
+
+            intent.putExtra("startTime", startTime)
             startActivity(intent)
 
 
