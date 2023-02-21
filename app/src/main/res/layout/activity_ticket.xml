@@ -57,16 +57,16 @@
             <TextView
                 android:id="@+id/txvTDTicketNOValue"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/edit_text2"
                 android:gravity="center_vertical"
                 android:text="202222121313241"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txvTDTicketNO" />
+                app:layout_constraintTop_toTopOf="@+id/txvTDClientValue"
+                app:layout_constraintBottom_toBottomOf="@+id/txvTDClientValue"/>
 
             <TextView
                 android:id="@+id/txvTDClient"
@@ -157,29 +157,30 @@
                 app:layout_constraintTop_toBottomOf="@+id/txvTDServiceDate" />
 
             <TextView
-                android:id="@+id/txvTDCity"
+                android:id="@+id/txvTDLocation"
                 style="@style/subheadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
-                android:text="City"
+                android:text="Location"
                 app:layout_constraintBaseline_toBaselineOf="@id/txvTDServiceDate"
                 app:layout_constraintStart_toStartOf="@id/guideline3"
                 app:layout_constraintTop_toTopOf="@id/txvTDServiceDate" />
 
             <TextView
-                android:id="@+id/txvTDCityValue"
+                android:id="@+id/txvTDLocationValue"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:minHeight="48dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/edit_text2"
                 android:gravity="center_vertical"
                 android:text="Nairobi"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/txvTDCity"
-                app:layout_constraintTop_toBottomOf="@+id/txvTDCity" />
+                app:layout_constraintStart_toStartOf="@+id/txvTDLocation"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDLocation" />
 
             <TextView
                 android:id="@+id/txvTDStart"
@@ -231,6 +232,76 @@
                 app:layout_constraintTop_toBottomOf="@+id/txvTDEnd" />
 
             <TextView
+                android:id="@+id/txvTDSJobCardNo"
+                style="@style/subheadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:text="Job Card No"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDStartValue" />
+
+            <TextView
+                android:id="@+id/txvAsteriscs4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:text=" *"
+                android:textColor="#FD0000"
+                android:textSize="16sp"
+                app:layout_constraintBaseline_toBaselineOf="@id/txvTDSJobCardNo"
+                app:layout_constraintStart_toEndOf="@+id/txvTDSJobCardNo" />
+
+            <TextView
+                android:id="@+id/txvTDSJobCardNoValue"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/edit_text2"
+                android:gravity="center_vertical"
+                app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDSJobCardNo" />
+
+            <TextView
+                android:id="@+id/txvTDSerialNo"
+                style="@style/subheadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:text="Serial No"
+                app:layout_constraintBaseline_toBaselineOf="@id/txvTDSJobCardNo"
+                app:layout_constraintStart_toStartOf="@id/guideline3" />
+
+            <TextView
+                android:id="@+id/txvAsteriscs5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:text=" *"
+                android:textColor="#FD0000"
+                android:textSize="16sp"
+                app:layout_constraintBaseline_toBaselineOf="@id/txvTDSerialNo"
+                app:layout_constraintStart_toEndOf="@+id/txvTDSerialNo" />
+
+            <TextView
+                android:id="@+id/txvTDSerialNoValue"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/edit_text2"
+                android:gravity="center_vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/txvTDEnd"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDSerialNo" />
+
+
+            <TextView
                 android:id="@+id/txvTDFindings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -239,7 +310,7 @@
                 android:textColor="#99000000"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@id/txvTDStart"
-                app:layout_constraintTop_toBottomOf="@+id/txvTDStartValue" />
+                app:layout_constraintTop_toBottomOf="@+id/txvTDSJobCardNoValue" />
 
             <TextView
                 android:id="@+id/txvAsteriscs"

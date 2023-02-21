@@ -13,6 +13,8 @@ import com.android.volley.toolbox.Volley
 import com.symphony.symphony.databinding.ActivityTicketBinding
 import org.json.JSONObject
 import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 
@@ -22,8 +24,7 @@ class TicketActivity : AppCompatActivity() {
     private lateinit var customer: String
     private lateinit var faultReported: String
     private lateinit var date: String
-
-    private lateinit var ticket_no: String
+    private lateinit var serialNo: String
     private lateinit var jobcardno: String
     private lateinit var servicedate: String
     private lateinit var start_time: String
@@ -56,9 +57,24 @@ class TicketActivity : AppCompatActivity() {
         binding.txvTDClientValue.text = customer
         binding.txvTDFaultReportedValue.text = faultReported
         binding.txvTDServiceDateValue.text = date
+        binding.txvTDLocationValue.text = customer
+        jobcardno = binding.txvTDSJobCardNoValue.text.toString().trim()
+        serialNo = binding.txvTDSerialNoValue.text.toString().trim()
+        findings = binding.txvTDFindingsValue.text.toString().trim()
+        action_taken = binding.txvTDActionsTakenValue.text.toString().trim()
+        recommendations = binding.txvTDRecommendationsValue.text.toString().trim()
+
+        val date = getCurrentDateTime()
+        servicedate = date.toString()
 
 
-        ticket_no = "yesno"
+
+
+
+
+
+
+
         jobcardno = "kwmkwel394i34"
         servicedate = "2000-20-20T00:00:00.0000Z"
         start_time = "09:46:45"
@@ -143,6 +159,7 @@ class TicketActivity : AppCompatActivity() {
         Volley.newRequestQueue(this@TicketActivity).add(request)
 
     }
+
 }
 
 

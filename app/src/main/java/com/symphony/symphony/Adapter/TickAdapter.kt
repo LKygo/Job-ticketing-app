@@ -62,7 +62,7 @@ class TickAdapter(private val activity: Activity) :
             date.text = data.date
             ksh.text = data.faultReported
             customer.text = data.customer
-            openedOn.text = data.openedOn
+            openedOn.text = data.updatedOn
             updatedOn.text = data.updatedOn
 
         }
