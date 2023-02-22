@@ -254,7 +254,7 @@
                 app:layout_constraintStart_toEndOf="@+id/txvTDSJobCardNo" />
 
             <EditText
-                android:id="@+id/txvTDSJobCardNoValue"
+                android:id="@+id/edtTDJobCardNoValue"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="16dp"
@@ -289,7 +289,7 @@
                 app:layout_constraintStart_toEndOf="@+id/txvTDSerialNo" />
 
             <EditText
-                android:id="@+id/txvTDSerialNoValue"
+                android:id="@+id/edtTDSerialNoValue"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="8dp"
@@ -310,7 +310,7 @@
                 android:textColor="#99000000"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@id/txvTDStart"
-                app:layout_constraintTop_toBottomOf="@+id/txvTDSJobCardNoValue" />
+                app:layout_constraintTop_toBottomOf="@+id/edtTDJobCardNoValue" />
 
             <TextView
                 android:id="@+id/txvAsteriscs"
@@ -324,7 +324,7 @@
                 app:layout_constraintStart_toEndOf="@+id/txvTDFindings" />
 
             <EditText
-                android:id="@+id/txvTDFindingsValue"
+                android:id="@+id/edtTDFindingsValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
@@ -345,7 +345,7 @@
                 android:textColor="#99000000"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@id/txvTDFindings"
-                app:layout_constraintTop_toBottomOf="@+id/txvTDFindingsValue" />
+                app:layout_constraintTop_toBottomOf="@+id/edtTDFindingsValue" />
 
             <TextView
                 android:id="@+id/txvAsteriscs2"
@@ -359,7 +359,7 @@
                 app:layout_constraintStart_toEndOf="@+id/txvTDActionsTaken" />
 
             <EditText
-                android:id="@+id/txvTDActionsTakenValue"
+                android:id="@+id/edtTDActionsTakenValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
@@ -380,7 +380,7 @@
                 android:textColor="#99000000"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@id/txvTDFindings"
-                app:layout_constraintTop_toBottomOf="@+id/txvTDActionsTakenValue" />
+                app:layout_constraintTop_toBottomOf="@+id/edtTDActionsTakenValue" />
 
             <TextView
                 android:id="@+id/txvAsteriscs3"
@@ -394,7 +394,7 @@
                 app:layout_constraintStart_toEndOf="@+id/txvTDRecommendations" />
 
             <EditText
-                android:id="@+id/txvTDRecommendationsValue"
+                android:id="@+id/edtTDRecommendationsValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
@@ -412,8 +412,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Start"
-                app:layout_constraintStart_toStartOf="@+id/txvTDRecommendationsValue"
-                app:layout_constraintTop_toBottomOf="@+id/txvTDRecommendationsValue" />
+                app:layout_constraintStart_toStartOf="@+id/edtTDRecommendationsValue"
+                app:layout_constraintTop_toBottomOf="@+id/edtTDRecommendationsValue" />
 
             <Button
                 android:id="@+id/btnTDClear"
@@ -431,7 +431,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="#C41BCA00"
                 android:text="Update"
-                app:layout_constraintEnd_toEndOf="@id/txvTDRecommendationsValue"
+                app:layout_constraintEnd_toEndOf="@id/edtTDRecommendationsValue"
                 app:layout_constraintBaseline_toBaselineOf="@+id/btnTDStartTicket"/>
 
             <com.google.android.material.divider.MaterialDivider

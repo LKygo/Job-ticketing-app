@@ -54,7 +54,6 @@ class TicketActivity : AppCompatActivity() {
         customer = bundle?.getString("customer").toString()
         faultReported = bundle?.getString("faultReported").toString()
         date = bundle?.getString("date").toString()
-
         val sTime = bundle?.getString("startTime").toString()
 
         binding.txvTDTicketNOValue.text = ticketNo
@@ -62,11 +61,9 @@ class TicketActivity : AppCompatActivity() {
         binding.txvTDFaultReportedValue.text = faultReported
         binding.txvTDServiceDateValue.text = date
         binding.txvTDLocationValue.text = customer
-        jobcardno = binding.txvTDSJobCardNoValue.text.toString().trim()
-        serialNo = binding.txvTDSerialNoValue.text.toString().trim()
-        findings = binding.txvTDFindingsValue.text.toString().trim()
-        action_taken = binding.txvTDActionsTakenValue.text.toString().trim()
-        recommendations = binding.txvTDRecommendationsValue.text.toString().trim()
+
+
+
         servicedate = LocalDate.now().toString()
         start_time = sTime
         created_at = date
@@ -74,9 +71,6 @@ class TicketActivity : AppCompatActivity() {
         updatedby = "Ronald"
 
 
-//        if (ticketNo.isNotEmpty() && date.isNotEmpty() && customer.isNotEmpty() && faultReported.isNotEmpty()) {
-//            Log.d("TicketDetails", "$ticketNo, $customer, $faultReported, $date")
-//        }
 
         binding.btnTDUpdate.setOnClickListener {
 
@@ -84,6 +78,15 @@ class TicketActivity : AppCompatActivity() {
             val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
             val endTime = currentTime.format(formatter)
             end_time = endTime.toString()
+
+
+            val jobcardno = binding.edtTDJobCardNoValue.text.toString()
+            val serialNo = binding.edtTDSerialNoValue.text.toString()
+            val findings = binding.edtTDFindingsValue.text.toString()
+            val action_taken = binding.edtTDActionsTakenValue.text.toString()
+            val recommendations = binding.edtTDRecommendationsValue.text.toString()
+
+
 
             try {
                 sendTicketDetails(
@@ -99,7 +102,9 @@ class TicketActivity : AppCompatActivity() {
                     recommendations,
                     updatedby,
                     created_at
+
                 )
+                Log.d("TicketLog","$ticketNo, $jobcardno, $servicedate, $start_time, $end_time, $serialNo, $city, $findings, $action_taken, $recommendations, $updatedby, $created_at")
             } catch (e: java.lang.Exception) {
                 Log.d("FunPost", e.toString())
             }
@@ -126,7 +131,7 @@ class TicketActivity : AppCompatActivity() {
         // Create a JSON object to hold your data
         val jsonObject = JSONObject()
         jsonObject.put("ticket_no", ticket_no)
-        jsonObject.put("jobcardno", jobcard_no)
+        jsonObject.put("jobcard_no", jobcard_no)
         jsonObject.put("service_date", service_date)
         jsonObject.put("start_time", start_time)
         jsonObject.put("end_time", end_time)
