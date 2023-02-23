@@ -5,6 +5,7 @@
     android:id="@+id/cdvCardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:cardBackgroundColor="#F7F2FA"
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
     android:elevation="24dp"
@@ -12,7 +13,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         >
 
         <ImageView
@@ -46,7 +47,7 @@
                 android:id="@+id/txvTicketNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="36dp"
+                android:layout_marginStart="42dp"
                 android:layout_marginTop="8dp"
                 android:text="Ticket No:"
                 app:layout_constraintStart_toStartOf="parent"
@@ -124,7 +125,7 @@
             android:id="@+id/txvOpenedOn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
+            android:layout_marginStart="34dp"
             android:text="Opened on:"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cnsConstraint2" />
@@ -175,15 +176,27 @@
             app:layout_constraintTop_toTopOf="@+id/txvStatus"
             tools:text="Pending" />
 
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/dvdButton"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:backgroundTint="@color/black"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imgUrgencyColumn2"
+            app:layout_constraintTop_toBottomOf="@id/txvStatusValue"
+            />
         <Button
             android:id="@+id/btnStartTicket"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="16dp"
             android:background="@drawable/button"
             android:text="Start ticket"
             android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/txvStatusValue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dvdButton"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"/>
 

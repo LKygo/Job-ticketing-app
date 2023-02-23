@@ -43,6 +43,7 @@ class TicketsAdapter(private var ticketsList: ArrayList<TicketItemModel>) :
         val updated: TextView = itemView.findViewById(R.id.txvUpdatedOn)
         val stats: TextView = itemView.findViewById(R.id.txvStatus)
         val startTicket :View = itemView.findViewById(R.id.btnStartTicket)
+        val divider : View = itemView.findViewById(R.id.dvdButton)
 
         fun collapseExpandedView() {
             openedOn.visibility = View.GONE
@@ -52,6 +53,7 @@ class TicketsAdapter(private var ticketsList: ArrayList<TicketItemModel>) :
             updated.visibility = View.GONE
             stats.visibility = View.GONE
             startTicket.visibility = View.GONE
+            divider.visibility = View.GONE
         }
 
         init {
@@ -82,6 +84,7 @@ class TicketsAdapter(private var ticketsList: ArrayList<TicketItemModel>) :
         holder.updated.visibility = if (isExpandable) View.VISIBLE else View.GONE
         holder.stats.visibility = if (isExpandable) View.VISIBLE else View.GONE
         holder.startTicket.visibility = if (isExpandable) View.VISIBLE else View.GONE
+        holder.divider.visibility = if (isExpandable) View.VISIBLE else View.GONE
 
         holder.consLayout2.setOnClickListener {
             isAnyItemExpanded(position)
