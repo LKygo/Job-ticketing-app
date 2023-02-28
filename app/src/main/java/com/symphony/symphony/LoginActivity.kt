@@ -1,16 +1,12 @@
 package com.symphony.symphony
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.symphony.symphony.databinding.ActivityLoginBinding
 import org.json.JSONObject
@@ -42,12 +38,13 @@ class LoginActivity : AppCompatActivity() {
         signIn.setOnClickListener {
 //            progressBar.visibility = View.VISIBLE
 //            signIn.setBackground(getDrawable(R.drawable.button_grey))
-            login()
+            jsonLogin()
         }
 
     }
 
-    fun login() {
+    fun jsonLogin() {
+
         val url = "https://backend.api.symphony.co.ke/login"
         val email = binding.edtEmail
         val password = binding.edtPassword
@@ -55,55 +52,108 @@ class LoginActivity : AppCompatActivity() {
         val passwordText = password.text.toString().trim()
         val salt = BCrypt.gensalt(10)
         val hashedPassword: String = BCrypt.hashpw(passwordText, salt)
-        val maxRetries = 3
-        val initialTimeoutMs = 5000
-        val backoffMultiplier = 2f
 
-        val jsonObject = JSONObject()
-        jsonObject.put("email", emailText)
-        jsonObject.put("hashedPassword", hashedPassword)
+        val queue = Volley.newRequestQueue(this)
 
-        Log.d("Hash", hashedPassword)
-        if (emailText.isNotEmpty() && passwordText.isNotEmpty()) {
+        val jsonBody = JSONObject()
+        jsonBody.put("email", emailText)
+        jsonBody.put("hahsedPassword", hashedPassword)
 
-            val volley = Volley.newRequestQueue(this)
-            val stringRequest = object :
-                StringRequest(Request.Method.POST, url, Response.Listener { response: String ->
-//                    progressBar.visibility = View.GONE
-//                    signIn.setBackground( getDrawable(R.drawable.button))
+        val request = JsonObjectRequest(
+            Request.Method.POST, url, jsonBody,
+            { response ->
+                // Handle successful login response
+                val token = response.getString("token")
+                // Save token for future requests
 
-                    if (response == "Login successful") {
-                        val intent = Intent(applicationContext, TechnicianDashboard::class.java)
-                        startActivity(intent)
-                        finish()
-                    } else if (response == "Invalid email or password") {
-                        Toast.makeText(this, "Invalid log in Id/Password", Toast.LENGTH_SHORT)
-                            .show()
+                // Make subsequent authenticated requests with token
+                val authenticatedUrl = "http://example.com/api/some-endpoint"
+                val authenticatedRequest = object : JsonObjectRequest(
+                    Method.GET, authenticatedUrl, null,
+                    { authenticatedResponse ->
+                        // Handle authenticated response
+                        Log.d("LoginA", "Login successful")
+                    },
+                    { error ->
+                        // Handle authenticated error
+                        Log.d("LoginE", "Log in credentials do not match")
                     }
-
-                }, Response.ErrorListener { error ->
-                    Toast.makeText(applicationContext, error.localizedMessage, Toast.LENGTH_SHORT).show()
-                    Log.d("Volley", error.toString().trim())
-
-                }) {
-                override fun getBody(): ByteArray {
-                    // Convert the JSON object to a byte array
-                    return jsonObject.toString().toByteArray(Charsets.UTF_8)
+                ) {
+                    override fun getHeaders(): MutableMap<String, String> {
+                        val headers = HashMap<String, String>()
+                        headers["Authorization"] = "Bearer $token"
+                        return headers
+                    }
                 }
 
-                override fun getBodyContentType(): String {
-                    // Set the content type to "application/json"
-                    return "application/json"
-                }
-
+                queue.add(authenticatedRequest)
+            },
+            { error ->
+                // Handle login error
+                Log.d("LoginER", error.toString())
             }
-            stringRequest.retryPolicy = DefaultRetryPolicy(initialTimeoutMs, maxRetries, backoffMultiplier)
+        )
 
-            volley.add(stringRequest)
-        } else {
-            Toast.makeText(this, "Please fill all the fields", Toast.LENGTH_LONG).show()
-        }
+        queue.add(request)
     }
+
+//    fun login() {
+//        val url = "https://backend.api.symphony.co.ke/login"
+//        val email = binding.edtEmail
+//        val password = binding.edtPassword
+//        val emailText = email.text.toString().trim()
+//        val passwordText = password.text.toString().trim()
+//        val salt = BCrypt.gensalt(10)
+//        val hashedPassword: String = BCrypt.hashpw(passwordText, salt)
+//        val maxRetries = 3
+//        val initialTimeoutMs = 5000
+//        val backoffMultiplier = 2f
+//
+//        val jsonObject = JSONObject()
+//        jsonObject.put("email", emailText)
+//        jsonObject.put("hashedPassword", hashedPassword)
+//
+//        Log.d("Hash", hashedPassword)
+//        if (emailText.isNotEmpty() && passwordText.isNotEmpty()) {
+//
+//            val volley = Volley.newRequestQueue(this)
+//            val stringRequest = object :
+//                StringRequest(Request.Method.POST, url, Response.Listener { response: String ->
+////                    progressBar.visibility = View.GONE
+////                    signIn.setBackground( getDrawable(R.drawable.button))
+//
+//                    if (response == "Login successful") {
+//                        val intent = Intent(applicationContext, TechnicianDashboard::class.java)
+//                        startActivity(intent)
+//                        finish()
+//                    } else if (response == "Invalid email or password") {
+//                        Toast.makeText(this, "Invalid log in Id/Password", Toast.LENGTH_SHORT)
+//                            .show()
+//                    }
+//
+//                }, Response.ErrorListener { error ->
+//                    Toast.makeText(applicationContext, error.localizedMessage, Toast.LENGTH_SHORT).show()
+//                    Log.d("Volley", error.toString().trim())
+//
+//                }) {
+//                override fun getBody(): ByteArray {
+//                    // Convert the JSON object to a byte array
+//                    return jsonObject.toString().toByteArray(Charsets.UTF_8)
+//                }
+//
+//                override fun getBodyContentType(): String {
+//                    // Set the content type to "application/json"
+//                    return "application/json"
+//                }
+//
+//            }
+//            stringRequest.retryPolicy = DefaultRetryPolicy(initialTimeoutMs, maxRetries, backoffMultiplier)
+//
+//            volley.add(stringRequest)
+//        } else {
+//            Toast.makeText(this, "Please fill all the fields", Toast.LENGTH_LONG).show()
+//        }
+//    }
 
 }
 
