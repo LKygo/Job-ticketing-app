@@ -59,11 +59,11 @@
         app:layout_constraintTop_toBottomOf="@+id/txvSITContinue" />
 
     <TextView
-        android:id="@+id/txvCAdministrator"
+        android:id="@+id/txvSignUp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:text="Contact administrator"
+        android:text="Sign Up"
         android:textColor="#7E000000"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/txvDHAccount"
