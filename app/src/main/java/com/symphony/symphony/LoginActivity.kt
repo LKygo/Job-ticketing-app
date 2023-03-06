@@ -2,8 +2,9 @@ package com.symphony.symphony
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
-import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
@@ -15,39 +16,53 @@ import com.symphony.symphony.databinding.ActivityLoginBinding
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var progressBar: ProgressBar
+    private lateinit var progressBar: View
     private lateinit var signIn: Button
-
-
+    private lateinit var forgotPass: TextView
+    private lateinit var lnLayout: View
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
+        setContentView(view)
 
 
+        lnLayout = binding.lnlLinearLayout
+        forgotPass = binding.txvForgotPassword
+        signIn = binding.btnSignIn
         progressBar = binding.progressBar
-
-
+        progressBar.visibility = View.GONE
         val signUp = binding.txvSignUp
 
-        signUp.paint.isUnderlineText = true
-        signUp.setOnClickListener {
+        forgotPass.paint.isUnderlineText = true
+        forgotPass.setOnClickListener {
             val intent = Intent(applicationContext, SignUp::class.java)
             startActivity(intent)
         }
 
-        setContentView(view)
-        signIn = binding.btnSignIn
 
         signIn.setOnClickListener {
-//            progressBar.visibility = View.VISIBLE
-//            signIn.setBackground(getDrawable(R.drawable.button_grey))
+
+            var email = binding.edtEmail.text.toString()
+            var password = binding.edtPassword.text.toString()
+
+            if(email.isEmpty() || password.isEmpty()){
+                Toast.makeText(this, "Please enter both email and password", Toast.LENGTH_SHORT).show()
+
+
+            }else
             loginNew()
         }
 
     }
 
     fun loginNew() {
+
+
+
+        signIn.isClickable = false
+        signIn.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
         val email = binding.edtEmail.text.toString()
         val password = binding.edtPassword.text.toString()
 
@@ -61,15 +76,20 @@ class LoginActivity : AppCompatActivity() {
         params["password"] = password
 
 // Create a new POST request with the login endpoint URL and parameters.
-        val stringRequest = object : StringRequest(Request.Method.POST, url,
-            Response.Listener<String> { response ->
+        val stringRequest =
+            object : StringRequest(Request.Method.POST, url, Response.Listener<String> { response ->
+                progressBar.visibility = View.GONE // hide the progress bar
+                signIn.visibility = View.VISIBLE
+                signIn.isClickable = true // enable the sign in button
                 // Handle the API response on success.
                 Toast.makeText(applicationContext, response, Toast.LENGTH_LONG).show()
                 val intent = Intent(applicationContext, TechnicianDashboard::class.java)
                 startActivity(intent)
 //                finish()
-            },
-            Response.ErrorListener { error ->
+            }, Response.ErrorListener { error ->
+                progressBar.visibility = View.GONE // hide the progress bar
+                signIn.visibility = View.VISIBLE
+                signIn.isClickable = true // enable the sign in button
                 // Handle the API response on error.
                 val errorMessage = error.networkResponse?.statusCode?.let {
                     when (it) {
@@ -80,78 +100,16 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_LONG).show()
             }) {
 
-            // Set the POST request parameters.
-            override fun getParams(): Map<String, String> {
-                return params
+                // Set the POST request parameters.
+                override fun getParams(): Map<String, String> {
+                    return params
+                }
             }
-        }
 
 // Add the request to the RequestQueue.
         queue.add(stringRequest)
 
     }
-
-//    fun login() {
-//        val url = "https://backend.api.symphony.co.ke/login"
-//        val email = binding.edtEmail
-//        val password = binding.edtPassword
-//        val emailText = email.text.toString().trim()
-//        val passwordText = password.text.toString().trim()
-//        val maxRetries = 3
-//        val initialTimeoutMs = 5000
-//        val backoffMultiplier = 2f
-//
-//        val jsonObject = JSONObject()
-//        jsonObject.put("email", emailText)
-//        jsonObject.put("password", passwordText)
-//
-//        if (emailText.isNotEmpty() && passwordText.isNotEmpty()) {
-//
-//            val volley = Volley.newRequestQueue(this)
-//            val stringRequest = object :
-//                StringRequest(Request.Method.POST, url, Response.Listener { response: String ->
-////                    progressBar.visibility = View.GONE
-////                    signIn.setBackground( getDrawable(R.drawable.button))
-//
-//                    if (response == "Login successful") {
-//                        Toast.makeText(this, "Login successful", Toast.LENGTH_LONG).show()
-//                        Log.d("loginsu", response.toString())
-//
-//                        val intent = Intent(applicationContext, TechnicianDashboard::class.java)
-//                        startActivity(intent)
-//                        finish()
-//                    } else if (response == "Invalid email or password") {
-//                        Toast.makeText(this, "Invalid log in Id/Password", Toast.LENGTH_SHORT)
-//                            .show()
-//                        Log.d("logininvalid", response.toString())
-//
-//                    }else if(response == "Internal"){
-//                        Toast.makeText(this, "Login successful", Toast.LENGTH_LONG).show()
-//Log.d("loginInternal", response.toString())
-//                    }
-//
-//                }, Response.ErrorListener { error ->
-//                    Toast.makeText(applicationContext, error.toString(), Toast.LENGTH_SHORT).show()
-//                    Log.d("loginerr", error.toString().trim())
-//
-//                }) {
-//                override fun getBody(): ByteArray {
-//                    // Convert the JSON object to a byte array
-//                    return jsonObject.toString().toByteArray(Charsets.UTF_8)
-//                }
-//                override fun getBodyContentType(): String {
-//                    // Set the content type to "application/json"
-//                    return "application/json"
-//                }
-//
-//            }
-//            stringRequest.retryPolicy = DefaultRetryPolicy(initialTimeoutMs, maxRetries, backoffMultiplier)
-//
-//            volley.add(stringRequest)
-//        } else {
-//            Toast.makeText(this, "Please fill all the fields", Toast.LENGTH_LONG).show()
-//        }
-//    }
 
 }
 

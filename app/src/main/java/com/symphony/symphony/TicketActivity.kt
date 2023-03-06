@@ -87,6 +87,10 @@ class TicketActivity : AppCompatActivity() {
             val recommendations = binding.edtTDRecommendationsValue.text.toString()
 
 
+            if (jobcardno.isNotEmpty() || serialNo.isEmpty() || findings.isEmpty() || action_taken.isEmpty() || recommendations.isEmpty()){
+
+                Toast.makeText(this, "Please fill all the fields with a rest start" , Toast.LENGTH_SHORT).show()
+            }else
 
             try {
                 sendTicketDetails(
@@ -104,7 +108,6 @@ class TicketActivity : AppCompatActivity() {
                     created_at
 
                 )
-                Log.d("TicketLog","$ticketNo, $jobcardno, $servicedate, $start_time, $end_time, $serialNo, $city, $findings, $action_taken, $recommendations, $updatedby, $created_at")
             } catch (e: java.lang.Exception) {
                 Log.d("FunPost", e.toString())
             }
