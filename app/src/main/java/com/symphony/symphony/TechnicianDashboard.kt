@@ -72,7 +72,7 @@ class TechnicianDashboard : AppCompatActivity() {
     })
         recyclerView.adapter = tAdapter
 
-        getData(userID)
+        getData("8")
     }
 
 
@@ -80,7 +80,7 @@ class TechnicianDashboard : AppCompatActivity() {
 
     private fun getData(id: String) {
 
-        var url = "https://backend.api.symphony.co.ke/tickets?id=$id"
+        var url = "https://backend.api.symphony.co.ke/tickets?user_id=$id"
         val queue = Volley.newRequestQueue(this)
 
         val request = JsonArrayRequest(com.android.volley.Request.Method.GET, url, null,
@@ -111,7 +111,7 @@ class TechnicianDashboard : AppCompatActivity() {
                     e.printStackTrace()
                 }
             }, { error ->
-                Toast.makeText(applicationContext, error.localizedMessage, Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, error.toString(), Toast.LENGTH_SHORT).show()
 
             })
         queue.add(request)
