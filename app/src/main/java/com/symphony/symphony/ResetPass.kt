@@ -2,8 +2,10 @@ package com.symphony.symphony
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
@@ -12,17 +14,27 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.symphony.symphony.databinding.ActivitySignUpBinding
 
-class SignUp : AppCompatActivity() {
+class ResetPass : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
     private lateinit var txvEmail: EditText
-    private lateinit var btnReg: Button
+    private lateinit var btnReq: Button
+    private lateinit var progressBar : ProgressBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        progressBar = binding.progressBarR
+        progressBar.visibility = View.GONE
 
-        binding.btnSignIn.setOnClickListener {
+        btnReq = binding.btnSignIn
+        btnReq.setOnClickListener {
+            var email = binding.edtEmail.text.toString()
+
+            if (email.isEmpty()){
+                Toast.makeText(this, "Please enter both email", Toast.LENGTH_SHORT).show()
+
+            }else
             resetPass()
 
         }
@@ -31,6 +43,9 @@ class SignUp : AppCompatActivity() {
     fun resetPass() {
         val email = binding.edtEmail.text.toString()
 
+        btnReq.isClickable = false
+        btnReq.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
         // Instantiate the RequestQueue.
         val queue = Volley.newRequestQueue(this)
 
@@ -42,10 +57,18 @@ class SignUp : AppCompatActivity() {
 // Create a new POST request with the login endpoint URL and parameters.
         val stringRequest =
             object : StringRequest(Request.Method.POST, url, Response.Listener<String> { response ->
+
+                progressBar.visibility = View.GONE // hide the progress bar
+                btnReq.visibility = View.VISIBLE
+                btnReq.isClickable = true // enable the sign in button
                 // Handle the API response on success.
                 Toast.makeText(applicationContext, response, Toast.LENGTH_LONG).show()
 
             }, Response.ErrorListener { error ->
+
+                progressBar.visibility = View.GONE // hide the progress bar
+                btnReq.visibility = View.VISIBLE
+                btnReq.isClickable = true // enable the sign in button
                 // Handle the API response on error.
                 val errorMessage = error.networkResponse?.statusCode?.let {
                     when (it) {

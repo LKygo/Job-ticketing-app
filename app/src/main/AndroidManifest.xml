@@ -17,7 +17,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".SignUp"
+            android:name=".ResetPass"
             android:exported="false">
 
         </activity>

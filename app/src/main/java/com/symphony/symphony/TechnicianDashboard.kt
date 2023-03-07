@@ -23,6 +23,7 @@ class TechnicianDashboard : AppCompatActivity() {
     private lateinit var tickets: ArrayList<TicketItemModel>
     private lateinit var tAdapter : TicketsAdapter
     private lateinit var pBar: ProgressBar
+    private lateinit var userID : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +35,10 @@ class TechnicianDashboard : AppCompatActivity() {
 //        stateImage = findViewById(R.id.imgCircularStatus)
         val recyclerView = binding.rcvRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+        val bundle: Bundle? = intent.extras
+        userID = bundle?.getString("id").toString()
+
 
         binding.txvHello.setText(greeting())
         pBar= binding.progressBar
@@ -67,15 +72,15 @@ class TechnicianDashboard : AppCompatActivity() {
     })
         recyclerView.adapter = tAdapter
 
-        getData()
+        getData(userID)
     }
 
 
 
 
-    private fun getData() {
+    private fun getData(id: String) {
 
-        var url = "https://backend.api.symphony.co.ke/tickets"
+        var url = "https://backend.api.symphony.co.ke/tickets?id=$id"
         val queue = Volley.newRequestQueue(this)
 
         val request = JsonArrayRequest(com.android.volley.Request.Method.GET, url, null,
@@ -106,9 +111,7 @@ class TechnicianDashboard : AppCompatActivity() {
                     e.printStackTrace()
                 }
             }, { error ->
-                Toast.makeText(applicationContext, error.localizedMessage, Toast.LENGTH_SHORT)
-                    .show()
-                Log.d("tickets", error.toString().trim())
+                Toast.makeText(applicationContext, error.localizedMessage, Toast.LENGTH_SHORT).show()
 
             })
         queue.add(request)
