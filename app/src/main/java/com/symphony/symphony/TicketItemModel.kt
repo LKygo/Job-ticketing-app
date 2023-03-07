@@ -10,6 +10,7 @@ data class TicketItemModel(
     val openedOn: String,
     val updatedOn: String,
     val status: String,
+    val location: String,
     var isExpandable: Boolean = false
 
 

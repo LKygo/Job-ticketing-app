@@ -52,6 +52,7 @@ class TicketActivity : AppCompatActivity() {
 
         ticketNo = bundle?.getString("ticketNo").toString()
         customer = bundle?.getString("customer").toString()
+        city = bundle?.getString("location").toString()
         faultReported = bundle?.getString("faultReported").toString()
         date = bundle?.getString("date").toString()
         val sTime = bundle?.getString("startTime").toString()
@@ -60,14 +61,11 @@ class TicketActivity : AppCompatActivity() {
         binding.txvTDClientValue.text = customer
         binding.txvTDFaultReportedValue.text = faultReported
         binding.txvTDServiceDateValue.text = date
-        binding.txvTDLocationValue.text = customer
-
-
+        binding.txvTDLocationValue.text = city
 
         servicedate = LocalDate.now().toString()
         start_time = sTime
         created_at = date
-        city = customer
         updatedby = "Ronald"
 
 

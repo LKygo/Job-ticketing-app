@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import com.symphony.symphony.databinding.ActivityTechnicianDashboardBinding
+import java.text.SimpleDateFormat
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
+import java.util.Locale
 
 
 class TechnicianDashboard : AppCompatActivity() {
@@ -56,6 +58,7 @@ class TechnicianDashboard : AppCompatActivity() {
             intent.putExtra("ticketNo", tickets[position].ticket)
             intent.putExtra("customer", tickets[position].customer)
             intent.putExtra("faultReported", tickets[position].faultReported)
+            intent.putExtra("location", tickets[position].location)
             intent.putExtra("date", tickets[position].date)
 
             val currentTime = LocalTime.now()
@@ -64,9 +67,6 @@ class TechnicianDashboard : AppCompatActivity() {
 
             intent.putExtra("startTime", startTime)
             startActivity(intent)
-
-
-
         }
 
     })
@@ -93,8 +93,10 @@ class TechnicianDashboard : AppCompatActivity() {
                         val ticket = response.getJSONObject(i)
                         val id = ticket.getString("id")
                         val ticketNo = ticket.getString("ticketno")
-                        val date = ticket.getString("ticketdate")
+                        val stringDate= ticket.getString("ticketdate")
+                        val date = formatDateString(stringDate)
                         val faultReported = ticket.getString("faultreported")
+                        val customer = ticket.getString("clientname")
                         val location = ticket.getString("location")
                         val urgency = ticket.getString("urgency")
                         val state = urgencyControl(urgency)
@@ -102,7 +104,7 @@ class TechnicianDashboard : AppCompatActivity() {
                         val openedOn = ticket.getString("updated_at")
                         val status = ticket.getString("status")
 
-                        tickets.add(TicketItemModel(id, ticketNo, date, faultReported, location, state, createdAt,openedOn,status))
+                        tickets.add(TicketItemModel(id, ticketNo, date, faultReported, customer, state, createdAt,openedOn,status,location))
                         tAdapter.notifyDataSetChanged()
 
                         Log.d("tickets", ticket.toString().trim())
@@ -134,6 +136,19 @@ private fun urgencyControl(urgency:String) :Int {
         else -> R.drawable.green_circle
     }
 }
+
+
+
+fun formatDateString(dateString: String): String {
+    val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+    val date = formatter.parse(dateString)
+    val dateFormatter = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+    val timeFormatter = SimpleDateFormat("hh:mm a", Locale.getDefault())
+    val formattedDate = date?.let { dateFormatter.format(it) }
+    val formattedTime = date?.let { timeFormatter.format(it) }
+    return "$formattedDate, $formattedTime"
+}
+
 
 fun greeting(): String {
     val calendar = Calendar.getInstance()
