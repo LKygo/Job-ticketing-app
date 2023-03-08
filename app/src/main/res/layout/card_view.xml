@@ -5,7 +5,6 @@
     android:id="@+id/cdvCardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
     android:elevation="24dp"
@@ -13,8 +12,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/imgUrgencyColumn2"
@@ -32,15 +30,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/imgUrgencyColumn"
-                android:layout_width="12dp"
-                android:layout_height="0dp"
-                android:background="@drawable/urgency_yellow"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
 
             <TextView
@@ -68,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:text="Date:"
+                android:text="Assigned on:"
                 app:layout_constraintEnd_toEndOf="@+id/txvTicketNo"
                 app:layout_constraintTop_toBottomOf="@+id/txvTicketNo" />
 
@@ -95,9 +84,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
+                android:layout_marginBottom="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/txvDateValue"
                 app:layout_constraintTop_toTopOf="@+id/txvFault"
+                app:layout_constraintBottom_toBottomOf="parent"
                 tools:text="UPS maintenance" />
 
 
@@ -197,16 +188,10 @@
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/dvdButton"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="20dp"/>
 
-
-        <com.google.android.material.divider.MaterialDivider
-            android:layout_width="8dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnStartTicket"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

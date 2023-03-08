@@ -45,7 +45,7 @@ class TickAdapter(private val activity: Activity) :
         val date: TextView = itemView.findViewById(R.id.txvDateValue)
         val ksh: TextView = itemView.findViewById(R.id.txvFaultValue)
         val customer: TextView = itemView.findViewById(R.id.txvCustomerValue)
-        val state: ImageView = itemView.findViewById(R.id.imgUrgencyColumn)
+//        val state: ImageView = itemView.findViewById(R.id.imgUrgencyColumn)
         val state2: ImageView = itemView.findViewById(R.id.imgUrgencyColumn2)
         val openedOn: TextView = itemView.findViewById(R.id.txvOpenedOnValue)
         val updatedOn: TextView = itemView.findViewById(R.id.txvUpdatedOnValue)

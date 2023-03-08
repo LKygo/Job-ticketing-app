@@ -55,6 +55,7 @@ class TicketActivity : AppCompatActivity() {
         city = bundle?.getString("location").toString()
         faultReported = bundle?.getString("faultReported").toString()
         date = bundle?.getString("date").toString()
+        updatedby = bundle?.getString("userID").toString()
         val sTime = bundle?.getString("startTime").toString()
 
         binding.txvTDTicketNOValue.text = ticketNo
@@ -66,7 +67,6 @@ class TicketActivity : AppCompatActivity() {
         servicedate = LocalDate.now().toString()
         start_time = sTime
         created_at = date
-        updatedby = "Ronald"
 
 
 
@@ -76,8 +76,6 @@ class TicketActivity : AppCompatActivity() {
             val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
             val endTime = currentTime.format(formatter)
             end_time = endTime.toString()
-
-
             val jobcardno = binding.edtTDJobCardNoValue.text.toString()
             val serialNo = binding.edtTDSerialNoValue.text.toString()
             val findings = binding.edtTDFindingsValue.text.toString()
@@ -85,30 +83,35 @@ class TicketActivity : AppCompatActivity() {
             val recommendations = binding.edtTDRecommendationsValue.text.toString()
 
 
-            if (jobcardno.isNotEmpty() || serialNo.isEmpty() || findings.isEmpty() || action_taken.isEmpty() || recommendations.isEmpty()){
+            if (jobcardno.isEmpty() || serialNo.isEmpty() || findings.isEmpty() || action_taken.isEmpty() || recommendations.isEmpty()) {
 
-                Toast.makeText(this, "Please fill all the fields with a rest start" , Toast.LENGTH_SHORT).show()
-            }else
+                Toast.makeText(
+                    this,
+                    "Please fill all the fields with a red star",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else
 
-            try {
-                sendTicketDetails(
-                    ticketNo,
-                    jobcardno,
-                    servicedate,
-                    start_time,
-                    end_time,
-                    serialNo,
-                    city,
-                    findings,
-                    action_taken,
-                    recommendations,
-                    updatedby,
-                    created_at
+                try {
+                    sendTicketDetails(
+                        ticketNo,
+                        jobcardno,
+                        servicedate,
+                        start_time,
+                        end_time,
+                        serialNo,
+                        city,
+                        findings,
+                        action_taken,
+                        recommendations,
+                        updatedby,
+                        created_at
+                    )
 
-                )
-            } catch (e: java.lang.Exception) {
-                Log.d("FunPost", e.toString())
-            }
+
+                } catch (e: java.lang.Exception) {
+                    Log.d("FunPost", e.toString())
+                }
         }
     }
 
@@ -145,7 +148,7 @@ class TicketActivity : AppCompatActivity() {
         jsonObject.put("created_at", created_at)
 
 
-// Create a request to your server's URL
+// Request to server's URL
         val request = object : StringRequest(Method.POST, url,
             { response ->
                 // Handle successful response from server
@@ -155,7 +158,12 @@ class TicketActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
 
-                Log.d("Volley", "Response: $response")
+                binding.edtTDActionsTakenValue.setText("")
+                binding.edtTDFindingsValue.setText("")
+                binding.edtTDSerialNoValue.setText("")
+                binding.edtTDJobCardNoValue.setText("")
+                binding.edtTDRecommendationsValue.setText("")
+
             },
             { error ->
                 // Handle error response from server

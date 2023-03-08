@@ -13,15 +13,15 @@
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imgProfile"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="@drawable/green_circle"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgProfile"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/user"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txvHello"
@@ -48,23 +48,37 @@
         app:layout_constraintTop_toBottomOf="@id/txvHello"
         app:layout_constraintStart_toEndOf="@+id/imgProfile"/>
 
-    <EditText
-        android:id="@+id/edtSearchBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="20dp"
-        android:hint=" Search job here"
-        android:drawableLeft="@drawable/baseline_search_24"
-        android:background="@drawable/edit_text2"
-        app:layout_constraintTop_toBottomOf="@+id/txvName"/>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/sbvCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintTop_toBottomOf="@+id/txvName">
+
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:queryHint="Search job by company name"
+                app:iconifiedByDefault="false"
+                app:queryBackground="@android:color/transparent"
+                />
+
+        </androidx.cardview.widget.CardView>
+
 
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/dvdDivider"
-            android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@id/edtSearchBox"/>
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/sbvCard"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -78,11 +92,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cnsConstraintT2"/>
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:id="@+id/crcYellow"
-        android:src="@drawable/yellow_circle"
+        android:src="@drawable/urgency_yellow"
         android:layout_marginStart="6dp"
         app:layout_constraintStart_toEndOf="@+id/txvUrgencyHelp"
         app:layout_constraintTop_toTopOf="@+id/txvUrgencyHelp"
@@ -93,17 +107,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txvModUrgent"
-        android:text="Moderatley Urgent"
+        android:text=" Urgent"
         android:layout_marginStart="4dp"
         app:layout_constraintBaseline_toBaselineOf="@+id/txvUrgencyHelp"
         app:layout_constraintStart_toEndOf="@+id/crcYellow"/>
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:id="@+id/crcOrange"
-        android:src="@drawable/orange_circle"
+        android:src="@drawable/urgency_orange"
         android:layout_marginStart="12dp"
         app:layout_constraintStart_toEndOf="@+id/txvModUrgent"
         app:layout_constraintTop_toTopOf="@+id/txvUrgencyHelp"
@@ -113,18 +127,18 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Urgent"
+        android:text="Moderatley Urgent"
         android:id="@+id/txvUrgent"
         android:layout_marginStart="4dp"
         app:layout_constraintBaseline_toBaselineOf="@+id/txvUrgencyHelp"
         app:layout_constraintStart_toEndOf="@+id/crcOrange"/>
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:id="@+id/crcRed"
-        android:src="@drawable/red_circle"
+        android:src="@drawable/urgency_red"
         android:layout_marginStart="12dp"
         app:layout_constraintStart_toEndOf="@+id/txvUrgent"
         app:layout_constraintTop_toTopOf="@+id/txvUrgencyHelp"

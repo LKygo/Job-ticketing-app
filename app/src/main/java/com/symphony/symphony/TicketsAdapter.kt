@@ -20,6 +20,10 @@ class TicketsAdapter(private var ticketsList: ArrayList<TicketItemModel>) :
         tListener = listener
     }
 
+    fun setFilteredList(ticketsList: ArrayList<TicketItemModel>){
+        this.ticketsList = ticketsList
+        notifyDataSetChanged()
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TicketsAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.card_view, parent, false)
         return ViewHolder(view, tListener)
@@ -33,7 +37,7 @@ class TicketsAdapter(private var ticketsList: ArrayList<TicketItemModel>) :
         val date: TextView = itemView.findViewById(R.id.txvDateValue)
         val ksh: TextView = itemView.findViewById(R.id.txvFaultValue)
         val customer: TextView = itemView.findViewById(R.id.txvCustomerValue)
-        val state: ImageView = itemView.findViewById(R.id.imgUrgencyColumn)
+//        val state: ImageView = itemView.findViewById(R.id.imgUrgencyColumn)
         val state2: ImageView = itemView.findViewById(R.id.imgUrgencyColumn2)
         val openedOn: TextView = itemView.findViewById(R.id.txvOpenedOnValue)
         val updatedOn: TextView = itemView.findViewById(R.id.txvUpdatedOnValue)
@@ -69,7 +73,7 @@ class TicketsAdapter(private var ticketsList: ArrayList<TicketItemModel>) :
         holder.date.text = ticketsList.get(position).date
         holder.customer.text = ticketsList.get(position).customer
         holder.ksh.text = ticketsList.get(position).faultReported
-        holder.state.setImageResource(ticketsList.get(position).state)
+//        holder.state.setImageResource(ticketsList.get(position).state)
         holder.state2.setImageResource(ticketsList.get(position).state)
         holder.openedOn.text = ticketsList.get(position).openedOn
         holder.updatedOn.text = ticketsList.get(position).updatedOn
