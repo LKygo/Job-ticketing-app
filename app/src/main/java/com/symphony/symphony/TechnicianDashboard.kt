@@ -125,38 +125,43 @@ class TechnicianDashboard : AppCompatActivity() {
 
                 try {
 
-                    for (i in 0..response.length()) {
+                    for (i in 0 until response.length()) {
                         val ticket = response.getJSONObject(i)
                         val id = ticket.getString("id")
-                        val ticketNo = ticket.getString("ticketno")
-                        val stringDate = ticket.getString("ticketdate")
-                        val date = formatDateString(stringDate)
-                        val faultReported = ticket.getString("faultreported")
-                        val customer = ticket.getString("clientname")
-                        val location = ticket.getString("location")
-                        val urgency = ticket.getString("urgency")
-                        val state = urgencyControl(urgency)
-                        val createdAt = ticket.getString("created_at")
-                        val openedOn = ticket.getString("updated_at")
-                        val status = ticket.getString("status")
 
-                        tickets.add(
-                            TicketItemModel(
-                                id,
-                                ticketNo,
-                                date,
-                                faultReported,
-                                customer,
-                                state,
-                                createdAt,
-                                openedOn,
-                                status,
-                                location
+//                        Check if id exists
+                        if (!tickets.any { it.id == id }) {
+                            val ticketNo = ticket.getString("ticketno")
+
+                            val stringDate = ticket.getString("ticketdate")
+                            val date = formatDateString(stringDate)
+                            val faultReported = ticket.getString("faultreported")
+                            val customer = ticket.getString("clientname")
+                            val location = ticket.getString("location")
+                            val urgency = ticket.getString("urgency")
+                            val state = urgencyControl(urgency)
+                            val createdAt = ticket.getString("created_at")
+                            val openedOn = ticket.getString("updated_at")
+                            val status = ticket.getString("status")
+
+                            tickets.add(
+                                TicketItemModel(
+                                    id,
+                                    ticketNo,
+                                    date,
+                                    faultReported,
+                                    customer,
+                                    state,
+                                    createdAt,
+                                    openedOn,
+                                    status,
+                                    location
+                                )
                             )
-                        )
-                        tAdapter?.notifyDataSetChanged()
-
+                        }
                     }
+                    tAdapter?.notifyDataSetChanged()
+
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
