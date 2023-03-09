@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -14,6 +15,7 @@ import com.android.volley.AuthFailureError
 import com.android.volley.NetworkError
 import com.android.volley.ServerError
 import com.android.volley.TimeoutError
+import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import com.symphony.symphony.databinding.ActivityTechnicianDashboardBinding
@@ -78,7 +80,7 @@ class TechnicianDashboard : AppCompatActivity() {
         })
         recyclerView.adapter = tAdapter
 
-        getData("2")
+        getData("1")
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(newText: String?): Boolean {
@@ -141,18 +143,42 @@ class TechnicianDashboard : AppCompatActivity() {
                     e.printStackTrace()
                 }
             }, { error ->
+
+                val statusCode = error.networkResponse?.statusCode
+
+                val errorLayout = when (statusCode) {
+                    404 -> layoutInflater.inflate(R.layout.error_404, null)
+                    500 -> layoutInflater.inflate(R.layout.error_500, null)
+                    else -> layoutInflater.inflate(R.layout.default_error, null)
+                }
+
+                val parentView = findViewById<ViewGroup>(R.id.parent_layout)
+                parentView.addView(errorLayout)
 //                Toast.makeText(applicationContext, error.toString(), Toast.LENGTH_SHORT).show()
                 if (error is NetworkError || error is AuthFailureError || error is TimeoutError) {
                     // Handle network or authentication errors here
+                    pBar.visibility = View.GONE
+                    Toast.makeText(
+                        applicationContext,
+                        "Please ensure you have a stable internet connection then try again",
+                        Toast.LENGTH_SHORT
+                    ).show()
 
                 } else if (error is ServerError) {
                     // Handle server error here
-                    Toast.makeText(applicationContext, "It appears there's a server error.Pplease contact admin", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        applicationContext,
+                        "It appears there's a server error.Please contact admin",
+                        Toast.LENGTH_SHORT
+                    ).show()
 
-                    val statusCode = error.networkResponse?.statusCode
                     if (statusCode == 404) {
                         // Handle 404 error here
-                        Toast.makeText(applicationContext, "It appears there are no open tickets. Check back later for new ones", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            applicationContext,
+                            "It appears there are no open tickets. Check back later for new ones",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         pBar.visibility = View.GONE
 
                     }
@@ -160,6 +186,21 @@ class TechnicianDashboard : AppCompatActivity() {
             })
         queue.add(request)
 
+    }
+
+    fun getErrorLayout(error: VolleyError): Int {
+        return when (error) {
+            is NetworkError, is AuthFailureError, is TimeoutError -> R.layout.network_error
+            is ServerError -> {
+                val statusCode = error.networkResponse?.statusCode
+                when (statusCode) {
+                    404 -> R.layout.error_404
+                    500 -> R.layout.error_500
+                    else -> R.layout.default_error
+                }
+            }
+            else -> R.layout.default_error
+        }
     }
 
     private fun filterList(query: String?) {
@@ -181,46 +222,45 @@ class TechnicianDashboard : AppCompatActivity() {
             }
         }
     }
-}
+
 
     private fun urgencyControl(urgency: String): Int {
 
+        return when (urgency) {
+            "Moderately Urgent" -> R.drawable.urgency_orange
 
-    return when (urgency) {
-        "Moderately Urgent" -> R.drawable.urgency_orange
+            "Urgent" -> R.drawable.urgency_yellow
 
-        "Urgent" -> R.drawable.urgency_yellow
+            "Very Urgent" -> R.drawable.urgency_red
 
-        "Very Urgent" -> R.drawable.urgency_red
+            else -> R.drawable.urgency_red
+        }
 
-        else -> R.drawable.urgency_red
     }
-}
-
 
     fun formatDateString(dateString: String): String {
-    val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-    val date = formatter.parse(dateString)
-    val dateFormatter = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
-    val timeFormatter = SimpleDateFormat("hh:mm a", Locale.getDefault())
-    val formattedDate = date?.let { dateFormatter.format(it) }
-    val formattedTime = date?.let { timeFormatter.format(it) }
-    return "$formattedDate, $formattedTime"
-}
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        val date = formatter.parse(dateString)
+        val dateFormatter = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+        val timeFormatter = SimpleDateFormat("hh:mm a", Locale.getDefault())
+        val formattedDate = date?.let { dateFormatter.format(it) }
+        val formattedTime = date?.let { timeFormatter.format(it) }
+        return "$formattedDate, $formattedTime"
+    }
 
 
     fun greeting(): String {
-    val calendar = Calendar.getInstance()
-    val timeOfDay = calendar.get(Calendar.HOUR_OF_DAY)
+        val calendar = Calendar.getInstance()
+        val timeOfDay = calendar.get(Calendar.HOUR_OF_DAY)
 
 
-    return when (timeOfDay) {
-        in 0..11 -> "Good Morning"
-        in 12..15 -> "Good Afternoon"
-        in 16..23 -> "Good Evening"
-        else -> "Hello"
+        return when (timeOfDay) {
+            in 0..11 -> "Good Morning"
+            in 12..15 -> "Good Afternoon"
+            in 16..23 -> "Good Evening"
+            else -> "Hello"
+        }
     }
 }
-
 
 
