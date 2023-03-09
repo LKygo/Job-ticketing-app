@@ -78,6 +78,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.0"
 //    Bcrypt
     implementation "org.mindrot:jbcrypt:0.4"
+//    SwipetoRefresh
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
 
 
 

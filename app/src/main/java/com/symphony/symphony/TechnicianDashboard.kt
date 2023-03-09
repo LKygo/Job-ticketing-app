@@ -3,14 +3,17 @@ package com.symphony.symphony
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.android.volley.AuthFailureError
 import com.android.volley.NetworkError
 import com.android.volley.ServerError
@@ -33,6 +36,8 @@ class TechnicianDashboard : AppCompatActivity() {
     private lateinit var pBar: ProgressBar
     private lateinit var userID: String
     private lateinit var searchView: SearchView
+    private lateinit var swipeRefresh : SwipeRefreshLayout
+    private lateinit var btnRefresh : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +50,7 @@ class TechnicianDashboard : AppCompatActivity() {
         val recyclerView = binding.rcvRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
         searchView = binding.searchView
+        swipeRefresh = binding.swipeRefresh
 
         val bundle: Bundle? = intent.extras
         /* userID = bundle?.getString("id").toString() */
@@ -82,6 +88,13 @@ class TechnicianDashboard : AppCompatActivity() {
 
         getData("1")
 
+        swipeRefresh.setOnRefreshListener {
+
+            Handler().postDelayed({
+                getData("1")
+                swipeRefresh.isRefreshing = false
+            }, 1000L)
+        }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(newText: String?): Boolean {
                 return false
@@ -93,6 +106,7 @@ class TechnicianDashboard : AppCompatActivity() {
             }
 
         })
+
     }
 
 
@@ -144,19 +158,6 @@ class TechnicianDashboard : AppCompatActivity() {
                 }
             }, { error ->
 
-                val statusCode = error.networkResponse?.statusCode
-
-//                val errorLayout = when (statusCode) {
-//                    404 -> layoutInflater.inflate(R.layout.error_404, null)
-//                    500 -> layoutInflater.inflate(R.layout.error_500, null)
-//                    else -> layoutInflater.inflate(R.layout.default_error, null)
-//                }
-//
-//                val parentView = findViewById<ViewGroup>(R.id.parent_layout)
-//                parentView.addView(errorLayout)
-//                Toast.makeText(applicationContext, error.toString(), Toast.LENGTH_SHORT).show()
-
-
                 if (error is VolleyError) {
                     val errorLayoutResId = getErrorLayout(error)
                     val errorLayout = layoutInflater.inflate(errorLayoutResId, null)
@@ -172,7 +173,8 @@ class TechnicianDashboard : AppCompatActivity() {
 
     fun getErrorLayout(error: VolleyError): Int {
         return when (error) {
-            is NetworkError, is AuthFailureError, is TimeoutError -> R.layout.network_error
+
+            is NetworkError, is AuthFailureError, is TimeoutError ->R.layout.network_error
             is ServerError -> {
                 when (error.networkResponse?.statusCode) {
                     404 -> R.layout.error_404
