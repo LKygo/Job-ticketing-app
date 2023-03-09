@@ -146,42 +146,24 @@ class TechnicianDashboard : AppCompatActivity() {
 
                 val statusCode = error.networkResponse?.statusCode
 
-                val errorLayout = when (statusCode) {
-                    404 -> layoutInflater.inflate(R.layout.error_404, null)
-                    500 -> layoutInflater.inflate(R.layout.error_500, null)
-                    else -> layoutInflater.inflate(R.layout.default_error, null)
-                }
-
-                val parentView = findViewById<ViewGroup>(R.id.parent_layout)
-                parentView.addView(errorLayout)
+//                val errorLayout = when (statusCode) {
+//                    404 -> layoutInflater.inflate(R.layout.error_404, null)
+//                    500 -> layoutInflater.inflate(R.layout.error_500, null)
+//                    else -> layoutInflater.inflate(R.layout.default_error, null)
+//                }
+//
+//                val parentView = findViewById<ViewGroup>(R.id.parent_layout)
+//                parentView.addView(errorLayout)
 //                Toast.makeText(applicationContext, error.toString(), Toast.LENGTH_SHORT).show()
-                if (error is NetworkError || error is AuthFailureError || error is TimeoutError) {
-                    // Handle network or authentication errors here
+
+
+                if (error is VolleyError) {
+                    val errorLayoutResId = getErrorLayout(error)
+                    val errorLayout = layoutInflater.inflate(errorLayoutResId, null)
+                    val parentView = findViewById<ViewGroup>(R.id.parent_layout)
+                    parentView.addView(errorLayout)
+                    parentView.visibility = View.VISIBLE
                     pBar.visibility = View.GONE
-                    Toast.makeText(
-                        applicationContext,
-                        "Please ensure you have a stable internet connection then try again",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                } else if (error is ServerError) {
-                    // Handle server error here
-                    Toast.makeText(
-                        applicationContext,
-                        "It appears there's a server error.Please contact admin",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    if (statusCode == 404) {
-                        // Handle 404 error here
-                        Toast.makeText(
-                            applicationContext,
-                            "It appears there are no open tickets. Check back later for new ones",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        pBar.visibility = View.GONE
-
-                    }
                 }
             })
         queue.add(request)
@@ -192,8 +174,7 @@ class TechnicianDashboard : AppCompatActivity() {
         return when (error) {
             is NetworkError, is AuthFailureError, is TimeoutError -> R.layout.network_error
             is ServerError -> {
-                val statusCode = error.networkResponse?.statusCode
-                when (statusCode) {
+                when (error.networkResponse?.statusCode) {
                     404 -> R.layout.error_404
                     500 -> R.layout.error_500
                     else -> R.layout.default_error
