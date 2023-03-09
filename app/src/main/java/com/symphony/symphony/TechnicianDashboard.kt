@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -37,7 +36,8 @@ class TechnicianDashboard : AppCompatActivity() {
     private lateinit var userID: String
     private lateinit var searchView: SearchView
     private lateinit var swipeRefresh : SwipeRefreshLayout
-    private lateinit var btnRefresh : Button
+    private lateinit var errorLayout : View
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +51,8 @@ class TechnicianDashboard : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         searchView = binding.searchView
         swipeRefresh = binding.swipeRefresh
+
+        errorLayout = binding.parentLayout
 
         val bundle: Bundle? = intent.extras
         /* userID = bundle?.getString("id").toString() */
@@ -119,6 +121,8 @@ class TechnicianDashboard : AppCompatActivity() {
             { response ->
 
                 pBar.visibility = View.GONE
+                errorLayout.visibility = View.GONE
+
                 try {
 
                     for (i in 0..response.length()) {
@@ -160,7 +164,7 @@ class TechnicianDashboard : AppCompatActivity() {
 
                 if (error is VolleyError) {
                     val errorLayoutResId = getErrorLayout(error)
-                    val errorLayout = layoutInflater.inflate(errorLayoutResId, null)
+                     errorLayout = layoutInflater.inflate(errorLayoutResId, null)
                     val parentView = findViewById<ViewGroup>(R.id.parent_layout)
                     parentView.addView(errorLayout)
                     parentView.visibility = View.VISIBLE
