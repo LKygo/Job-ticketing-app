@@ -3,6 +3,9 @@ package com.symphony.symphony
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -25,19 +28,14 @@ class TicketActivity : AppCompatActivity() {
     private lateinit var customer: String
     private lateinit var faultReported: String
     private lateinit var date: String
-    private lateinit var serialNo: String
-    private lateinit var jobcardno: String
     private lateinit var servicedate: String
     private lateinit var start_time: String
     private lateinit var end_time: String
-    private lateinit var serialno: String
     private lateinit var city: String
-    private lateinit var findings: String
-    private lateinit var action_taken: String
-    private lateinit var recommendations: String
-    private lateinit var updated_at: String
     private lateinit var created_at: String
     private lateinit var updatedby: String
+    private lateinit var progressB : ProgressBar
+    private lateinit var updateT : Button
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -51,6 +49,9 @@ class TicketActivity : AppCompatActivity() {
         val bundle: Bundle? = intent.extras
 
         servicedate = LocalDate.now().toString()
+        progressB = binding.pgbTDProgress
+        progressB.visibility = View.GONE
+        updateT = binding.btnTDUpdate
 
         ticketNo = bundle?.getString("ticketNo").toString()
         customer = bundle?.getString("customer").toString()
@@ -72,7 +73,7 @@ class TicketActivity : AppCompatActivity() {
 
 
 
-        binding.btnTDUpdate.setOnClickListener {
+        updateT.setOnClickListener {
 
             val currentTime = LocalTime.now()
             val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
@@ -115,6 +116,15 @@ class TicketActivity : AppCompatActivity() {
                     Log.d("FunPost", e.toString())
                 }
         }
+
+
+        binding.btnTDClear.setOnClickListener {
+            binding.edtTDActionsTakenValue.setText("")
+            binding.edtTDFindingsValue.setText("")
+            binding.edtTDSerialNoValue.setText("")
+            binding.edtTDJobCardNoValue.setText("")
+            binding.edtTDRecommendationsValue.setText("")
+        }
     }
 
 
@@ -132,6 +142,9 @@ class TicketActivity : AppCompatActivity() {
         updated_by: String,
         created_at: String
     ) {
+        updateT.isClickable = false
+        updateT.visibility = View.GONE
+        progressB.visibility = View.VISIBLE
         val url = "https://backend.api.symphony.co.ke/upload"
 
         // Create a JSON object to hold your data
@@ -154,6 +167,10 @@ class TicketActivity : AppCompatActivity() {
         val request = object : StringRequest(Method.POST, url,
             { response ->
                 // Handle successful response from server
+
+                updateT.isClickable = true
+                updateT.visibility = View.VISIBLE
+                progressB.visibility = View.GONE
                 Toast.makeText(
                     this@TicketActivity,
                     "Successfully updated Ticket",
@@ -169,6 +186,10 @@ class TicketActivity : AppCompatActivity() {
             },
             { error ->
                 // Handle error response from server
+
+                updateT.isClickable = true
+                updateT.visibility = View.VISIBLE
+                progressB.visibility = View.GONE
                 Toast.makeText(this@TicketActivity, "Failed to update Ticket", Toast.LENGTH_SHORT)
                     .show()
 

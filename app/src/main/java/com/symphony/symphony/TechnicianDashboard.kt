@@ -2,14 +2,13 @@ package com.symphony.symphony
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,8 +23,6 @@ import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import com.symphony.symphony.databinding.ActivityTechnicianDashboardBinding
 import java.text.SimpleDateFormat
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 
@@ -44,11 +41,13 @@ class TechnicianDashboard : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = ActivityTechnicianDashboardBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
-
+try {
+    binding = ActivityTechnicianDashboardBinding.inflate(layoutInflater)
+    val view = binding.root
+    setContentView(view)
+}catch (e: Exception){
+    Log.d("inflate", e.toString())
+}
         recyclerView = binding.rcvRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
         searchView = binding.searchView
@@ -56,19 +55,23 @@ class TechnicianDashboard : AppCompatActivity() {
 
         errorLayout = binding.parentLayout
 
-        val bundle: Bundle? = intent.extras
-        userID = bundle?.getString("id").toString()
-
-
         binding.txvHello.setText(greeting())
         pBar = binding.progressBar
 
 //        Setting tickets list as Arraylist and mapping it as input to our adapter
         tickets = ArrayList()
         tAdapter = TicketsAdapter(tickets)
+        recyclerView.adapter = tAdapter
+
+        val sharedPref = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+        val userID = sharedPref.getString("userID", null)
+
+        val bundle: Bundle? = intent.extras
+
+
+
 
         tAdapter!!.setOnItemClickListener(object : TicketsAdapter.onItemClickListener {
-            @RequiresApi(Build.VERSION_CODES.O)
             override fun onItemClick(position: Int) {
                 val intent = Intent(this@TechnicianDashboard, TicketActivity::class.java)
                 intent.putExtra("ticketNo", tickets[position].ticket)
@@ -78,9 +81,8 @@ class TechnicianDashboard : AppCompatActivity() {
                 intent.putExtra("date", tickets[position].openedOn)
                 intent.putExtra("userID", userID)
 
-                val currentTime = LocalTime.now()
-                val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-                val startTime = currentTime.format(formatter)
+          val calendar = Calendar.getInstance()
+          val startTime = "${calendar.get(Calendar.HOUR_OF_DAY)}:${calendar.get(Calendar.MINUTE)}:${calendar.get(Calendar.SECOND)}"
 
                 intent.putExtra("startTime", startTime)
                 startActivity(intent)
@@ -89,12 +91,22 @@ class TechnicianDashboard : AppCompatActivity() {
         })
         recyclerView.adapter = tAdapter
 
-        getData(userID)
+        if (userID != null) {
+            getData(userID)
+        }
+        else{
+            Toast.makeText(this, "No userId found. Please logout and log in again", Toast.LENGTH_SHORT).show()
+        }
 
         swipeRefresh.setOnRefreshListener {
 
             Handler().postDelayed({
-                getData(userID)
+                if (userID != null) {
+                    getData(userID)
+                }
+                else{
+                    Toast.makeText(this, "No userId found. Please logout and log in again", Toast.LENGTH_SHORT).show()
+                }
                 swipeRefresh.isRefreshing = false
             }, 1000L)
         }
@@ -115,12 +127,7 @@ class TechnicianDashboard : AppCompatActivity() {
         })
 
         binding.imgLogout.setOnClickListener {
-            val sharedPrefs = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
-            val editor = sharedPrefs.edit()
-            editor.clear()
-            editor.apply()
-
-            val intent = Intent(this, LoginActivity::class.java)
+       val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
