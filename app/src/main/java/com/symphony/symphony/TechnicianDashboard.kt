@@ -105,11 +105,15 @@ class TechnicianDashboard : AppCompatActivity() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (!newText.isNullOrEmpty()) {
                     filterList(newText)
+                }else{
+                    resetAdapter()
                 }
                 return true
 
             }
         })
+
+
     }
 
 
@@ -192,6 +196,10 @@ class TechnicianDashboard : AppCompatActivity() {
         }
     }
 
+    private fun resetAdapter() {
+        tAdapter?.setFilteredList(tickets)
+    }
+
     private fun filterList(query: String?) {
         if (query != null) {
             val filteredList = ArrayList<TicketItemModel>()
@@ -209,8 +217,11 @@ class TechnicianDashboard : AppCompatActivity() {
             } else {
                 tAdapter?.setFilteredList(filteredList)
             }
+        } else {
+            resetAdapter()
         }
     }
+
 
 
     private fun urgencyControl(urgency: String): Int {
