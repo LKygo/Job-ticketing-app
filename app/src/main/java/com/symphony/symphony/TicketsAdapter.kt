@@ -75,7 +75,7 @@ class TicketsAdapter(private var ticketsList: ArrayList<TicketItemModel>) :
         holder.ksh.text = ticketsList.get(position).faultReported
 //        holder.state.setImageResource(ticketsList.get(position).state)
         holder.state2.setImageResource(ticketsList.get(position).state)
-        holder.openedOn.text = ticketsList.get(position).openedOn
+        holder.openedOn.text = ticketsList.get(position).location
         holder.updatedOn.text = ticketsList.get(position).updatedOn
         holder.status.text = ticketsList.get(position).status
 
