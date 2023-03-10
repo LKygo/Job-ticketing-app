@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.android.volley.AuthFailureError
 import com.android.volley.NetworkError
@@ -37,6 +38,7 @@ class TechnicianDashboard : AppCompatActivity() {
     private lateinit var searchView: SearchView
     private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var errorLayout: View
+    private lateinit var recyclerView: RecyclerView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,8 +48,7 @@ class TechnicianDashboard : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-//        stateImage = findViewById(R.id.imgCircularStatus)
-        val recyclerView = binding.rcvRecyclerView
+        recyclerView = binding.rcvRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
         searchView = binding.searchView
         swipeRefresh = binding.swipeRefresh
@@ -126,7 +127,10 @@ class TechnicianDashboard : AppCompatActivity() {
             { response ->
 
                 pBar.visibility = View.GONE
-                errorLayout.visibility = View.GONE
+
+                val parentView = findViewById<ViewGroup>(R.id.parent_layout)
+                parentView.removeAllViews()
+                parentView.visibility = View.GONE
 
                 try {
                         tickets.clear()
@@ -168,12 +172,17 @@ class TechnicianDashboard : AppCompatActivity() {
             }, { error ->
 
                 if (error is VolleyError) {
-                    val errorLayoutResId = getErrorLayout(error)
-                    errorLayout = layoutInflater.inflate(errorLayoutResId, null)
-                    val parentView = findViewById<ViewGroup>(R.id.parent_layout)
-                    parentView.addView(errorLayout)
-                    parentView.visibility = View.VISIBLE
-                    pBar.visibility = View.GONE
+                    if (tickets.isEmpty()) {
+                        val errorLayoutResId = getErrorLayout(error)
+                        errorLayout = layoutInflater.inflate(errorLayoutResId, null)
+                        val parentView = findViewById<ViewGroup>(R.id.parent_layout)
+                        parentView.addView(errorLayout)
+                        parentView.visibility = View.VISIBLE
+                        pBar.visibility = View.GONE
+                    }
+                    else{
+                        Toast.makeText(this, "Unable to refresh tickets. Please try again later", Toast.LENGTH_LONG).show()
+                    }
                 }
             })
         queue.add(request)
@@ -181,6 +190,8 @@ class TechnicianDashboard : AppCompatActivity() {
     }
 
     fun getErrorLayout(error: VolleyError): Int {
+
+
         return when (error) {
 
             is NetworkError, is AuthFailureError, is TimeoutError -> R.layout.network_error
