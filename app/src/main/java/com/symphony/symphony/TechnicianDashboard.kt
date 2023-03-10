@@ -35,8 +35,8 @@ class TechnicianDashboard : AppCompatActivity() {
     private lateinit var pBar: ProgressBar
     private lateinit var userID: String
     private lateinit var searchView: SearchView
-    private lateinit var swipeRefresh : SwipeRefreshLayout
-    private lateinit var errorLayout : View
+    private lateinit var swipeRefresh: SwipeRefreshLayout
+    private lateinit var errorLayout: View
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -124,41 +124,36 @@ class TechnicianDashboard : AppCompatActivity() {
                 errorLayout.visibility = View.GONE
 
                 try {
-
+                        tickets.clear()
                     for (i in 0 until response.length()) {
                         val ticket = response.getJSONObject(i)
                         val id = ticket.getString("id")
+                        val ticketNo = ticket.getString("ticketno")
+                        val stringDate = ticket.getString("ticketdate")
+                        val date = formatDateString(stringDate)
+                        val faultReported = ticket.getString("faultreported")
+                        val customer = ticket.getString("clientname")
+                        val location = ticket.getString("location")
+                        val urgency = ticket.getString("urgency")
+                        val state = urgencyControl(urgency)
+                        val createdAt = ticket.getString("created_at")
+                        val openedOn = ticket.getString("updated_at")
+                        val status = ticket.getString("status")
 
-//                        Check if id exists
-                        if (!tickets.any { it.id == id }) {
-                            val ticketNo = ticket.getString("ticketno")
-
-                            val stringDate = ticket.getString("ticketdate")
-                            val date = formatDateString(stringDate)
-                            val faultReported = ticket.getString("faultreported")
-                            val customer = ticket.getString("clientname")
-                            val location = ticket.getString("location")
-                            val urgency = ticket.getString("urgency")
-                            val state = urgencyControl(urgency)
-                            val createdAt = ticket.getString("created_at")
-                            val openedOn = ticket.getString("updated_at")
-                            val status = ticket.getString("status")
-
-                            tickets.add(
-                                TicketItemModel(
-                                    id,
-                                    ticketNo,
-                                    date,
-                                    faultReported,
-                                    customer,
-                                    state,
-                                    createdAt,
-                                    openedOn,
-                                    status,
-                                    location
-                                )
+                        tickets.add(
+                            TicketItemModel(
+                                id,
+                                ticketNo,
+                                date,
+                                faultReported,
+                                customer,
+                                state,
+                                createdAt,
+                                openedOn,
+                                status,
+                                location
                             )
-                        }
+                        )
                     }
                     tAdapter?.notifyDataSetChanged()
 
@@ -169,7 +164,7 @@ class TechnicianDashboard : AppCompatActivity() {
 
                 if (error is VolleyError) {
                     val errorLayoutResId = getErrorLayout(error)
-                     errorLayout = layoutInflater.inflate(errorLayoutResId, null)
+                    errorLayout = layoutInflater.inflate(errorLayoutResId, null)
                     val parentView = findViewById<ViewGroup>(R.id.parent_layout)
                     parentView.addView(errorLayout)
                     parentView.visibility = View.VISIBLE
@@ -183,7 +178,7 @@ class TechnicianDashboard : AppCompatActivity() {
     fun getErrorLayout(error: VolleyError): Int {
         return when (error) {
 
-            is NetworkError, is AuthFailureError, is TimeoutError ->R.layout.network_error
+            is NetworkError, is AuthFailureError, is TimeoutError -> R.layout.network_error
             is ServerError -> {
                 when (error.networkResponse?.statusCode) {
                     404 -> R.layout.error_404
@@ -191,6 +186,7 @@ class TechnicianDashboard : AppCompatActivity() {
                     else -> R.layout.default_error
                 }
             }
+
             else -> R.layout.default_error
         }
     }
