@@ -50,6 +50,8 @@ class TicketActivity : AppCompatActivity() {
 
         val bundle: Bundle? = intent.extras
 
+        servicedate = LocalDate.now().toString()
+
         ticketNo = bundle?.getString("ticketNo").toString()
         customer = bundle?.getString("customer").toString()
         city = bundle?.getString("location").toString()
@@ -61,10 +63,10 @@ class TicketActivity : AppCompatActivity() {
         binding.txvTDTicketNOValue.text = ticketNo
         binding.txvTDClientValue.text = customer
         binding.txvTDFaultReportedValue.text = faultReported
-        binding.txvTDServiceDateValue.text = date
+        binding.txvTDServiceDateValue.text = servicedate
         binding.txvTDLocationValue.text = city
+        binding.txvTDStartValue.text = sTime
 
-        servicedate = LocalDate.now().toString()
         start_time = sTime
         created_at = date
 

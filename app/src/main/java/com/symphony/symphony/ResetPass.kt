@@ -72,7 +72,7 @@ class ResetPass : AppCompatActivity() {
                 // Handle the API response on error.
                 val errorMessage = error.networkResponse?.statusCode?.let {
                     when (it) {
-                        404 -> "Email not found"
+                        404 -> "Email is not a member of the company"
                         else -> "Internal Server Error"
                     }
                 }

@@ -226,7 +226,7 @@
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/edit_text2"
                 android:gravity="center_vertical"
-                android:text="1200 hrs"
+                android:text="Autofill"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/txvTDEnd"
                 app:layout_constraintTop_toBottomOf="@+id/txvTDEnd" />

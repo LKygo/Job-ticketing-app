@@ -1,5 +1,6 @@
 package com.symphony.symphony
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -56,8 +57,7 @@ class TechnicianDashboard : AppCompatActivity() {
         errorLayout = binding.parentLayout
 
         val bundle: Bundle? = intent.extras
-        /* userID = bundle?.getString("id").toString() */
-        userID = "17"
+        userID = bundle?.getString("id").toString()
 
 
         binding.txvHello.setText(greeting())
@@ -89,12 +89,12 @@ class TechnicianDashboard : AppCompatActivity() {
         })
         recyclerView.adapter = tAdapter
 
-        getData("1")
+        getData(userID)
 
         swipeRefresh.setOnRefreshListener {
 
             Handler().postDelayed({
-                getData("1")
+                getData(userID)
                 swipeRefresh.isRefreshing = false
             }, 1000L)
         }
@@ -114,6 +114,16 @@ class TechnicianDashboard : AppCompatActivity() {
             }
         })
 
+        binding.imgLogout.setOnClickListener {
+            val sharedPrefs = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+            val editor = sharedPrefs.edit()
+            editor.clear()
+            editor.apply()
+
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
     }
 
@@ -233,8 +243,6 @@ class TechnicianDashboard : AppCompatActivity() {
         }
     }
 
-
-
     private fun urgencyControl(urgency: String): Int {
 
         return when (urgency) {
@@ -258,7 +266,6 @@ class TechnicianDashboard : AppCompatActivity() {
         val formattedTime = date?.let { timeFormatter.format(it) }
         return "$formattedDate, $formattedTime"
     }
-
 
     fun greeting(): String {
         val calendar = Calendar.getInstance()
