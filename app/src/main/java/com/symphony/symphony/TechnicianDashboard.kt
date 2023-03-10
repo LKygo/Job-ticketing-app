@@ -103,15 +103,13 @@ class TechnicianDashboard : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText != null) {
+                if (!newText.isNullOrEmpty()) {
                     filterList(newText)
-                    return true
-                } else {
-                    return false
                 }
+                return true
+
             }
         })
-
     }
 
 
