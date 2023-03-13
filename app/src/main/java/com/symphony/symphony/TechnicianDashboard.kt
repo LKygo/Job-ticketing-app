@@ -2,6 +2,7 @@ package com.symphony.symphony
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +25,8 @@ import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import com.symphony.symphony.databinding.ActivityTechnicianDashboardBinding
 import java.text.SimpleDateFormat
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 
@@ -41,13 +45,13 @@ class TechnicianDashboard : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-try {
-    binding = ActivityTechnicianDashboardBinding.inflate(layoutInflater)
-    val view = binding.root
-    setContentView(view)
-}catch (e: Exception){
-    Log.d("inflate", e.toString())
-}
+        try {
+            binding = ActivityTechnicianDashboardBinding.inflate(layoutInflater)
+            val view = binding.root
+            setContentView(view)
+        } catch (e: Exception) {
+            Log.d("inflate", e.toString())
+        }
         recyclerView = binding.rcvRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
         searchView = binding.searchView
@@ -72,6 +76,7 @@ try {
 
 
         tAdapter!!.setOnItemClickListener(object : TicketsAdapter.onItemClickListener {
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onItemClick(position: Int) {
                 val intent = Intent(this@TechnicianDashboard, TicketActivity::class.java)
                 intent.putExtra("ticketNo", tickets[position].ticket)
@@ -81,9 +86,12 @@ try {
                 intent.putExtra("date", tickets[position].openedOn)
                 intent.putExtra("userID", userID)
 
-          val calendar = Calendar.getInstance()
-          val startTime = "${calendar.get(Calendar.HOUR_OF_DAY)}:${calendar.get(Calendar.MINUTE)}:${calendar.get(Calendar.SECOND)}"
+//          val calendar = Calendar.getInstance()
+//          val startTime = "${calendar.get(Calendar.HOUR_OF_DAY)}:${calendar.get(Calendar.MINUTE)}:${calendar.get(Calendar.SECOND)}"
 
+                val currentTime = LocalTime.now()
+                val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+                val startTime = currentTime.format(formatter)
                 intent.putExtra("startTime", startTime)
                 startActivity(intent)
             }
@@ -93,9 +101,10 @@ try {
 
         if (userID != null) {
             getData(userID)
-        }
-        else{
-            Toast.makeText(this, "No userId found. Please logout and log in again", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(
+                this, "No userId found. Please logout and log in again", Toast.LENGTH_SHORT
+            ).show()
         }
 
         swipeRefresh.setOnRefreshListener {
@@ -103,9 +112,10 @@ try {
             Handler().postDelayed({
                 if (userID != null) {
                     getData(userID)
-                }
-                else{
-                    Toast.makeText(this, "No userId found. Please logout and log in again", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(
+                        this, "No userId found. Please logout and log in again", Toast.LENGTH_SHORT
+                    ).show()
                 }
                 swipeRefresh.isRefreshing = false
             }, 1000L)
@@ -118,7 +128,7 @@ try {
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (!newText.isNullOrEmpty()) {
                     filterList(newText)
-                }else{
+                } else {
                     resetAdapter()
                 }
                 return true
@@ -127,7 +137,7 @@ try {
         })
 
         binding.imgLogout.setOnClickListener {
-       val intent = Intent(this, LoginActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -140,8 +150,8 @@ try {
         val url = "https://backend.api.symphony.co.ke/tickets?user_id=$id"
         val queue = Volley.newRequestQueue(this)
 
-        val request = JsonArrayRequest(com.android.volley.Request.Method.GET, url, null,
-            { response ->
+        val request =
+            JsonArrayRequest(com.android.volley.Request.Method.GET, url, null, { response ->
 
                 pBar.visibility = View.GONE
 
@@ -150,7 +160,7 @@ try {
                 parentView.visibility = View.GONE
 
                 try {
-                        tickets.clear()
+                    tickets.clear()
                     for (i in 0 until response.length()) {
                         val ticket = response.getJSONObject(i)
                         val id = ticket.getString("id")
@@ -196,9 +206,12 @@ try {
                         parentView.addView(errorLayout)
                         parentView.visibility = View.VISIBLE
                         pBar.visibility = View.GONE
-                    }
-                    else{
-                        Toast.makeText(this, "Unable to refresh tickets. Please try again later", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "Unable to refresh tickets. Please try again later",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
             })
@@ -238,9 +251,7 @@ try {
             }
             if (filteredList.isEmpty()) {
                 Toast.makeText(
-                    this,
-                    "Seems like there are no jobs under this company",
-                    Toast.LENGTH_LONG
+                    this, "Seems like there are no jobs under this company", Toast.LENGTH_LONG
                 ).show()
             } else {
                 tAdapter?.setFilteredList(filteredList)
