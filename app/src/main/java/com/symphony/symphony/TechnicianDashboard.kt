@@ -25,9 +25,8 @@ import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import com.symphony.symphony.databinding.ActivityTechnicianDashboardBinding
 import java.text.SimpleDateFormat
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 
@@ -86,12 +85,10 @@ class TechnicianDashboard : AppCompatActivity() {
                 intent.putExtra("date", tickets[position].openedOn)
                 intent.putExtra("userID", userID)
 
-//          val calendar = Calendar.getInstance()
-//          val startTime = "${calendar.get(Calendar.HOUR_OF_DAY)}:${calendar.get(Calendar.MINUTE)}:${calendar.get(Calendar.SECOND)}"
+                val currentTime = Date()
+                val formatter = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+                val startTime = formatter.format(currentTime)
 
-                val currentTime = LocalTime.now()
-                val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-                val startTime = currentTime.format(formatter)
                 intent.putExtra("startTime", startTime)
                 startActivity(intent)
             }

@@ -17,9 +17,9 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.symphony.symphony.databinding.ActivityTicketBinding
 import org.json.JSONObject
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 class TicketActivity : AppCompatActivity() {
@@ -48,7 +48,8 @@ class TicketActivity : AppCompatActivity() {
 
         val bundle: Bundle? = intent.extras
 
-        servicedate = LocalDate.now().toString()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        servicedate = dateFormat.format(Date())
         progressB = binding.pgbTDProgress
         progressB.visibility = View.GONE
         updateT = binding.btnTDUpdate
@@ -75,10 +76,9 @@ class TicketActivity : AppCompatActivity() {
 
         updateT.setOnClickListener {
 
-            val currentTime = LocalTime.now()
-            val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-            val endTime = currentTime.format(formatter)
-            end_time = endTime.toString()
+            val currentTime = Date()
+            val formatter = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+            end_time = formatter.format(currentTime)
             val jobcardno = binding.edtTDJobCardNoValue.text.toString()
             val serialNo = binding.edtTDSerialNoValue.text.toString()
             val findings = binding.edtTDFindingsValue.text.toString()
