@@ -23,9 +23,11 @@ import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.symphony.symphony.databinding.ActivityTicketBinding
+import org.apache.http.entity.ContentType
+import org.apache.http.entity.mime.MultipartEntityBuilder
+import org.apache.http.util.EntityUtils
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
-import java.io.DataOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -46,7 +48,7 @@ class TicketActivity : AppCompatActivity() {
     private lateinit var progressB: ProgressBar
     private lateinit var updateT: Button
     private lateinit var takePic: ImageView
-    private lateinit var byteArray: ByteArray
+    private  lateinit var byteArray : ByteArray
     private val REQUEST_IMAGE_CAPTURE = 1
 
 
@@ -65,6 +67,7 @@ class TicketActivity : AppCompatActivity() {
         progressB.visibility = View.GONE
         updateT = binding.btnTDUpdate
 
+        byteArray = ByteArray(0)
         ticketNo = bundle?.getString("ticketNo").toString()
         customer = bundle?.getString("customer").toString()
         city = bundle?.getString("location").toString()
@@ -114,37 +117,43 @@ class TicketActivity : AppCompatActivity() {
             val action_taken = binding.edtTDActionsTakenValue.text.toString()
             val recommendations = binding.edtTDRecommendationsValue.text.toString()
 
-
-            if (jobcardno.isEmpty() || serialNo.isEmpty() || findings.isEmpty() || action_taken.isEmpty() || recommendations.isEmpty() || byteArray.isEmpty()) {
-
-                Toast.makeText(
-                    this,
-                    "Please fill all the fields with a red star",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else
-
-                try {
-                    sendTicketDetails(
-                        ticketNo,
-                        jobcardno,
-                        servicedate,
-                        start_time,
-                        end_time,
-                        serialNo,
-                        city,
-                        findings,
-                        action_taken,
-                        recommendations,
-                        updatedby,
-                        created_at
-                    )
-                    uploadImage(byteArray,jobcardno)
-
-
-                } catch (e: java.lang.Exception) {
-                    Log.d("FunPost", e.toString())
-                }
+            if (::byteArray.isInitialized && byteArray.isNotEmpty()) {
+                // Call uploadImage() function with the byteArray
+                uploadImage(byteArray, jobcardno)
+            } else {
+                // Display an error message that the byteArray is empty
+                Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show()
+            }
+//            if (jobcardno.isEmpty() || serialNo.isEmpty() || findings.isEmpty() || action_taken.isEmpty() || recommendations.isEmpty() || byteArray.isEmpty()) {
+//
+//                Toast.makeText(
+//                    this,
+//                    "Please fill all the fields with a red star",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            } else
+//
+//                try {
+//                    sendTicketDetails(
+//                        ticketNo,
+//                        jobcardno,
+//                        servicedate,
+//                        start_time,
+//                        end_time,
+//                        serialNo,
+//                        city,
+//                        findings,
+//                        action_taken,
+//                        recommendations,
+//                        updatedby,
+//                        created_at
+//                    )
+//                    uploadImage(byteArray,jobcardno)
+//
+//
+//                } catch (e: java.lang.Exception) {
+//                    Log.d("FunPost", e.toString())
+//                }
         }
         binding.btnTDClear.setOnClickListener {
             binding.edtTDActionsTakenValue.setText("")
@@ -280,15 +289,19 @@ class TicketActivity : AppCompatActivity() {
 
 
     fun uploadImage(byteArray: ByteArray, jobcard_no: String) {
-        val url = "http://example.com/upload_image.php"
+        val url = "https://backend.api.symphony.co.ke/imageUpload"
         val stringRequest = object : StringRequest(
             Method.POST, url,
             Response.Listener<String> { response ->
                 // Handle response
 
+                Toast.makeText(this, "Successfully saved Image", Toast.LENGTH_SHORT).show()
             },
             Response.ErrorListener { error ->
                 // Handle error
+                Log.d("pic", error.toString())
+                Toast.makeText(this, error.toString(), Toast.LENGTH_SHORT).show()
+
             }
         ) {
             override fun getParams(): Map<String, String> {
@@ -297,24 +310,18 @@ class TicketActivity : AppCompatActivity() {
                 return params
             }
 
-            override fun getBodyContentType(): String {
-                return "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW"
-            }
-
             @Throws(AuthFailureError::class)
             override fun getBody(): ByteArray {
-                val outputStream = ByteArrayOutputStream()
-                val dataOutputStream = DataOutputStream(outputStream)
+                val form = MultipartEntityBuilder.create()
+                    .addTextBody("name", jobcard_no)
+                    .addBinaryBody("image", byteArray, ContentType.create("image/png"), "image.png")
+                    .build()
 
-                // Add image to request
-                dataOutputStream.writeBytes("------WebKitFormBoundary7MA4YWxkTrZu0gW\r\n")
-                dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"image\"; filename=\"image.png\"\r\n")
-                dataOutputStream.writeBytes("Content-Type: image/png\r\n\r\n")
-                dataOutputStream.write(byteArray)
-                dataOutputStream.writeBytes("\r\n")
-                dataOutputStream.writeBytes("------WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n")
+                return EntityUtils.toByteArray(form)
+            }
 
-                return outputStream.toByteArray()
+            override fun getBodyContentType(): String {
+                return "multipart/form-data"
             }
         }
 
