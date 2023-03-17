@@ -31,6 +31,7 @@ import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.UUID
 
 
 class TicketActivity : AppCompatActivity() {
@@ -174,7 +175,7 @@ class TicketActivity : AppCompatActivity() {
 
             // Convert the image to a byte array
             val byteArrayOutputStream = ByteArrayOutputStream()
-            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
             byteArray = byteArrayOutputStream.toByteArray()
 
 
@@ -290,6 +291,9 @@ class TicketActivity : AppCompatActivity() {
 
     fun uploadImage(byteArray: ByteArray, jobcard_no: String) {
         val url = "https://backend.api.symphony.co.ke/imageUpload"
+
+        val BOUNDARY = UUID.randomUUID().toString()
+
         val stringRequest = object : StringRequest(
             Method.POST, url,
             Response.Listener<String> { response ->
@@ -321,7 +325,7 @@ class TicketActivity : AppCompatActivity() {
             }
 
             override fun getBodyContentType(): String {
-                return "multipart/form-data"
+                return "multipart/form-data; boundary=${BOUNDARY}"
             }
         }
 
