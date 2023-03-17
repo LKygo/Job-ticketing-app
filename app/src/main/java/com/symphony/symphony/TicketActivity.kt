@@ -15,28 +15,20 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.android.volley.AuthFailureError
 import com.android.volley.NetworkError
 import com.android.volley.NetworkResponse
-import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.symphony.symphony.databinding.ActivityTicketBinding
-import okhttp3.MediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Retrofit
 import java.io.ByteArrayOutputStream
-import java.io.PrintWriter
+import java.io.DataOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
 
 
 class TicketActivity : AppCompatActivity() {
@@ -54,7 +46,7 @@ class TicketActivity : AppCompatActivity() {
     private lateinit var progressB: ProgressBar
     private lateinit var updateT: Button
     private lateinit var takePic: ImageView
-    private lateinit var byteArray : ByteArray
+    private lateinit var byteArray: ByteArray
     private val REQUEST_IMAGE_CAPTURE = 1
 
 
@@ -123,7 +115,7 @@ class TicketActivity : AppCompatActivity() {
             val recommendations = binding.edtTDRecommendationsValue.text.toString()
 
 
-            if (jobcardno.isEmpty() || serialNo.isEmpty() || findings.isEmpty() || action_taken.isEmpty() || recommendations.isEmpty()) {
+            if (jobcardno.isEmpty() || serialNo.isEmpty() || findings.isEmpty() || action_taken.isEmpty() || recommendations.isEmpty() || byteArray.isEmpty()) {
 
                 Toast.makeText(
                     this,
@@ -147,6 +139,7 @@ class TicketActivity : AppCompatActivity() {
                         updatedby,
                         created_at
                     )
+                    uploadImage(byteArray,jobcardno)
 
 
                 } catch (e: java.lang.Exception) {
@@ -176,139 +169,164 @@ class TicketActivity : AppCompatActivity() {
             byteArray = byteArrayOutputStream.toByteArray()
 
 
-            // Upload the image to the server
-            uploadImage(byteArray)
+//            // Upload the image to the server
+//            uploadImage(byteArray)
         }
     }
 
 
+    private fun sendTicketDetails(
+        ticket_no: String,
+        jobcard_no: String,
+        service_date: String,
+        start_time: String,
+        end_time: String,
+        serial_no: String,
+        city: String,
+        findings: String,
+        action_taken: String,
+        recommendations: String,
+        updated_by: String,
+        created_at: String
+    ) {
+        updateT.isClickable = false
+        updateT.visibility = View.GONE
+        progressB.visibility = View.VISIBLE
+        val url = "https://backend.api.symphony.co.ke/upload"
 
-        private fun sendTicketDetails(
-            ticket_no: String,
-            jobcard_no: String,
-            service_date: String,
-            start_time: String,
-            end_time: String,
-            serial_no: String,
-            city: String,
-            findings: String,
-            action_taken: String,
-            recommendations: String,
-            updated_by: String,
-            created_at: String
-        ) {
-            updateT.isClickable = false
-            updateT.visibility = View.GONE
-            progressB.visibility = View.VISIBLE
-            val url = "https://backend.api.symphony.co.ke/upload"
-
-            // Create a JSON object to hold your data
-            val jsonObject = JSONObject()
-            jsonObject.put("ticket_no", ticket_no)
-            jsonObject.put("jobcard_no", jobcard_no)
-            jsonObject.put("service_date", service_date)
-            jsonObject.put("start_time", start_time)
-            jsonObject.put("end_time", end_time)
-            jsonObject.put("serial_no", serial_no)
-            jsonObject.put("city", city)
-            jsonObject.put("findings", findings)
-            jsonObject.put("action_taken", action_taken)
-            jsonObject.put("recommendations", recommendations)
-            jsonObject.put("updated_by", updated_by)
-            jsonObject.put("created_at", created_at)
+        // Create a JSON object to hold your data
+        val jsonObject = JSONObject()
+        jsonObject.put("ticket_no", ticket_no)
+        jsonObject.put("jobcard_no", jobcard_no)
+        jsonObject.put("service_date", service_date)
+        jsonObject.put("start_time", start_time)
+        jsonObject.put("end_time", end_time)
+        jsonObject.put("serial_no", serial_no)
+        jsonObject.put("city", city)
+        jsonObject.put("findings", findings)
+        jsonObject.put("action_taken", action_taken)
+        jsonObject.put("recommendations", recommendations)
+        jsonObject.put("updated_by", updated_by)
+        jsonObject.put("created_at", created_at)
 
 
 // Request to server's URL
-            val request = object : StringRequest(Method.POST, url,
-                { response ->
-                    // Handle successful response from server
+        val request = object : StringRequest(Method.POST, url,
+            { response ->
+                // Handle successful response from server
 
-                    updateT.isClickable = true
-                    updateT.visibility = View.VISIBLE
-                    progressB.visibility = View.GONE
-                    Toast.makeText(
-                        this@TicketActivity,
-                        "Successfully updated Ticket",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                updateT.isClickable = true
+                updateT.visibility = View.VISIBLE
+                progressB.visibility = View.GONE
+                Toast.makeText(
+                    this@TicketActivity,
+                    "Successfully updated Ticket",
+                    Toast.LENGTH_SHORT
+                ).show()
 
-                    binding.edtTDActionsTakenValue.setText("")
-                    binding.edtTDFindingsValue.setText("")
-                    binding.edtTDSerialNoValue.setText("")
-                    binding.edtTDJobCardNoValue.setText("")
-                    binding.edtTDRecommendationsValue.setText("")
+                binding.edtTDActionsTakenValue.setText("")
+                binding.edtTDFindingsValue.setText("")
+                binding.edtTDSerialNoValue.setText("")
+                binding.edtTDJobCardNoValue.setText("")
+                binding.edtTDRecommendationsValue.setText("")
 
-                },
-                { error ->
-                    // Handle error response from server
+            },
+            { error ->
+                // Handle error response from server
 
-                    updateT.isClickable = true
-                    updateT.visibility = View.VISIBLE
-                    progressB.visibility = View.GONE
-                    Toast.makeText(
-                        this@TicketActivity,
-                        "Failed to update Ticket",
-                        Toast.LENGTH_SHORT
+                updateT.isClickable = true
+                updateT.visibility = View.VISIBLE
+                progressB.visibility = View.GONE
+                Toast.makeText(
+                    this@TicketActivity,
+                    "Failed to update Ticket",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+
+                Log.e("Volley", "Error: $error")
+            }) {
+
+            override fun parseNetworkResponse(response: NetworkResponse): Response<String> {
+                val status = response.statusCode
+                val responseBody = String(response.data)
+                Log.d("StatusCode", "Response body: $responseBody")
+                Log.d("StatusCode", "Status code: $status")
+
+                if (status == 200) {
+                    return Response.success(
+                        responseBody,
+                        HttpHeaderParser.parseCacheHeaders(response)
                     )
-                        .show()
-
-                    Log.e("Volley", "Error: $error")
-                }) {
-
-                override fun parseNetworkResponse(response: NetworkResponse): Response<String> {
-                    val status = response.statusCode
-                    val responseBody = String(response.data)
-                    Log.d("StatusCode", "Response body: $responseBody")
-                    Log.d("StatusCode", "Status code: $status")
-
-                    if (status == 200) {
-                        return Response.success(
-                            responseBody,
-                            HttpHeaderParser.parseCacheHeaders(response)
-                        )
-                    } else {
-                        return Response.error(NetworkError())
-                    }
-                }
-
-                override fun getBody(): ByteArray {
-                    // Convert the JSON object to a byte array
-                    return jsonObject.toString().toByteArray(Charsets.UTF_8)
-                }
-
-                override fun getBodyContentType(): String {
-                    // Set the content type to "application/json"
-                    return "application/json"
+                } else {
+                    return Response.error(NetworkError())
                 }
             }
-// Add the request to the request queue
-            Volley.newRequestQueue(this@TicketActivity).add(request)
 
+            override fun getBody(): ByteArray {
+                // Convert the JSON object to a byte array
+                return jsonObject.toString().toByteArray(Charsets.UTF_8)
+            }
+
+            override fun getBodyContentType(): String {
+                // Set the content type to "application/json"
+                return "application/json"
+            }
         }
+// Add the request to the request queue
+        Volley.newRequestQueue(this@TicketActivity).add(request)
 
     }
 
 
-fun uploadImage(imageData: ByteArray) {
-    val requestBody = RequestBody.create("image/*".toMediaTypeOrNull(), imageData)
-    val imagePart = MultipartBody.Part.createFormData("image", "image.png", requestBody)
+    fun uploadImage(byteArray: ByteArray, jobcard_no: String) {
+        val url = "http://example.com/upload_image.php"
+        val stringRequest = object : StringRequest(
+            Method.POST, url,
+            Response.Listener<String> { response ->
+                // Handle response
 
-    val retrofit = Retrofit.Builder()
-        .baseUrl("https://example.com/api/")
-        .build()
+            },
+            Response.ErrorListener { error ->
+                // Handle error
+            }
+        ) {
+            override fun getParams(): Map<String, String> {
+                val params = HashMap<String, String>()
+                params["name"] = jobcard_no
+                return params
+            }
 
-    val service = retrofit.create(ApiService::class.java)
-    val call = service.uploadImage(imagePart)
-    call.enqueue(object : Callback<Void> {
-        override fun onResponse(call: Call<Void>, response: Response<Void>) {
-            // Image uploaded successfully
+            override fun getBodyContentType(): String {
+                return "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW"
+            }
+
+            @Throws(AuthFailureError::class)
+            override fun getBody(): ByteArray {
+                val outputStream = ByteArrayOutputStream()
+                val dataOutputStream = DataOutputStream(outputStream)
+
+                // Add image to request
+                dataOutputStream.writeBytes("------WebKitFormBoundary7MA4YWxkTrZu0gW\r\n")
+                dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"image\"; filename=\"image.png\"\r\n")
+                dataOutputStream.writeBytes("Content-Type: image/png\r\n\r\n")
+                dataOutputStream.write(byteArray)
+                dataOutputStream.writeBytes("\r\n")
+                dataOutputStream.writeBytes("------WebKitFormBoundary7MA4YWxkTrZu0gW--\r\n")
+
+                return outputStream.toByteArray()
+            }
         }
 
-        override fun onFailure(call: Call<Void>, t: Throwable) {
-            // Image upload failed
-        }
-    })
+        // Add request to queue
+        val queue = Volley.newRequestQueue(this)
+        queue.add(stringRequest)
+    }
+
 }
+
+
+
 
 
 
