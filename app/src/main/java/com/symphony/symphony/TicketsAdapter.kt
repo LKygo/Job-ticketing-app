@@ -24,7 +24,7 @@ class TicketsAdapter(private var ticketsList: ArrayList<TicketItemModel>) :
         this.ticketsList = ticketsList
         notifyDataSetChanged()
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TicketsAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.card_view, parent, false)
         return ViewHolder(view, tListener)
 
@@ -68,7 +68,7 @@ class TicketsAdapter(private var ticketsList: ArrayList<TicketItemModel>) :
     }
 
 
-    override fun onBindViewHolder(holder: TicketsAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.ticketValue.text = ticketsList.get(position).ticket
         holder.date.text = ticketsList.get(position).date
         holder.customer.text = ticketsList.get(position).customer

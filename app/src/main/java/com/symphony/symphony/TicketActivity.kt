@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -17,16 +18,19 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android.volley.NetworkError
 import com.android.volley.NetworkResponse
+import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.HttpHeaderParser
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.symphony.symphony.databinding.ActivityTicketBinding
+import org.json.JSONException
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
+
 
 
 class TicketActivity : AppCompatActivity() {
@@ -45,6 +49,7 @@ class TicketActivity : AppCompatActivity() {
     private lateinit var updateT: Button
     private lateinit var takePic: ImageView
     private  lateinit var byteArray : ByteArray
+    private lateinit var imageBitmap : Bitmap
     private val REQUEST_IMAGE_CAPTURE = 1
 
 
@@ -115,7 +120,7 @@ class TicketActivity : AppCompatActivity() {
 
             if (::byteArray.isInitialized && byteArray.isNotEmpty()) {
                 // Call uploadImage() function with the byteArray
-//                uploadImage(byteArray)
+                uploadImage(imageBitmap)
             } else {
                 // Display an error message that the byteArray is empty
                 Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show()
@@ -166,18 +171,61 @@ class TicketActivity : AppCompatActivity() {
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             // Get the image data
-            val imageBitmap = data?.extras?.get("data") as Bitmap
+            imageBitmap = data?.extras?.get("data") as Bitmap
             binding.imgPreview.setImageBitmap(imageBitmap)
             // Convert the image to a byte array
-            val byteArrayOutputStream = ByteArrayOutputStream()
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
-            byteArray = byteArrayOutputStream.toByteArray()
+//            val byteArrayOutputStream = ByteArrayOutputStream()
+//            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
+//            byteArray = byteArrayOutputStream.toByteArray()
 
 
 //            // Upload the image to the server
 //            uploadImage(byteArray)
         }
     }
+
+
+    private fun uploadImage(bitmap: Bitmap) {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        val image = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
+        val name = Calendar.getInstance().timeInMillis.toString()
+
+        try {
+            val jsonObject = JSONObject()
+            jsonObject.put("name", name)
+            jsonObject.put("image", image)
+
+            val jsonObjectRequest = JsonObjectRequest(
+                Request.Method.POST, "https://backend.api.symphony.co.ke/uploadI", jsonObject,
+                { response ->
+                    try {
+                        val message = response.getString("message")
+                        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+//                        progressDialog.dismiss()
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                },
+                { error ->
+                    Toast.makeText(this, "Image Upload Failed", Toast.LENGTH_SHORT).show()
+//                    progressDialog.dismiss()
+                }
+            )
+
+            val requestQueue = Volley.newRequestQueue(this)
+            requestQueue.add(jsonObjectRequest)
+
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+    }
+
+
+
+
+
+
 
 
     private fun sendTicketDetails(

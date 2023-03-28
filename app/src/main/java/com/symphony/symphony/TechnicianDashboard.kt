@@ -58,7 +58,7 @@ class TechnicianDashboard : AppCompatActivity() {
 
         errorLayout = binding.parentLayout
 
-        binding.txvHello.setText(greeting())
+        binding.txvHello.text = greeting()
         pBar = binding.progressBar
 
 //        Setting tickets list as Arraylist and mapping it as input to our adapter

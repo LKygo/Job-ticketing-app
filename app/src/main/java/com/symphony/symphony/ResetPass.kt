@@ -56,7 +56,7 @@ class ResetPass : AppCompatActivity() {
 
 // Create a new POST request with the login endpoint URL and parameters.
         val stringRequest =
-            object : StringRequest(Request.Method.POST, url, Response.Listener<String> { response ->
+            object : StringRequest(Method.POST, url, Response.Listener<String> { response ->
 
                 progressBar.visibility = View.GONE // hide the progress bar
                 btnReq.visibility = View.VISIBLE
