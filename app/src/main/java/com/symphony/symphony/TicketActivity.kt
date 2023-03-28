@@ -15,7 +15,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.android.volley.AuthFailureError
 import com.android.volley.NetworkError
 import com.android.volley.NetworkResponse
 import com.android.volley.Response
@@ -23,15 +22,11 @@ import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.symphony.symphony.databinding.ActivityTicketBinding
-import org.apache.http.entity.ContentType
-import org.apache.http.entity.mime.MultipartEntityBuilder
-import org.apache.http.util.EntityUtils
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import java.util.UUID
 
 
 class TicketActivity : AppCompatActivity() {
@@ -120,7 +115,7 @@ class TicketActivity : AppCompatActivity() {
 
             if (::byteArray.isInitialized && byteArray.isNotEmpty()) {
                 // Call uploadImage() function with the byteArray
-                uploadImage(byteArray, jobcardno)
+//                uploadImage(byteArray)
             } else {
                 // Display an error message that the byteArray is empty
                 Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show()
@@ -172,7 +167,7 @@ class TicketActivity : AppCompatActivity() {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             // Get the image data
             val imageBitmap = data?.extras?.get("data") as Bitmap
-
+            binding.imgPreview.setImageBitmap(imageBitmap)
             // Convert the image to a byte array
             val byteArrayOutputStream = ByteArrayOutputStream()
             imageBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
@@ -202,7 +197,7 @@ class TicketActivity : AppCompatActivity() {
         updateT.isClickable = false
         updateT.visibility = View.GONE
         progressB.visibility = View.VISIBLE
-        val url = "https://backend.api.symphony.co.ke/upload"
+        val url = "https://backend.api.symphony.co.ke/uploadI"
 
         // Create a JSON object to hold your data
         val jsonObject = JSONObject()
@@ -289,50 +284,36 @@ class TicketActivity : AppCompatActivity() {
     }
 
 
-    fun uploadImage(byteArray: ByteArray, jobcard_no: String) {
-        val url = "https://backend.api.symphony.co.ke/imageUpload"
-
-        val BOUNDARY = UUID.randomUUID().toString()
-
-        val stringRequest = object : StringRequest(
-            Method.POST, url,
-            Response.Listener<String> { response ->
-                // Handle response
-
-                Toast.makeText(this, "Successfully saved Image", Toast.LENGTH_SHORT).show()
-            },
-            Response.ErrorListener { error ->
-                // Handle error
-                Log.d("pic", error.toString())
-                Toast.makeText(this, error.toString(), Toast.LENGTH_SHORT).show()
-
-            }
-        ) {
-            override fun getParams(): Map<String, String> {
-                val params = HashMap<String, String>()
-                params["name"] = jobcard_no
-                return params
-            }
-
-            @Throws(AuthFailureError::class)
-            override fun getBody(): ByteArray {
-                val form = MultipartEntityBuilder.create()
-                    .addTextBody("name", jobcard_no)
-                    .addBinaryBody("image", byteArray, ContentType.create("image/png"), "image.png")
-                    .build()
-
-                return EntityUtils.toByteArray(form)
-            }
-
-            override fun getBodyContentType(): String {
-                return "multipart/form-data; boundary=${BOUNDARY}"
-            }
-        }
-
-        // Add request to queue
-        val queue = Volley.newRequestQueue(this)
-        queue.add(stringRequest)
-    }
+//    fun uploadImage(byteArray: ByteArray) {
+//        val url = "https://backend.api.symphony.co.ke/imageUpload"
+//        val volleyMultipartRequest = object : VolleyMultipartRequest(
+//            Request.Method.POST, url,
+//            Response.Listener { response ->
+//                // Handle response
+//                Toast.makeText(this, "Successfully saved Image", Toast.LENGTH_SHORT).show()
+//            },
+//            Response.ErrorListener { error ->
+//                // Handle error
+//                Log.d("pic", error.toString())
+//                Toast.makeText(this, error.toString(), Toast.LENGTH_SHORT).show()
+//            }
+//        ) {
+//            override fun getParams(): Map<String, String> {
+//                val params = HashMap<String, String>()
+//                params["name"] = "event_image"
+//                return params
+//            }
+//
+//            override fun getByteData(): Map<String, DataPart> {
+//                val params = HashMap<String, DataPart>()
+//                params["image"] = DataPart("image.png", byteArray, "image/png")
+//                return params
+//            }
+//        }
+//
+//        // Add request to queue
+//        Volley.newRequestQueue(this).add(volleyMultipartRequest)
+//    }
 
 }
 
