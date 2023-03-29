@@ -28,6 +28,7 @@ import com.symphony.symphony.databinding.ActivityTicketBinding
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
+import java.nio.charset.Charset
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -118,13 +119,14 @@ class TicketActivity : AppCompatActivity() {
             val action_taken = binding.edtTDActionsTakenValue.text.toString()
             val recommendations = binding.edtTDRecommendationsValue.text.toString()
 
-            if (::byteArray.isInitialized && byteArray.isNotEmpty()) {
-                // Call uploadImage() function with the byteArray
-                uploadImage(imageBitmap)
-            } else {
-                // Display an error message that the byteArray is empty
-                Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show()
-            }
+            uploadImage(imageBitmap)
+
+//            if (::imageBitmap.isInitialized) {
+//                // Call uploadImage() function with the byteArray
+//            } else {
+//                // Display an error message that the byteArray is empty
+//                Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show()
+//            }
 //            if (jobcardno.isEmpty() || serialNo.isEmpty() || findings.isEmpty() || action_taken.isEmpty() || recommendations.isEmpty() || byteArray.isEmpty()) {
 //
 //                Toast.makeText(
@@ -173,14 +175,7 @@ class TicketActivity : AppCompatActivity() {
             // Get the image data
             imageBitmap = data?.extras?.get("data") as Bitmap
             binding.imgPreview.setImageBitmap(imageBitmap)
-            // Convert the image to a byte array
-//            val byteArrayOutputStream = ByteArrayOutputStream()
-//            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
-//            byteArray = byteArrayOutputStream.toByteArray()
 
-
-//            // Upload the image to the server
-//            uploadImage(byteArray)
         }
     }
 
@@ -189,7 +184,8 @@ class TicketActivity : AppCompatActivity() {
         val byteArrayOutputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
         val image = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
-        val name = Calendar.getInstance().timeInMillis.toString()
+        Log.d("pic", image)
+        val name = "event_image"
 
         try {
             val jsonObject = JSONObject()
@@ -208,7 +204,10 @@ class TicketActivity : AppCompatActivity() {
                     }
                 },
                 { error ->
-                    Toast.makeText(this, "Image Upload Failed", Toast.LENGTH_SHORT).show()
+                    Log.d("pic", error.toString())
+                    val errorMessage = error.networkResponse?.data?.toString(Charset.defaultCharset())
+                    Log.e("Volley Error", errorMessage ?: "Unknown error")
+                    Toast.makeText(this, error.toString(), Toast.LENGTH_SHORT).show()
 //                    progressDialog.dismiss()
                 }
             )
@@ -332,36 +331,6 @@ class TicketActivity : AppCompatActivity() {
     }
 
 
-//    fun uploadImage(byteArray: ByteArray) {
-//        val url = "https://backend.api.symphony.co.ke/imageUpload"
-//        val volleyMultipartRequest = object : VolleyMultipartRequest(
-//            Request.Method.POST, url,
-//            Response.Listener { response ->
-//                // Handle response
-//                Toast.makeText(this, "Successfully saved Image", Toast.LENGTH_SHORT).show()
-//            },
-//            Response.ErrorListener { error ->
-//                // Handle error
-//                Log.d("pic", error.toString())
-//                Toast.makeText(this, error.toString(), Toast.LENGTH_SHORT).show()
-//            }
-//        ) {
-//            override fun getParams(): Map<String, String> {
-//                val params = HashMap<String, String>()
-//                params["name"] = "event_image"
-//                return params
-//            }
-//
-//            override fun getByteData(): Map<String, DataPart> {
-//                val params = HashMap<String, DataPart>()
-//                params["image"] = DataPart("image.png", byteArray, "image/png")
-//                return params
-//            }
-//        }
-//
-//        // Add request to queue
-//        Volley.newRequestQueue(this).add(volleyMultipartRequest)
-//    }
 
 }
 
