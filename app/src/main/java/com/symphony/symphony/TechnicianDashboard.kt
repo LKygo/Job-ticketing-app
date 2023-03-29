@@ -68,7 +68,9 @@ class TechnicianDashboard : AppCompatActivity() {
 
         val sharedPref = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
         val userID = sharedPref.getString("userID", null)
+        val userName = sharedPref.getString("userName", null)
 
+        binding.txvName.text = userName.toString()
         val bundle: Bundle? = intent.extras
 
 
@@ -109,6 +111,7 @@ class TechnicianDashboard : AppCompatActivity() {
             Handler().postDelayed({
                 if (userID != null) {
                     getData(userID)
+                    greeting()
                 } else {
                     Toast.makeText(
                         this, "No userId found. Please logout and log in again", Toast.LENGTH_SHORT
@@ -137,6 +140,9 @@ class TechnicianDashboard : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
+        }
+        binding.imgProfile.setOnClickListener {
+
         }
 
     }

@@ -33,7 +33,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-
 class TicketActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTicketBinding
     private lateinit var ticketNo: String
@@ -219,13 +218,6 @@ class TicketActivity : AppCompatActivity() {
             e.printStackTrace()
         }
     }
-
-
-
-
-
-
-
 
     private fun sendTicketDetails(
         ticket_no: String,

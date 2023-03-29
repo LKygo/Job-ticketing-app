@@ -8,7 +8,6 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -78,6 +77,7 @@ class LoginActivity : AppCompatActivity() {
         params["email"] = email
         params["password"] = password
 
+
         // Create a new POST request with the login endpoint URL and parameters.
         val stringRequest =
             object : StringRequest(Method.POST, url, Response.Listener<String> { response ->
@@ -88,15 +88,20 @@ class LoginActivity : AppCompatActivity() {
 
                 // Parse the response to get the user ID
                 val userID = response.substringAfter("User ID :").trim()
+                val userName = response.substringAfter("User name :").substringBefore("User").trim()
+                val user = userName.substring(0 , userName.indexOf(" ") +2)
+                val userN = "$user."
+
 
                 hashedPassword = hash(password)
-                storeLoginCredentials(email, hashedPassword, userID, applicationContext)
+                storeLoginCredentials(email, hashedPassword, userID, userN, applicationContext)
 
 
                 // Handle the API response on success.
-                Toast.makeText(applicationContext, response.toString(), Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "Login successful", Toast.LENGTH_LONG).show()
                 val intent = Intent(applicationContext, TechnicianDashboard::class.java)
                 intent.putExtra("id", userID)
+                intent.putExtra("name", userN)
                 startActivity(intent)
                 finish()
             }, Response.ErrorListener { error ->
@@ -133,7 +138,7 @@ class LoginActivity : AppCompatActivity() {
         return digest.fold("", { str, it -> str + "%02x".format(it) })
     }
 
-    fun storeLoginCredentials(username: String, password: String, userID: String, context: Context) {
+    fun storeLoginCredentials(username: String, password: String, userID: String, userName: String ,context: Context) {
         // Initialize SharedPreferences
         val sharedPref = context.getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
 
@@ -144,6 +149,7 @@ class LoginActivity : AppCompatActivity() {
         editor.putString("username", username)
         editor.putString("password", password)
         editor.putString("userID", userID)
+        editor.putString("userName", userName)
 
         // Commit the changes to SharedPreferences
         editor.apply()
