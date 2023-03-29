@@ -273,6 +273,9 @@ class TechnicianDashboard : AppCompatActivity() {
 
             "Very Urgent" -> R.drawable.urgency_red
 
+            "Meeting" -> R.drawable.urgency_meeting
+
+
             else -> R.drawable.urgency_red
         }
 
