@@ -119,77 +119,74 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txvUrgencyHelp">
 
 
-            <ImageView
-                android:id="@+id/crcYellow"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginStart="30dp"
-                android:src="@drawable/urgency_yellow"/>
+        <ImageView
+            android:id="@+id/crcYellow"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:src="@drawable/urgency_yellow" />
 
-            <TextView
-                android:id="@+id/txvModUrgent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text=" Low"/>
-
-
-<Space
-    android:layout_width="20dp"
-    android:layout_height="5dp"/>
-            <ImageView
-                android:id="@+id/crcOrange"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginStart="12dp"
-                android:src="@drawable/urgency_orange" />
-
-            <TextView
-                android:id="@+id/txvUrgent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="Moderate"/>
+        <TextView
+            android:id="@+id/txvModUrgent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text=" Low" />
 
 
-        <Space
-            android:layout_width="20dp"
-            android:layout_height="5dp"/>
-
-            <ImageView
-                android:id="@+id/crcRed"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginStart="12dp"
-                android:src="@drawable/urgency_red"/>
-
-            <TextView
-                android:id="@+id/txvVUrgent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="High" />
 
 
-        <Space
-            android:layout_width="20dp"
-            android:layout_height="5dp"/>
+        <ImageView
+            android:id="@+id/crcOrange"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:src="@drawable/urgency_orange" />
 
-            <ImageView
-                android:id="@+id/crcMeeting"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginStart="12dp"
-                android:src="@drawable/urgency_meeting" />
+        <TextView
+            android:id="@+id/txvUrgent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="Moderate" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="Meeting" />
+
+
+
+        <ImageView
+            android:id="@+id/crcRed"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:src="@drawable/urgency_red" />
+
+        <TextView
+            android:id="@+id/txvVUrgent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:text="High" />
+
+
+
+        <ImageView
+            android:id="@+id/crcMeeting"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:src="@drawable/urgency_meeting" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="Meeting" />
     </LinearLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -204,8 +201,7 @@
             android:id="@+id/rcvRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:paddingBottom="230dp"
+            android:paddingBottom="@dimen/_170sdp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
