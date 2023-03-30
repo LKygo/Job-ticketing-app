@@ -114,87 +114,87 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cnsConstraintT2" />
 
-    <LinearLayout
-        android:id="@+id/tbLayout"
-        android:layout_width="match_parent"
+
+    <ImageView
+        android:id="@+id/crcYellow"
+        android:layout_width="@dimen/_16sdp"
+        android:layout_height="@dimen/_16sdp"
+        android:src="@drawable/urgency_yellow"
+        app:layout_constraintStart_toEndOf="@id/guideline4"
+        app:layout_constraintTop_toBottomOf="@+id/txvUrgencyHelp" />
+
+    <TextView
+        android:id="@+id/txvModUrgent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txvUrgencyHelp">
+        android:layout_marginStart="@dimen/_3sdp"
+        android:text=" Low"
+        app:layout_constraintStart_toEndOf="@id/crcYellow"
+        app:layout_constraintTop_toTopOf="@id/crcYellow" />
 
 
-        <ImageView
-            android:id="@+id/crcYellow"
-            android:layout_width="@dimen/_16sdp"
-            android:layout_height="@dimen/_16sdp"
-            android:layout_marginStart="@dimen/_16sdp"
-            android:src="@drawable/urgency_yellow" />
+    <ImageView
+        android:id="@+id/crcOrange"
+        android:layout_width="@dimen/_16sdp"
+        android:layout_height="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_3sdp"
+        app:layout_constraintEnd_toStartOf="@id/txvUrgent"
+        app:layout_constraintTop_toBottomOf="@id/txvUrgencyHelp"
+        android:src="@drawable/urgency_orange" />
 
-        <TextView
-            android:id="@+id/txvModUrgent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text=" Low" />
-
-
-
-
-        <ImageView
-            android:id="@+id/crcOrange"
-            android:layout_width="@dimen/_16sdp"
-            android:layout_height="@dimen/_16sdp"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:src="@drawable/urgency_orange" />
-
-        <TextView
-            android:id="@+id/txvUrgent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="Moderate" />
+    <TextView
+        android:id="@+id/txvUrgent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_8sdp"
+        app:layout_constraintTop_toTopOf="@id/crcOrange"
+        app:layout_constraintEnd_toStartOf="@id/guideline6"
+        android:text="Moderate" />
 
 
+    <ImageView
+        android:id="@+id/crcRed"
+        android:layout_width="@dimen/_16sdp"
+        android:layout_height="@dimen/_16sdp"
+        android:layout_marginStart="@dimen/_12sdp"
+        app:layout_constraintTop_toBottomOf="@id/txvUrgencyHelp"
+        app:layout_constraintStart_toEndOf="@id/guideline6"
+        android:src="@drawable/urgency_red" />
+
+    <TextView
+        android:id="@+id/txvVUrgent"
+        app:layout_constraintStart_toEndOf="@id/crcRed"
+        app:layout_constraintTop_toTopOf="@id/crcRed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:text="High" />
 
 
-        <ImageView
-            android:id="@+id/crcRed"
-            android:layout_width="@dimen/_16sdp"
-            android:layout_height="@dimen/_16sdp"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:src="@drawable/urgency_red" />
+    <ImageView
+        android:id="@+id/crcMeeting"
+        android:layout_width="@dimen/_16sdp"
+        android:layout_height="@dimen/_16sdp"
+        app:layout_constraintTop_toBottomOf="@id/txvUrgencyHelp"
+        app:layout_constraintEnd_toStartOf="@id/txvMeeting"
+        android:layout_marginEnd="@dimen/_3sdp"
+        android:src="@drawable/urgency_meeting" />
 
-        <TextView
-            android:id="@+id/txvVUrgent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_4sdp"
-            android:text="High" />
-
-
-
-        <ImageView
-            android:id="@+id/crcMeeting"
-            android:layout_width="@dimen/_16sdp"
-            android:layout_height="@dimen/_16sdp"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:src="@drawable/urgency_meeting" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="Meeting" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/txvMeeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/crcMeeting"
+        app:layout_constraintEnd_toStartOf="@id/guideline5"
+        android:layout_marginStart="4dp"
+        android:text="Meeting" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/tbLayout">
+        app:layout_constraintTop_toBottomOf="@+id/txvModUrgent">
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -215,7 +215,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintTop_toTopOf="@id/txvUrgencyHelp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
