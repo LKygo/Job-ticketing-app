@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    class=""
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F6F6F6"
@@ -121,7 +120,7 @@
         android:layout_height="@dimen/_16sdp"
         android:src="@drawable/urgency_yellow"
         app:layout_constraintStart_toEndOf="@id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/txvUrgencyHelp" />
+        app:layout_constraintTop_toTopOf="@+id/crcOrange" />
 
     <TextView
         android:id="@+id/txvModUrgent"
@@ -138,6 +137,7 @@
         android:layout_width="@dimen/_16sdp"
         android:layout_height="@dimen/_16sdp"
         android:layout_marginEnd="@dimen/_3sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         app:layout_constraintEnd_toStartOf="@id/txvUrgent"
         app:layout_constraintTop_toBottomOf="@id/txvUrgencyHelp"
         android:src="@drawable/urgency_orange" />
@@ -157,7 +157,7 @@
         android:layout_width="@dimen/_16sdp"
         android:layout_height="@dimen/_16sdp"
         android:layout_marginStart="@dimen/_12sdp"
-        app:layout_constraintTop_toBottomOf="@id/txvUrgencyHelp"
+        app:layout_constraintTop_toTopOf="@id/crcOrange"
         app:layout_constraintStart_toEndOf="@id/guideline6"
         android:src="@drawable/urgency_red" />
 
@@ -175,7 +175,7 @@
         android:id="@+id/crcMeeting"
         android:layout_width="@dimen/_16sdp"
         android:layout_height="@dimen/_16sdp"
-        app:layout_constraintTop_toBottomOf="@id/txvUrgencyHelp"
+        app:layout_constraintTop_toTopOf="@id/crcOrange"
         app:layout_constraintEnd_toStartOf="@id/txvMeeting"
         android:layout_marginEnd="@dimen/_3sdp"
         android:src="@drawable/urgency_meeting" />

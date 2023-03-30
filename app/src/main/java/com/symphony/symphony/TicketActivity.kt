@@ -48,8 +48,8 @@ class TicketActivity : AppCompatActivity() {
     private lateinit var progressB: ProgressBar
     private lateinit var updateT: Button
     private lateinit var takePic: ImageView
-    private  lateinit var byteArray : ByteArray
-    private lateinit var imageBitmap : Bitmap
+    private lateinit var byteArray: ByteArray
+    private lateinit var imageBitmap: Bitmap
     private val REQUEST_IMAGE_CAPTURE = 1
 
 
@@ -181,8 +181,9 @@ class TicketActivity : AppCompatActivity() {
 
     private fun uploadImage(bitmap: Bitmap) {
         val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream)
         val image = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
+
         Log.d("pic", image)
         val name = "event_image"
 
@@ -204,7 +205,8 @@ class TicketActivity : AppCompatActivity() {
                 },
                 { error ->
                     Log.d("pic", error.toString())
-                    val errorMessage = error.networkResponse?.data?.toString(Charset.defaultCharset())
+                    val errorMessage =
+                        error.networkResponse?.data?.toString(Charset.defaultCharset())
                     Log.e("Volley Error", errorMessage ?: "Unknown error")
                     Toast.makeText(this, error.toString(), Toast.LENGTH_SHORT).show()
 //                    progressDialog.dismiss()
@@ -321,7 +323,6 @@ class TicketActivity : AppCompatActivity() {
         Volley.newRequestQueue(this@TicketActivity).add(request)
 
     }
-
 
 
 }
