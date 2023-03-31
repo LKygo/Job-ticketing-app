@@ -1,11 +1,10 @@
 package com.symphony.symphony
 
-import android.Manifest
+import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import android.view.View
@@ -14,8 +13,6 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.android.volley.NetworkError
 import com.android.volley.NetworkResponse
 import com.android.volley.Request
@@ -28,6 +25,7 @@ import com.symphony.symphony.databinding.ActivityTicketBinding
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
+import java.io.IOException
 import java.nio.charset.Charset
 import java.text.SimpleDateFormat
 import java.util.*
@@ -50,7 +48,11 @@ class TicketActivity : AppCompatActivity() {
     private lateinit var takePic: ImageView
     private lateinit var byteArray: ByteArray
     private lateinit var imageBitmap: Bitmap
+    private  var imageData: ByteArray? = null
     private val REQUEST_IMAGE_CAPTURE = 1
+    companion object {
+        private const val IMAGE_PICK_CODE = 999
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,20 +93,21 @@ class TicketActivity : AppCompatActivity() {
         takePic = binding.imgCamera
         takePic.setOnClickListener {
 
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED
-            ) {
-                // Permission is granted
-
-                val picIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                startActivityForResult(picIntent, REQUEST_IMAGE_CAPTURE)
-            } else {
-                // Permission is not granted, request it
-                ActivityCompat.requestPermissions(
-                    this, arrayOf(Manifest.permission.CAMERA),
-                    REQUEST_IMAGE_CAPTURE
-                )
-            }
+            openGallery()
+//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+//                == PackageManager.PERMISSION_GRANTED
+//            ) {
+//                // Permission is granted
+//
+//                val picIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//                startActivityForResult(picIntent, REQUEST_IMAGE_CAPTURE)
+//            } else {
+//                // Permission is not granted, request it
+//                ActivityCompat.requestPermissions(
+//                    this, arrayOf(Manifest.permission.CAMERA),
+//                    REQUEST_IMAGE_CAPTURE
+//                )
+//            }
         }
 
         updateT.setOnClickListener {
@@ -118,8 +121,9 @@ class TicketActivity : AppCompatActivity() {
             val action_taken = binding.edtTDActionsTakenValue.text.toString()
             val recommendations = binding.edtTDRecommendationsValue.text.toString()
 
-            uploadImage(imageBitmap)
+//            uploadImage(imageBitmap)
 
+            uploadVolley()
 //            if (::imageBitmap.isInitialized) {
 //                // Call uploadImage() function with the byteArray
 //            } else {
@@ -166,16 +170,71 @@ class TicketActivity : AppCompatActivity() {
         }
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            // Get the image data
-            imageBitmap = data?.extras?.get("data") as Bitmap
-            binding.imgPreview.setImageBitmap(imageBitmap)
-
+    @Throws(IOException::class)
+    private fun createImageData(uri: Uri) {
+        val inputStream = contentResolver.openInputStream(uri)
+        inputStream?.buffered()?.use {
+            imageData = it.readBytes()
         }
+    }
+
+//    @Deprecated("Deprecated in Java")
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//
+//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+//            // Get the image data
+////            imageBitmap = data?.extras?.get("data") as Bitmap
+////            binding.imgPreview.setImageBitmap(imageBitmap)
+//
+//            val uri = data?.data
+//            if (uri != null) {
+//                binding.imgPreview.setImageURI(uri)
+//                createImageData(uri)
+//            }
+//        }
+//    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
+            val uri = data?.data
+            if (uri != null) {
+                binding.imgPreview.setImageURI(uri)
+                createImageData(uri)
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_CODE)
+    }
+    private fun uploadVolley() {
+        imageData ?: return
+//        val postURL = "https://backend.api.symphony.co.ke/uploadI"
+        val postURL = "https://reqbin.com/"
+
+        val request = object : VolleyFileUploadRequest(
+            Request.Method.POST,
+            postURL,
+            Response.Listener {
+                Log.d("newvolley" ,"$it")
+                println("response is: $it")
+            },
+            Response.ErrorListener {
+                Log.d("newvolley" ,"$it")
+                println("error is: $it")
+            }
+        ) {
+            override fun getByteData(): MutableMap<String, FileDataPart> {
+                var params = HashMap<String, FileDataPart>()
+                params["imageFile"] = FileDataPart("image", imageData!!, "jpeg")
+                return params
+            }
+        }
+        Volley.newRequestQueue(this).add(request)
     }
 
 
