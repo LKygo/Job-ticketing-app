@@ -1,5 +1,6 @@
 package com.symphony.symphony
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -40,6 +41,11 @@ class TechnicianDashboard : AppCompatActivity() {
     private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var errorLayout: View
     private lateinit var recyclerView: RecyclerView
+
+
+    companion object {
+        private const val IMAGE_PICK_CODE = 999
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -142,9 +148,30 @@ class TechnicianDashboard : AppCompatActivity() {
             finish()
         }
         binding.imgProfile.setOnClickListener {
-
+            openGallery()
+//            uploadProfile()
         }
 
+    }
+
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+       if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
+           val uri = data?.data
+           if (uri != null){
+               binding.imgProfile.setImageURI(uri)
+           }
+       }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun uploadProfile() {
+        val profilePic : ByteArray
     }
 
 
