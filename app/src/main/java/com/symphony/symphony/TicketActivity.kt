@@ -1,10 +1,10 @@
 package com.symphony.symphony
 
-import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import android.view.View
@@ -13,6 +13,8 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.android.volley.NetworkError
 import com.android.volley.NetworkResponse
 import com.android.volley.Request
@@ -22,10 +24,14 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.symphony.symphony.databinding.ActivityTicketBinding
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
-import java.io.IOException
+import java.io.File
 import java.nio.charset.Charset
 import java.text.SimpleDateFormat
 import java.util.*
@@ -48,8 +54,9 @@ class TicketActivity : AppCompatActivity() {
     private lateinit var takePic: ImageView
     private lateinit var byteArray: ByteArray
     private lateinit var imageBitmap: Bitmap
-    private  var imageData: ByteArray? = null
+    private var imageData: ByteArray? = null
     private val REQUEST_IMAGE_CAPTURE = 1
+
     companion object {
         private const val IMAGE_PICK_CODE = 999
     }
@@ -93,21 +100,20 @@ class TicketActivity : AppCompatActivity() {
         takePic = binding.imgCamera
         takePic.setOnClickListener {
 
-            openGallery()
-//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-//                == PackageManager.PERMISSION_GRANTED
-//            ) {
-//                // Permission is granted
-//
-//                val picIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//                startActivityForResult(picIntent, REQUEST_IMAGE_CAPTURE)
-//            } else {
-//                // Permission is not granted, request it
-//                ActivityCompat.requestPermissions(
-//                    this, arrayOf(Manifest.permission.CAMERA),
-//                    REQUEST_IMAGE_CAPTURE
-//                )
-//            }
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED
+            ) {
+                // Permission is granted
+
+                val picIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                startActivityForResult(picIntent, REQUEST_IMAGE_CAPTURE)
+            } else {
+                // Permission is not granted, request it
+                ActivityCompat.requestPermissions(
+                    this, arrayOf(android.Manifest.permission.CAMERA),
+                    REQUEST_IMAGE_CAPTURE
+                )
+            }
         }
 
         updateT.setOnClickListener {
@@ -122,8 +128,8 @@ class TicketActivity : AppCompatActivity() {
             val recommendations = binding.edtTDRecommendationsValue.text.toString()
 
 //            uploadImage(imageBitmap)
-
-            uploadVolley()
+            uploadOk(imageBitmap)
+//            uploadVolley()
 //            if (::imageBitmap.isInitialized) {
 //                // Call uploadImage() function with the byteArray
 //            } else {
@@ -168,72 +174,104 @@ class TicketActivity : AppCompatActivity() {
             binding.edtTDJobCardNoValue.setText("")
             binding.edtTDRecommendationsValue.setText("")
         }
+
+
     }
 
-    @Throws(IOException::class)
-    private fun createImageData(uri: Uri) {
-        val inputStream = contentResolver.openInputStream(uri)
-        inputStream?.buffered()?.use {
-            imageData = it.readBytes()
-        }
-    }
+//    @Throws(IOException::class)
+//    private fun createImageData(uri: Uri) {
+//        val inputStream = contentResolver.openInputStream(uri)
+//        inputStream?.buffered()?.use {
+//            imageData = it.readBytes()
+//        }
+//    }
 
-//    @Deprecated("Deprecated in Java")
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//
-//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-//            // Get the image data
-////            imageBitmap = data?.extras?.get("data") as Bitmap
-////            binding.imgPreview.setImageBitmap(imageBitmap)
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            // Get the image data
+            imageBitmap = data?.extras?.get("data") as Bitmap
+            binding.imgPreview.setImageBitmap(imageBitmap)
 //
 //            val uri = data?.data
 //            if (uri != null) {
 //                binding.imgPreview.setImageURI(uri)
 //                createImageData(uri)
 //            }
+        }
+    }
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
+//            val uri = data?.data
+//            if (uri != null) {
+//                binding.imgPreview.setImageURI(uri)
+//                createImageData(uri)
+//            }
 //        }
+//        super.onActivityResult(requestCode, resultCode, data)
 //    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
-            val uri = data?.data
-            if (uri != null) {
-                binding.imgPreview.setImageURI(uri)
-                createImageData(uri)
+    //    private fun openGallery() {
+//        val intent = Intent(Intent.ACTION_PICK)
+//        intent.type = "image/*"
+//        startActivityForResult(intent, IMAGE_PICK_CODE)
+//    }
+
+
+    private fun uploadOk(bitmap: Bitmap) {
+        val client = OkHttpClient.Builder().build()
+        val mediaType = "application/json".toMediaTypeOrNull()
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        val byteArray = stream.toByteArray()
+        val file = File.createTempFile("image", ".jpeg")
+        file.writeBytes(byteArray)
+        val requestBody: RequestBody =
+            MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart(
+                "image",
+                file.name,
+                RequestBody.create("application/octet-stream".toMediaTypeOrNull(), file)
+            ).build()
+
+        val request = okhttp3.Request.Builder()
+            .url("https://backend.api.symphony.co.ke/uploadVolley")
+            .method("POST", requestBody)
+            .addHeader("Content-Type", "application/json")
+            .build()
+
+        Thread {
+            try {
+                val response = client.newCall(request).execute()
+                println(response.body?.string())
+                Log.d("okhttp", response.body.toString())
+            } catch (e: Exception) {
+                Log.e("okhttp", "Error: ${e.message}")
             }
-        }
-        super.onActivityResult(requestCode, resultCode, data)
+        }.start()
     }
 
-    private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_PICK_CODE)
-    }
     private fun uploadVolley() {
         imageData ?: return
 //        val postURL = "https://backend.api.symphony.co.ke/uploadI"
         val postURL = "https://reqbin.com/"
 
-        val request = object : VolleyFileUploadRequest(
-            Request.Method.POST,
-            postURL,
-            Response.Listener {
-                Log.d("newvolley" ,"$it")
+        val request =
+            object : VolleyFileUploadRequest(Request.Method.POST, postURL, Response.Listener {
+                Log.d("newvolley", "$it")
                 println("response is: $it")
-            },
-            Response.ErrorListener {
-                Log.d("newvolley" ,"$it")
+            }, Response.ErrorListener {
+                Log.d("newvolley", "$it")
                 println("error is: $it")
+            }) {
+                override fun getByteData(): MutableMap<String, FileDataPart> {
+                    var params = HashMap<String, FileDataPart>()
+                    params["imageFile"] = FileDataPart("image", imageData!!, "jpeg")
+                    return params
+                }
             }
-        ) {
-            override fun getByteData(): MutableMap<String, FileDataPart> {
-                var params = HashMap<String, FileDataPart>()
-                params["imageFile"] = FileDataPart("image", imageData!!, "jpeg")
-                return params
-            }
-        }
         Volley.newRequestQueue(this).add(request)
     }
 
@@ -251,8 +289,9 @@ class TicketActivity : AppCompatActivity() {
             jsonObject.put("name", name)
             jsonObject.put("image", image)
 
-            val jsonObjectRequest = JsonObjectRequest(
-                Request.Method.POST, "https://backend.api.symphony.co.ke/uploadI", jsonObject,
+            val jsonObjectRequest = JsonObjectRequest(Request.Method.POST,
+                "https://backend.api.symphony.co.ke/uploadI",
+                jsonObject,
                 { response ->
                     try {
                         val message = response.getString("message")
@@ -269,8 +308,7 @@ class TicketActivity : AppCompatActivity() {
                     Log.e("Volley Error", errorMessage ?: "Unknown error")
                     Toast.makeText(this, error.toString(), Toast.LENGTH_SHORT).show()
 //                    progressDialog.dismiss()
-                }
-            )
+                })
 
             val requestQueue = Volley.newRequestQueue(this)
             requestQueue.add(jsonObjectRequest)
@@ -316,41 +354,34 @@ class TicketActivity : AppCompatActivity() {
 
 
 // Request to server's URL
-        val request = object : StringRequest(Method.POST, url,
-            { response ->
-                // Handle successful response from server
+        val request = object : StringRequest(Method.POST, url, { response ->
+            // Handle successful response from server
 
-                updateT.isClickable = true
-                updateT.visibility = View.VISIBLE
-                progressB.visibility = View.GONE
-                Toast.makeText(
-                    this@TicketActivity,
-                    "Successfully updated Ticket",
-                    Toast.LENGTH_SHORT
-                ).show()
+            updateT.isClickable = true
+            updateT.visibility = View.VISIBLE
+            progressB.visibility = View.GONE
+            Toast.makeText(
+                this@TicketActivity, "Successfully updated Ticket", Toast.LENGTH_SHORT
+            ).show()
 
-                binding.edtTDActionsTakenValue.setText("")
-                binding.edtTDFindingsValue.setText("")
-                binding.edtTDSerialNoValue.setText("")
-                binding.edtTDJobCardNoValue.setText("")
-                binding.edtTDRecommendationsValue.setText("")
+            binding.edtTDActionsTakenValue.setText("")
+            binding.edtTDFindingsValue.setText("")
+            binding.edtTDSerialNoValue.setText("")
+            binding.edtTDJobCardNoValue.setText("")
+            binding.edtTDRecommendationsValue.setText("")
 
-            },
-            { error ->
-                // Handle error response from server
+        }, { error ->
+            // Handle error response from server
 
-                updateT.isClickable = true
-                updateT.visibility = View.VISIBLE
-                progressB.visibility = View.GONE
-                Toast.makeText(
-                    this@TicketActivity,
-                    "Failed to update Ticket",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
+            updateT.isClickable = true
+            updateT.visibility = View.VISIBLE
+            progressB.visibility = View.GONE
+            Toast.makeText(
+                this@TicketActivity, "Failed to update Ticket", Toast.LENGTH_SHORT
+            ).show()
 
-                Log.e("Volley", "Error: $error")
-            }) {
+            Log.e("Volley", "Error: $error")
+        }) {
 
             override fun parseNetworkResponse(response: NetworkResponse): Response<String> {
                 val status = response.statusCode
@@ -360,8 +391,7 @@ class TicketActivity : AppCompatActivity() {
 
                 if (status == 200) {
                     return Response.success(
-                        responseBody,
-                        HttpHeaderParser.parseCacheHeaders(response)
+                        responseBody, HttpHeaderParser.parseCacheHeaders(response)
                     )
                 } else {
                     return Response.error(NetworkError())
