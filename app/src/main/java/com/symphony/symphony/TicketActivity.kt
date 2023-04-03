@@ -1,10 +1,10 @@
 package com.symphony.symphony
 
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import android.view.View
@@ -23,6 +23,7 @@ import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
 import com.symphony.symphony.databinding.ActivityTicketBinding
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -34,7 +35,8 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.nio.charset.Charset
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 
 class TicketActivity : AppCompatActivity() {
@@ -56,6 +58,11 @@ class TicketActivity : AppCompatActivity() {
     private lateinit var imageBitmap: Bitmap
     private var imageData: ByteArray? = null
     private val REQUEST_IMAGE_CAPTURE = 1
+    private val PICK_PDF_FILE = 23
+    val REQUEST_CODE = 1
+    private lateinit var filePath : File
+
+
 
     companion object {
         private const val IMAGE_PICK_CODE = 999
@@ -97,23 +104,32 @@ class TicketActivity : AppCompatActivity() {
         created_at = date
 
 
-        takePic = binding.imgCamera
+        val takePic = binding.imgCamera
         takePic.setOnClickListener {
 
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED
-            ) {
-                // Permission is granted
-
-                val picIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                startActivityForResult(picIntent, REQUEST_IMAGE_CAPTURE)
+            val permission = android.Manifest.permission.READ_EXTERNAL_STORAGE
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(permission), REQUEST_CODE)
             } else {
-                // Permission is not granted, request it
-                ActivityCompat.requestPermissions(
-                    this, arrayOf(android.Manifest.permission.CAMERA),
-                    REQUEST_IMAGE_CAPTURE
-                )
+              openPdfPicker()
             }
+
+
+
+//            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
+//                == PackageManager.PERMISSION_GRANTED
+//            ) {
+//                // Permission is granted
+//
+//                val picIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//                startActivityForResult(picIntent, REQUEST_IMAGE_CAPTURE)
+//            } else {
+//                // Permission is not granted, request it
+//                ActivityCompat.requestPermissions(
+//                    this, arrayOf(android.Manifest.permission.CAMERA),
+//                    REQUEST_IMAGE_CAPTURE
+//                )
+//            }
         }
 
         updateT.setOnClickListener {
@@ -127,8 +143,10 @@ class TicketActivity : AppCompatActivity() {
             val action_taken = binding.edtTDActionsTakenValue.text.toString()
             val recommendations = binding.edtTDRecommendationsValue.text.toString()
 
+
+            uploadPdf(filePath)
 //            uploadImage(imageBitmap)
-            uploadOk(imageBitmap)
+//            uploadOk(imageBitmap)
 //            uploadVolley()
 //            if (::imageBitmap.isInitialized) {
 //                // Call uploadImage() function with the byteArray
@@ -167,6 +185,7 @@ class TicketActivity : AppCompatActivity() {
 //                    Log.d("FunPost", e.toString())
 //                }
         }
+
         binding.btnTDClear.setOnClickListener {
             binding.edtTDActionsTakenValue.setText("")
             binding.edtTDFindingsValue.setText("")
@@ -178,6 +197,85 @@ class TicketActivity : AppCompatActivity() {
 
     }
 
+    private fun uploadPdf(file: File) {
+        val url = "https://backend.api.symphony.co.ke/uploadPdf"
+
+        val fileName = file.name
+        val fileContent = file.readBytes()
+        val fileBase64 = Base64.encodeToString(fileContent, Base64.DEFAULT)
+
+        val requestBody = mapOf(
+            "file" to fileBase64,
+            "fileName" to fileName
+        )
+
+        val request = okhttp3.Request.Builder()
+            .url(url)
+            .post(
+                RequestBody.create(
+                    "application/json".toMediaTypeOrNull(),
+                    Gson().toJson(requestBody)
+                )
+            )
+            .build()
+
+        val response = OkHttpClient().newCall(request).execute()
+
+        if (response.isSuccessful) {
+            // File uploaded successfully
+            Toast.makeText(this, response.toString(), Toast.LENGTH_SHORT).show()
+
+        } else {
+            // Error occurred while uploading file
+            Toast.makeText(this, response.toString(), Toast.LENGTH_SHORT).show()
+
+        }
+    }
+
+    private fun openPdfPicker() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "application/pdf"
+        }
+        startActivityForResult(intent, PICK_PDF_FILE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == PICK_PDF_FILE && resultCode == Activity.RESULT_OK) {
+            val fileUri = data?.data
+            if (fileUri != null) {
+                try {
+                    // Open a stream to read the content of the selected file
+                    val inputStream = contentResolver.openInputStream(fileUri)
+
+                    if (inputStream != null) {
+                        // The user has selected a valid file
+                        Toast.makeText(this, "Pdf selected", Toast.LENGTH_SHORT).show()
+
+                        // Get the file path from the file URI
+                         filePath = File(fileUri.path)
+
+
+                    } else {
+                        // Failed to open the stream for the selected file
+                        Toast.makeText(this, "Failed to read the selected file", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    // Failed to open the selected file
+                    Toast.makeText(this, "Failed to open the selected file", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                // The user did not select a valid file
+                Toast.makeText(this, "No Pdf selected", Toast.LENGTH_SHORT).show()
+                // Show an error message or handle the error appropriately
+            }
+        }
+    }
+
+
+
 //    @Throws(IOException::class)
 //    private fun createImageData(uri: Uri) {
 //        val inputStream = contentResolver.openInputStream(uri)
@@ -186,22 +284,24 @@ class TicketActivity : AppCompatActivity() {
 //        }
 //    }
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            // Get the image data
-            imageBitmap = data?.extras?.get("data") as Bitmap
-            binding.imgPreview.setImageBitmap(imageBitmap)
+//    @Deprecated("Deprecated in Java")
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//
+//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+//            // Get the image data
+//            imageBitmap = data?.extras?.get("data") as Bitmap
+//            binding.imgPreview.setImageBitmap(imageBitmap)
 //
 //            val uri = data?.data
 //            if (uri != null) {
 //                binding.imgPreview.setImageURI(uri)
 //                createImageData(uri)
 //            }
-        }
-    }
+//        }
+//    }
+
+
 
 //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 //        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
@@ -246,8 +346,14 @@ class TicketActivity : AppCompatActivity() {
             try {
                 val response = client.newCall(request).execute()
                 println(response.body?.string())
+                runOnUiThread {
+                    Toast.makeText(this, response.body.toString(), Toast.LENGTH_SHORT).show()
+                }
                 Log.d("okhttp", response.body.toString())
             } catch (e: Exception) {
+                runOnUiThread {
+                    Toast.makeText(this, e.message.toString(), Toast.LENGTH_SHORT).show()
+                }
                 Log.e("okhttp", "Error: ${e.message}")
             }
         }.start()

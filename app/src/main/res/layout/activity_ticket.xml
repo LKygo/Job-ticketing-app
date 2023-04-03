@@ -430,7 +430,7 @@
                 android:id="@+id/imgCamera"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
-                android:background="@drawable/camera"
+                android:background="@drawable/pdf"
                 app:layout_constraintStart_toStartOf="@+id/edtTDRecommendationsValue"
                 app:layout_constraintTop_toTopOf="@+id/imgPreview"
                 app:layout_constraintBottom_toBottomOf="@id/imgPreview"/>
