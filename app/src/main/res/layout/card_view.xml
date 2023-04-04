@@ -16,7 +16,7 @@
 
         <ImageView
             android:id="@+id/imgUrgencyColumn2"
-            android:layout_width="@dimen/_10sdp"
+            android:layout_width="@dimen/_9sdp"
             android:layout_height="0dp"
             android:background="@drawable/urgency_yellow"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -120,7 +120,7 @@
             android:id="@+id/txvOpenedOn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_62sdp"
+            android:layout_marginStart="@dimen/_64sdp"
             android:text="Site:"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cnsConstraint2" />
@@ -143,8 +143,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_6sdp"
             android:text="Last updated:"
-            android:layout_marginStart="@dimen/_14sdp"
-            app:layout_constraintStart_toStartOf="@id/imgUrgencyColumn2"
+            android:layout_marginStart="@dimen/_8sdp"
+            app:layout_constraintStart_toEndOf="@id/imgUrgencyColumn2"
             app:layout_constraintEnd_toEndOf="@+id/txvOpenedOn"
             app:layout_constraintTop_toBottomOf="@+id/txvOpenedOn" />
 
