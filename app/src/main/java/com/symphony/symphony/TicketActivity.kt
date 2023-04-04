@@ -3,14 +3,13 @@ package com.symphony.symphony
 import android.app.Activity
 import android.content.ContentResolver
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.webkit.MimeTypeMap
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,12 +19,9 @@ import com.android.volley.Response
 import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.OnProgressListener
 import com.google.firebase.storage.StorageReference
 import com.symphony.symphony.databinding.ActivityTicketBinding
 import org.json.JSONObject
@@ -48,17 +44,15 @@ class TicketActivity : AppCompatActivity() {
     private lateinit var updatedby: String
     private lateinit var progressB: ProgressBar
     private lateinit var updateT: Button
-    private lateinit var takePic: ImageView
-    private lateinit var byteArray: ByteArray
+    private lateinit var jobcardno: String
+    private lateinit var serialNo: String
+    private lateinit var findings: String
+    private lateinit var action_taken: String
+    private lateinit var recommendations: String
     private lateinit var attachment: String
-    private lateinit var imageBitmap: Bitmap
-    private var imageData: ByteArray? = null
-    private val REQUEST_IMAGE_CAPTURE = 1
-    private val PICK_PDF_FILE = 23
-    val REQUEST_CODE = 1
     private lateinit var filePath: Uri
     private val root: DatabaseReference = FirebaseDatabase.getInstance().getReference("Jobcards")
-    private val reference: StorageReference = FirebaseStorage.getInstance().getReference()
+    private val reference: StorageReference = FirebaseStorage.getInstance().reference
 
 
     companion object {
@@ -81,7 +75,6 @@ class TicketActivity : AppCompatActivity() {
         progressB.visibility = View.GONE
         updateT = binding.btnTDUpdate
 
-        byteArray = ByteArray(0)
         ticketNo = bundle?.getString("ticketNo").toString()
         customer = bundle?.getString("customer").toString()
         city = bundle?.getString("location").toString()
@@ -109,63 +102,26 @@ class TicketActivity : AppCompatActivity() {
         }
 
         updateT.setOnClickListener {
-
             val currentTime = Date()
             val formatter = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
             end_time = formatter.format(currentTime)
-            val jobcardno = binding.edtTDJobCardNoValue.text.toString()
-            val serialNo = binding.edtTDSerialNoValue.text.toString()
-            val findings = binding.edtTDFindingsValue.text.toString()
-            val action_taken = binding.edtTDActionsTakenValue.text.toString()
-            val recommendations = binding.edtTDRecommendationsValue.text.toString()
+            jobcardno = binding.edtTDJobCardNoValue.text.toString()
+            serialNo = binding.edtTDSerialNoValue.text.toString()
+            findings = binding.edtTDFindingsValue.text.toString()
+            action_taken = binding.edtTDActionsTakenValue.text.toString()
+            recommendations = binding.edtTDRecommendationsValue.text.toString()
 
-            if (filePath != null) {
-                uploadToFirebase(filePath)
+
+            if (jobcardno.isEmpty() || serialNo.isEmpty() || findings.isEmpty() || action_taken.isEmpty() || recommendations.isEmpty() ) {
+
+                Toast.makeText(
+                    this,
+                    "Please fill all the fields with a red star",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
-                Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show()
+                uploadToFirebase(filePath)
             }
-
-
-//            uploadPdf(filePath)
-//            uploadImage(imageBitmap)
-//            uploadOk(imageBitmap)
-//            uploadVolley()
-//            if (::imageBitmap.isInitialized) {
-//                // Call uploadImage() function with the byteArray
-//            } else {
-//                // Display an error message that the byteArray is empty
-//                Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show()
-//            }
-//            if (jobcardno.isEmpty() || serialNo.isEmpty() || findings.isEmpty() || action_taken.isEmpty() || recommendations.isEmpty() || byteArray.isEmpty()) {
-//
-//                Toast.makeText(
-//                    this,
-//                    "Please fill all the fields with a red star",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            } else
-//
-//                try {
-//                    sendTicketDetails(
-//                        ticketNo,
-//                        jobcardno,
-//                        servicedate,
-//                        start_time,
-//                        end_time,
-//                        serialNo,
-//                        city,
-//                        findings,
-//                        action_taken,
-//                        recommendations,
-//                        updatedby,
-//                        created_at
-//                    )
-//                    uploadImage(byteArray,jobcardno)
-//
-//
-//                } catch (e: java.lang.Exception) {
-//                    Log.d("FunPost", e.toString())
-//                }
         }
 
         binding.btnTDClear.setOnClickListener {
@@ -180,32 +136,59 @@ class TicketActivity : AppCompatActivity() {
     }
 
     private fun uploadToFirebase(uri: Uri) {
+
+
         val fileRef = reference.child("${System.currentTimeMillis()}" + "." + getFileExtension(uri))
-        fileRef.putFile(uri).addOnSuccessListener(OnSuccessListener { taskSnapshot ->
+        fileRef.putFile(uri).addOnSuccessListener { taskSnapshot ->
             taskSnapshot.storage.downloadUrl.addOnSuccessListener { downloadUrl ->
                 // Use downloadUrl as needed
                 attachment = downloadUrl.toString()
-                Log.d("Attachment", "Image download URL: $attachment")
-                progressB.visibility = View.GONE
-                Toast.makeText(this, "Uploaded successfully", Toast.LENGTH_SHORT).show()
+
+                Toast.makeText(this, "Job card picture Uploaded successfully", Toast.LENGTH_SHORT)
+                    .show()
+
+                Handler().postDelayed({
+                try {
+                    sendTicketDetails(
+                        ticketNo,
+                        jobcardno,
+                        servicedate,
+                        start_time,
+                        end_time,
+                        serialNo,
+                        city,
+                        findings,
+                        action_taken,
+                        recommendations,
+                        updatedby,
+                        created_at,
+                        attachment
+                    )
+                    Log.d("attachment", attachment)
+                } catch (e: java.lang.Exception) {
+                    Log.d("FunPost", e.toString())
+                }
+                }, 2000L)
+
 
             }.addOnFailureListener { exception ->
                 // Handle any errors
+                Toast.makeText(this, exception.message, Toast.LENGTH_SHORT ).show()
                 Log.e("Attachment", "Error getting download URL: ${exception.message}", exception)
             }
 
 
-        })
-            .addOnProgressListener(OnProgressListener {
-                progressB.visibility = View.VISIBLE
-            }).addOnFailureListener(
-                OnFailureListener { exception ->
-                    Log.e("Firebase", "Upload failed", exception)
+        }.addOnProgressListener {
+            progressB.visibility = View.VISIBLE
+            updateT.isClickable = false
+            updateT.visibility = View.GONE
+        }.addOnFailureListener { exception ->
+            Log.e("Firebase", "Upload failed", exception)
 
-                    progressB.visibility = View.GONE
+            progressB.visibility = View.GONE
 
-                    Toast.makeText(this, "JobCard upload failed", Toast.LENGTH_SHORT).show()
-                })
+            Toast.makeText(this, "JobCard upload failed", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun getFileExtension(mUri: Uri): String? {
@@ -215,150 +198,21 @@ class TicketActivity : AppCompatActivity() {
     }
 
 
-    private fun openPdfPicker() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = "application/pdf"
-        }
-        startActivityForResult(intent, PICK_PDF_FILE)
-    }
-
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//
-//        if (requestCode == PICK_PDF_FILE && resultCode == Activity.RESULT_OK) {
-//            val fileUri = data?.data
-//            if (fileUri != null) {
-//                try {
-//                    // Open a stream to read the content of the selected file
-//                    val inputStream = contentResolver.openInputStream(fileUri)
-//
-//                    if (inputStream != null) {
-//                        // The user has selected a valid file
-//                        Toast.makeText(this, "Pdf selected", Toast.LENGTH_SHORT).show()
-//
-//                        // Get the file path from the file URI
-//                         filePath = File(fileUri.path)
-//
-//
-//                    } else {
-//                        // Failed to open the stream for the selected file
-//                        Toast.makeText(this, "Failed to read the selected file", Toast.LENGTH_SHORT).show()
-//                    }
-//                } catch (e: Exception) {
-//                    // Failed to open the selected file
-//                    Toast.makeText(this, "Failed to open the selected file", Toast.LENGTH_SHORT).show()
-//                }
-//            } else {
-//                // The user did not select a valid file
-//                Toast.makeText(this, "No Pdf selected", Toast.LENGTH_SHORT).show()
-//                // Show an error message or handle the error appropriately
-//            }
-//        }
-//    }
-
-
-//    @Throws(IOException::class)
-//    private fun createImageData(uri: Uri) {
-//        val inputStream = contentResolver.openInputStream(uri)
-//        inputStream?.buffered()?.use {
-//            imageData = it.readBytes()
-//        }
-//    }
-
-//    @Deprecated("Deprecated in Java")
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//
-//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-//            // Get the image data
-//            imageBitmap = data?.extras?.get("data") as Bitmap
-//            binding.imgPreview.setImageBitmap(imageBitmap)
-//
-//            val uri = data?.data
-//            if (uri != null) {
-//                binding.imgPreview.setImageURI(uri)
-//                createImageData(uri)
-//            }
-//        }
-//    }
-
-
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, IMAGE_PICK_CODE)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE && data != null) {
-            filePath = data.data!!
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE ) {
+            filePath = data?.data!!
 
         }
     }
-
-
-//private fun uploadOk(bitmap: Bitmap) {
-//    val client = OkHttpClient.Builder().build()
-//    val mediaType = "application/json".toMediaTypeOrNull()
-//    val stream = ByteArrayOutputStream()
-//    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-//    val byteArray = stream.toByteArray()
-//    val file = File.createTempFile("image", ".jpeg")
-//    file.writeBytes(byteArray)
-//    val requestBody: RequestBody =
-//        MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart(
-//            "image",
-//            file.name,
-//            RequestBody.create("application/octet-stream".toMediaTypeOrNull(), file)
-//        ).build()
-//
-//    val request = okhttp3.Request.Builder()
-//        .url("https://backend.api.symphony.co.ke/uploadVolley")
-//        .method("POST", requestBody)
-//        .addHeader("Content-Type", "application/json")
-//        .build()
-//
-//    Thread {
-//        try {
-//            val response = client.newCall(request).execute()
-//            println(response.body?.string())
-//            runOnUiThread {
-//                Toast.makeText(this, response.body.toString(), Toast.LENGTH_SHORT).show()
-//            }
-//            Log.d("okhttp", response.body.toString())
-//        } catch (e: Exception) {
-//            runOnUiThread {
-//                Toast.makeText(this, e.message.toString(), Toast.LENGTH_SHORT).show()
-//            }
-//            Log.e("okhttp", "Error: ${e.message}")
-//        }
-//    }.start()
-//}
-
-//private fun uploadVolley() {
-//    imageData ?: return
-////        val postURL = "https://backend.api.symphony.co.ke/uploadI"
-//    val postURL = "https://reqbin.com/"
-//
-//    val request =
-//        object : VolleyFileUploadRequest(Request.Method.POST, postURL, Response.Listener {
-//            Log.d("newvolley", "$it")
-//            println("response is: $it")
-//        }, Response.ErrorListener {
-//            Log.d("newvolley", "$it")
-//            println("error is: $it")
-//        }) {
-//            override fun getByteData(): MutableMap<String, FileDataPart> {
-//                var params = HashMap<String, FileDataPart>()
-//                params["imageFile"] = FileDataPart("image", imageData!!, "jpeg")
-//                return params
-//            }
-//        }
-//    Volley.newRequestQueue(this).add(request)
-//}
 
 
     private fun sendTicketDetails(
@@ -373,12 +227,12 @@ class TicketActivity : AppCompatActivity() {
         action_taken: String,
         recommendations: String,
         updated_by: String,
-        created_at: String
+        created_at: String,
+        attachment: String
     ) {
-        updateT.isClickable = false
-        updateT.visibility = View.GONE
+
         progressB.visibility = View.VISIBLE
-        val url = "https://backend.api.symphony.co.ke/uploadI"
+        val url = "https://backend.api.symphony.co.ke/upload"
 
         // Create a JSON object to hold your data
         val jsonObject = JSONObject()
@@ -388,6 +242,7 @@ class TicketActivity : AppCompatActivity() {
         jsonObject.put("start_time", start_time)
         jsonObject.put("end_time", end_time)
         jsonObject.put("serial_no", serial_no)
+        jsonObject.put("attachment", attachment)
         jsonObject.put("city", city)
         jsonObject.put("findings", findings)
         jsonObject.put("action_taken", action_taken)
