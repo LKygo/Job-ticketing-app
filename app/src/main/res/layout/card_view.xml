@@ -16,7 +16,7 @@
 
         <ImageView
             android:id="@+id/imgUrgencyColumn2"
-            android:layout_width="12dp"
+            android:layout_width="@dimen/_10sdp"
             android:layout_height="0dp"
             android:background="@drawable/urgency_yellow"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -36,8 +36,8 @@
                 android:id="@+id/txvTicketNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="42dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="@dimen/_32sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:text="Ticket No:"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -46,7 +46,7 @@
                 android:id="@+id/txvTicketValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="@dimen/_10sdp"
                 app:layout_constraintStart_toEndOf="@+id/txvTicketNo"
                 app:layout_constraintTop_toTopOf="@+id/txvTicketNo"
                 tools:text="123456789" />
@@ -55,8 +55,8 @@
                 android:id="@+id/txvDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="@dimen/_14sdp"
+                android:layout_marginTop="@dimen/_6sdp"
                 android:text="Assigned on:"
                 app:layout_constraintEnd_toEndOf="@+id/txvTicketNo"
                 app:layout_constraintTop_toBottomOf="@+id/txvTicketNo" />
@@ -73,18 +73,18 @@
                 android:id="@+id/txvFault"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="@dimen/_14sdp"
+                android:layout_marginTop="@dimen/_6sdp"
                 android:text="Fault:"
                 app:layout_constraintEnd_toEndOf="@+id/txvCustomer"
-                app:layout_constraintTop_toBottomOf="@+id/txvCustomer" />
+                app:layout_constraintTop_toBottomOf="@+id/txvCustomerValue" />
 
             <TextView
                 android:id="@+id/txvFaultValue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/txvDateValue"
@@ -96,16 +96,20 @@
                 android:id="@+id/txvCustomer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="@dimen/_14sdp"
+                android:layout_marginTop="@dimen/_6sdp"
                 android:text="Customer:"
                 app:layout_constraintEnd_toEndOf="@+id/txvDate"
                 app:layout_constraintTop_toBottomOf="@+id/txvDate" />
 
             <TextView
                 android:id="@+id/txvCustomerValue"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_8sdp"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/txvFaultValue"
                 app:layout_constraintTop_toBottomOf="@+id/txvFaultValue"
                 app:layout_constraintTop_toTopOf="@+id/txvCustomer"
@@ -116,7 +120,7 @@
             android:id="@+id/txvOpenedOn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="77dp"
+            android:layout_marginStart="@dimen/_62sdp"
             android:text="Site:"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cnsConstraint2" />
@@ -125,9 +129,11 @@
             android:id="@+id/txvOpenedOnValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_4sdp"
             app:layout_constraintBaseline_toBaselineOf="@id/txvOpenedOn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@id/txvOpenedOn"
             tools:text="12/12/2000" />
 
@@ -135,8 +141,10 @@
             android:id="@+id/txvUpdatedOn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/_6sdp"
             android:text="Last updated:"
+            android:layout_marginStart="@dimen/_14sdp"
+            app:layout_constraintStart_toStartOf="@id/imgUrgencyColumn2"
             app:layout_constraintEnd_toEndOf="@+id/txvOpenedOn"
             app:layout_constraintTop_toBottomOf="@+id/txvOpenedOn" />
 
@@ -144,6 +152,8 @@
             android:id="@+id/txvUpdatedOnValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/txvOpenedOnValue"
             app:layout_constraintTop_toTopOf="@+id/txvUpdatedOn"
             tools:text="12/12/2000" />
@@ -153,7 +163,7 @@
             android:id="@+id/txvStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="8dp"
             android:text="Status:"
             app:layout_constraintEnd_toEndOf="@id/txvUpdatedOn"
@@ -170,8 +180,8 @@
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/dvdButton"
             android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="16dp"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_marginHorizontal="@dimen/_14sdp"
             android:layout_marginTop="8dp"
             android:backgroundTint="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
@@ -182,9 +192,9 @@
             android:id="@+id/btnStartTicket"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginHorizontal="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginBottom="@dimen/_16sdp"
             android:background="@drawable/button"
             android:text="Start ticket"
             android:textColor="@color/black"
