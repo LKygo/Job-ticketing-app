@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "925801688813",
+    "project_id": "symphony-digital-jobcard",
+    "storage_bucket": "symphony-digital-jobcard.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925801688813:android:7c19777113033f081a66e4",
+        "android_client_info": {
+          "package_name": "com.symphony.symphony"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "925801688813-kub4ljk0lgbb8vf18amkuiitriac6ko2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAj-SCcGQ0W22Nb3vAx-ZSeIK6r_HEF2D0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925801688813-kub4ljk0lgbb8vf18amkuiitriac6ko2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
