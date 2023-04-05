@@ -149,7 +149,6 @@ class TechnicianDashboard : AppCompatActivity() {
         }
         binding.imgProfile.setOnClickListener {
             openGallery()
-//            uploadProfile()
         }
 
     }

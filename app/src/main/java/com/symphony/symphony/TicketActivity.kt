@@ -3,9 +3,9 @@ package com.symphony.symphony
 import android.app.Activity
 import android.content.ContentResolver
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.webkit.MimeTypeMap
@@ -13,14 +13,14 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.android.volley.NetworkError
 import com.android.volley.NetworkResponse
 import com.android.volley.Response
 import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.symphony.symphony.databinding.ActivityTicketBinding
@@ -50,9 +50,9 @@ class TicketActivity : AppCompatActivity() {
     private lateinit var action_taken: String
     private lateinit var recommendations: String
     private lateinit var attachment: String
-    private lateinit var filePath: Uri
-    private val root: DatabaseReference = FirebaseDatabase.getInstance().getReference("Jobcards")
+    private var filePath: Uri? = null
     private val reference: StorageReference = FirebaseStorage.getInstance().reference
+    private val GALLERY_PERMISSION_CODE = 22
 
 
     companion object {
@@ -97,8 +97,7 @@ class TicketActivity : AppCompatActivity() {
         val takePic = binding.imgCamera
         takePic.setOnClickListener {
 
-            openGallery()
-
+            requestGalleryPermission()
         }
 
         updateT.setOnClickListener {
@@ -112,7 +111,7 @@ class TicketActivity : AppCompatActivity() {
             recommendations = binding.edtTDRecommendationsValue.text.toString()
 
 
-            if (jobcardno.isEmpty() || serialNo.isEmpty() || findings.isEmpty() || action_taken.isEmpty() || recommendations.isEmpty() ) {
+            if (jobcardno.isEmpty() || serialNo.isEmpty() || findings.isEmpty() || action_taken.isEmpty() || recommendations.isEmpty()) {
 
                 Toast.makeText(
                     this,
@@ -120,7 +119,17 @@ class TicketActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                uploadToFirebase(filePath)
+                if (filePath != null) {
+                    uploadToFirebase(filePath!!)
+                } else {
+
+                    Toast.makeText(
+                        this,
+                        "Please select Job Card image from gallery",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
             }
         }
 
@@ -147,7 +156,7 @@ class TicketActivity : AppCompatActivity() {
                 Toast.makeText(this, "Job card picture Uploaded successfully", Toast.LENGTH_SHORT)
                     .show()
 
-                Handler().postDelayed({
+//                Handler().postDelayed({
                 try {
                     sendTicketDetails(
                         ticketNo,
@@ -160,21 +169,21 @@ class TicketActivity : AppCompatActivity() {
                         findings,
                         action_taken,
                         recommendations,
+                        attachment,
                         updatedby,
-                        created_at,
-                        attachment
+                        created_at
                     )
                     Log.d("attachment", attachment)
                 } catch (e: java.lang.Exception) {
                     Log.d("FunPost", e.toString())
                 }
-                }, 2000L)
+//                }, 1000L)
 
 
             }.addOnFailureListener { exception ->
                 // Handle any errors
-                Toast.makeText(this, exception.message, Toast.LENGTH_SHORT ).show()
-                Log.e("Attachment", "Error getting download URL: ${exception.message}", exception)
+                Toast.makeText(this, exception.message, Toast.LENGTH_SHORT).show()
+//                Log.e("Attachment", "Error getting download URL: ${exception.message}", exception)
             }
 
 
@@ -198,17 +207,69 @@ class TicketActivity : AppCompatActivity() {
     }
 
 
-    private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_PICK_CODE)
+    private fun requestGalleryPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                GALLERY_PERMISSION_CODE
+            )
+        } else {
+            openGallery()
+        }
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == GALLERY_PERMISSION_CODE && grantResults.isNotEmpty()
+            && grantResults[0] == PackageManager.PERMISSION_GRANTED
+        ) {
+            openGallery()
+        } else {
+            // Permission denied, handle the case here
+            Toast.makeText(
+                this,
+                "Gallery permission required to take pictures",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+
+    private fun openGallery() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, GALLERY_PERMISSION_CODE)
+        } else {
+            // Permission not granted, handle the case here
+            Toast.makeText(
+                this,
+                "Gallery permission required to take pictures",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
 
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE ) {
+        if (resultCode == Activity.RESULT_OK && requestCode == GALLERY_PERMISSION_CODE) {
             filePath = data?.data!!
 
         }
@@ -226,9 +287,9 @@ class TicketActivity : AppCompatActivity() {
         findings: String,
         action_taken: String,
         recommendations: String,
+        attachment: String,
         updated_by: String,
         created_at: String,
-        attachment: String
     ) {
 
         progressB.visibility = View.VISIBLE
@@ -242,13 +303,14 @@ class TicketActivity : AppCompatActivity() {
         jsonObject.put("start_time", start_time)
         jsonObject.put("end_time", end_time)
         jsonObject.put("serial_no", serial_no)
-        jsonObject.put("attachment", attachment)
         jsonObject.put("city", city)
         jsonObject.put("findings", findings)
         jsonObject.put("action_taken", action_taken)
         jsonObject.put("recommendations", recommendations)
+        jsonObject.put("attachment", attachment)
         jsonObject.put("updated_by", updated_by)
         jsonObject.put("created_at", created_at)
+        Log.d("Volley", "JSON object: $jsonObject")
 
 
 // Request to server's URL
@@ -267,6 +329,7 @@ class TicketActivity : AppCompatActivity() {
             binding.edtTDSerialNoValue.setText("")
             binding.edtTDJobCardNoValue.setText("")
             binding.edtTDRecommendationsValue.setText("")
+            filePath = null
 
         }, { error ->
             // Handle error response from server
