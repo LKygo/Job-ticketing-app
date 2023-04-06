@@ -24,6 +24,7 @@ import com.android.volley.TimeoutError
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
+import com.michaelflisar.changelog.ChangelogBuilder
 import com.symphony.symphony.databinding.ActivityTechnicianDashboardBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -57,6 +58,18 @@ class TechnicianDashboard : AppCompatActivity() {
         } catch (e: Exception) {
             Log.d("inflate", e.toString())
         }
+
+
+
+//        if (ChangelogUtil().shouldShowChangelog()) {
+            ChangelogBuilder()
+                .withUseBulletList(false)
+                .withMinVersionToShow(2)
+                .withSummary(true, true)
+                .withTitle("What's new?")
+                .buildAndShowDialog(this, false)
+//        }
+
         recyclerView = binding.rcvRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
         searchView = binding.searchView
@@ -153,6 +166,13 @@ class TechnicianDashboard : AppCompatActivity() {
 
     }
 
+//    private fun shouldShowChangelog(): Boolean {
+//        val versionCode = BuildConfig.VERSION_CODE
+//        val changelogUtil = ChangelogUtil()
+//        val shownVersions = changelogUtil.getShownVersionCodes()
+//        return !shownVersions.contains(versionCode)
+//    }
+
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
@@ -160,17 +180,17 @@ class TechnicianDashboard : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-       if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
-           val uri = data?.data
-           if (uri != null){
-               binding.imgProfile.setImageURI(uri)
-           }
-       }
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
+            val uri = data?.data
+            if (uri != null) {
+                binding.imgProfile.setImageURI(uri)
+            }
+        }
         super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun uploadProfile() {
-        val profilePic : ByteArray
+        val profilePic: ByteArray
     }
 
 
