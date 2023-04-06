@@ -167,12 +167,6 @@ class TechnicianDashboard : AppCompatActivity() {
 
     }
 
-//    private fun shouldShowChangelog(): Boolean {
-//        val versionCode = BuildConfig.VERSION_CODE
-//        val changelogUtil = ChangelogUtil()
-//        val shownVersions = changelogUtil.getShownVersionCodes()
-//        return !shownVersions.contains(versionCode)
-//    }
 
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK)
