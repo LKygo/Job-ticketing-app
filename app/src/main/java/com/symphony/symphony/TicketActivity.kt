@@ -139,6 +139,8 @@ class TicketActivity : AppCompatActivity() {
             binding.edtTDSerialNoValue.setText("")
             binding.edtTDJobCardNoValue.setText("")
             binding.edtTDRecommendationsValue.setText("")
+            filePath = null
+            binding.imgJobCardValidation.setBackgroundResource(R.drawable.remove)
         }
 
 
@@ -271,6 +273,7 @@ class TicketActivity : AppCompatActivity() {
 
         if (resultCode == Activity.RESULT_OK && requestCode == GALLERY_PERMISSION_CODE) {
             filePath = data?.data!!
+            binding.imgJobCardValidation.setBackgroundResource(R.drawable.check)
 
         }
     }
@@ -330,6 +333,8 @@ class TicketActivity : AppCompatActivity() {
             binding.edtTDJobCardNoValue.setText("")
             binding.edtTDRecommendationsValue.setText("")
             filePath = null
+            binding.imgJobCardValidation.setBackgroundResource(R.drawable.remove)
+
 
         }, { error ->
             // Handle error response from server

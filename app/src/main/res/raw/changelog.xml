@@ -2,7 +2,16 @@
 <changelog>
 
 
+    <release versionCode="115" versionName="v1.1.5" date="06/04/2023">
+        <new type="summary">Added update profile picture. Just click on the profile picture circle, grant gallery permission and select an image</new>
+        <new type="summary">Added functionality to upload job card picture. On ticket screen, click on the gallery icon with a plus to attach picture of job card</new>
+        <new type="summary">Added successful job card selection indicator on ticket details screen</new>
+        <new type="summary">Added meeting notifier. On the priority indicator, a purple indicator colour has been added to denote upcoming meetings</new>
+        <new type="summary">Added new low priority colour indicator.</new>
+        <bugfix>Improved priority indicator colour codes. Priority scale colours have been improved to avoid confusion</bugfix>
+        <bugfix>Fixed layout appearance on smaller screens</bugfix>
 
+    </release>
 
     <release versionCode="114" versionName="v1.1.4" date="06/04/2023">
         <info>New features, bug fixes and performance improvements.</info>

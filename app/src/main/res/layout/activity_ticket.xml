@@ -430,35 +430,43 @@
                 android:id="@+id/imgCamera"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:background="@drawable/add_image"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDJCPicture"
                 app:layout_constraintStart_toStartOf="@+id/edtTDRecommendationsValue"
-                app:layout_constraintTop_toTopOf="@+id/imgPreview"
-                app:layout_constraintBottom_toBottomOf="@id/imgPreview"/>
+                tools:layout_editor_absoluteY="842dp" />
 
-            <ImageView
-                android:id="@+id/imgPreview"
+            <TextView
+                android:id="@+id/txvCameraHint"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_16ssp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:background="@drawable/edit_text2"
-                android:gravity="center_vertical"
-                android:minHeight="@dimen/_36sdp"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toTopOf="@id/imgCamera"
+                app:layout_constraintStart_toEndOf="@id/imgCamera"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imgCamera"
-                app:layout_constraintTop_toBottomOf="@+id/txvTDJCPicture" />
+                android:text="Click on the gallery image to select picture of jobcard"
+                android:layout_marginHorizontal="@dimen/_16sdp" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgJobCardValidation"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:background="@drawable/remove"
+                app:layout_constraintTop_toBottomOf="@id/txvCameraHint"
+                app:layout_constraintStart_toStartOf="@id/txvCameraHint"
+                android:layout_marginTop="@dimen/_3sdp"/>
 
 
             <Button
                 android:id="@+id/btnTDClear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_14sdp"
                 android:backgroundTint="#B5C60202"
                 android:text="Clear"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintTop_toBottomOf="@+id/imgCamera"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imgPreview" />
+                tools:layout_editor_absoluteY="909dp" />
 
             <Button
                 android:id="@+id/btnTDUpdate"
