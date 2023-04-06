@@ -6,7 +6,6 @@
 
     <release versionCode="114" versionName="v1.1.4" date="06/04/2023">
         <info>New features, bug fixes and performance improvements.</info>
-
         <new type="summary">Added update profile picture. Just click on the profile picture circle</new>
         <new type="summary">Added functionality to upload job card picture. On ticket screen, click on the gallery icon with a plus to attach picture of job card</new>
         <new type="summary">Added meeting notifier. On the priority indicator, a purple indicator colour has been added to denote upcoming meetings</new>

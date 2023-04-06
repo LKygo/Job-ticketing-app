@@ -3,6 +3,8 @@ package com.symphony.symphony
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -14,6 +16,8 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -59,17 +63,20 @@ class TechnicianDashboard : AppCompatActivity() {
             Log.d("inflate", e.toString())
         }
 
+        ChangelogBuilder()
+            .withUseBulletList(false)
+            .withMinVersionToShow(2)
+            .withManagedShowOnStart(true)
+            .withSummary(true, true)
+            .withTitle("What's new?")
+            .buildAndShowDialog(this, false)
 
-
-//        if (ChangelogUtil().shouldShowChangelog()) {
-            ChangelogBuilder()
-                .withUseBulletList(false)
-                .withMinVersionToShow(2)
-                .withManagedShowOnStart(true)
-                .withSummary(true, true)
-                .withTitle("What's new?")
-                .buildAndShowDialog(this, false)
-//        }
+        // Load the profile picture from internal storage
+        val file = getFileStreamPath("profile_image.jpg")
+        if (file.exists()) {
+            val uri = Uri.fromFile(file)
+            binding.imgProfile.setImageURI(uri)
+        }
 
         recyclerView = binding.rcvRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -162,27 +169,88 @@ class TechnicianDashboard : AppCompatActivity() {
             finish()
         }
         binding.imgProfile.setOnClickListener {
-            openGallery()
+            requestGalleryPermission()
         }
 
     }
 
 
+    private fun requestGalleryPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                IMAGE_PICK_CODE
+            )
+        } else {
+            openGallery()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == IMAGE_PICK_CODE && grantResults.isNotEmpty()
+            && grantResults[0] == PackageManager.PERMISSION_GRANTED
+        ) {
+            openGallery()
+        } else {
+            // Permission denied, handle the case here
+            Toast.makeText(
+                this,
+                "Gallery permission required to take pictures",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
     private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_PICK_CODE)
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, IMAGE_PICK_CODE)
+
+        } else {
+            // Permission not granted, handle the case here
+            Toast.makeText(
+                this,
+                "Gallery permission required to upload profile picture",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             val uri = data?.data
             if (uri != null) {
+                // Save the image to internal storage
+                val inputStream = contentResolver.openInputStream(uri)
+                val outputStream = openFileOutput("profile_image.jpg", Context.MODE_PRIVATE)
+                inputStream?.copyTo(outputStream)
+                inputStream?.close()
+                outputStream.close()
+
+                // Set the profile picture
                 binding.imgProfile.setImageURI(uri)
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
+
+
 
     private fun uploadProfile() {
         val profilePic: ByteArray
