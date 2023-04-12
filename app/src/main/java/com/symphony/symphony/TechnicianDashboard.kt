@@ -65,7 +65,7 @@ class TechnicianDashboard : AppCompatActivity() {
 
         ChangelogBuilder()
             .withUseBulletList(true)
-            .withMinVersionToShow(114)
+            .withMinVersionToShow(113)
             .withManagedShowOnStart(true)
             .withSummary(true, true)
             .withTitle("What's new?")
