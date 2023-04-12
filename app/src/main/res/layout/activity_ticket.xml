@@ -460,13 +460,23 @@
                 android:id="@+id/btnTDClear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#B5C60202"
-                android:text="Clear"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:backgroundTint="#8A0000"
+                android:text="Clear"
                 app:layout_constraintTop_toBottomOf="@+id/imgCamera"
-                app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                app:layout_constraintEnd_toStartOf="@+id/btnClaim"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:layout_editor_absoluteY="909dp" />
+
+            <Button
+                android:id="@+id/btnClaim"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="claim"
+                app:layout_constraintStart_toStartOf="@id/guideline3"
+                app:layout_constraintEnd_toEndOf="@id/guideline3"
+                app:layout_constraintTop_toTopOf="@id/btnTDClear"
+                android:backgroundTint="#2D5FFF"/>
 
             <Button
                 android:id="@+id/btnTDUpdate"
@@ -475,7 +485,7 @@
                 android:backgroundTint="#C41BCA00"
                 android:text="Update"
                 app:layout_constraintEnd_toEndOf="@id/edtTDRecommendationsValue"
-                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintStart_toEndOf="@+id/btnClaim"
                 app:layout_constraintTop_toTopOf="@+id/btnTDClear" />
 
             <ProgressBar

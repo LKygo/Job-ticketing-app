@@ -35,7 +35,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline7"
@@ -95,7 +96,7 @@
                 style="@style/subheadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_18sdp"
                 android:text="Mode of transport"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -136,7 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Fare paid"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_12sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ClaimsRadioGroup" />
 
@@ -149,7 +150,7 @@
                 android:background="@drawable/edit_text2"
                 android:gravity="center_vertical"
                 app:layout_goneMarginEnd="@dimen/_8sdp"
-                android:text="0.00"
+                android:text="0.00 "
                 android:inputType="number"
                 app:layout_constraintEnd_toStartOf="@id/guideline7"
                 app:layout_constraintStart_toStartOf="parent"
@@ -164,7 +165,7 @@
                 android:text="Distance Covered"
                 android:alpha="0.5"
                 android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_12sdp"
                 app:layout_constraintStart_toEndOf="@id/guideline7"
                 app:layout_constraintTop_toBottomOf="@id/ClaimsRadioGroup" />
 
@@ -174,16 +175,200 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/edit_text2"
-                android:gravity="end"
                 android:layout_marginStart="@dimen/_8sdp"
-                android:text="0"
-                android:hint="Kms"
+                android:text="0.00 "
+                android:hint="0.00 kms"
                 android:enabled="false"
                 android:inputType="number"
                 app:layout_constraintStart_toStartOf="@id/guideline7"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txvKMCovered" />
 
+
+
+            <TextView
+                android:id="@+id/txvAccomodation"
+                style="@style/subheadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Accomodation"
+                android:layout_marginTop="@dimen/_16sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edtFarePaid" />
+
+            <EditText
+                android:id="@+id/edtAccomodation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:background="@drawable/edit_text2"
+                android:gravity="center_vertical"
+                app:layout_goneMarginEnd="@dimen/_8sdp"
+                android:text="0.00 "
+                android:inputType="number"
+                app:layout_constraintEnd_toStartOf="@id/guideline7"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvAccomodation" />
+
+
+            <TextView
+                android:id="@+id/txvPetties"
+                style="@style/subheadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Petties"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                app:layout_constraintStart_toEndOf="@id/guideline7"
+                app:layout_constraintTop_toBottomOf="@id/edtKMCovered" />
+
+            <EditText
+                android:id="@+id/edtPetties"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/edit_text2"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:text="0.00 "
+                android:inputType="number"
+                app:layout_constraintStart_toStartOf="@id/guideline7"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvPetties" />
+
+
+            <TextView
+                android:id="@+id/txvDinner"
+                style="@style/subheadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dinner"
+                android:layout_marginTop="@dimen/_16sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edtAccomodation" />
+
+            <EditText
+                android:id="@+id/edtDinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:background="@drawable/edit_text2"
+                android:gravity="center_vertical"
+                app:layout_goneMarginEnd="@dimen/_8sdp"
+                android:text="0.00 "
+                android:inputType="number"
+                app:layout_constraintEnd_toStartOf="@id/guideline7"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvDinner" />
+
+            <TextView
+                android:id="@+id/txvLunch"
+                style="@style/subheadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lunch"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                app:layout_constraintStart_toEndOf="@id/guideline7"
+                app:layout_constraintTop_toBottomOf="@id/edtPetties" />
+
+            <EditText
+                android:id="@+id/edtlunch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/edit_text2"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:text="0.00 "
+                android:inputType="number"
+                app:layout_constraintStart_toStartOf="@id/guideline7"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvLunch" />
+
+            <TextView
+                android:id="@+id/txvLaundry"
+                style="@style/subheadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Laundry"
+                android:layout_marginTop="@dimen/_16sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edtDinner" />
+
+            <EditText
+                android:id="@+id/edtLaundry"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:background="@drawable/edit_text2"
+                android:gravity="center_vertical"
+                app:layout_goneMarginEnd="@dimen/_8sdp"
+                android:text="0.00 "
+                android:inputType="number"
+                app:layout_constraintEnd_toStartOf="@id/guideline7"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvLaundry" />
+
+
+
+            <TextView
+                android:id="@+id/txvOthers"
+                style="@style/subheadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Others"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                app:layout_constraintStart_toEndOf="@id/guideline7"
+                app:layout_constraintTop_toBottomOf="@id/edtlunch" />
+
+            <EditText
+                android:id="@+id/edtOthers"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/edit_text2"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:text="0.00 "
+                android:inputType="number"
+                app:layout_constraintStart_toStartOf="@id/guideline7"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvOthers" />
+
+            <Button
+                android:id="@+id/btnTDClear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:backgroundTint="#8A0000"
+                android:text="Clear"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@+id/edtLaundry"
+                app:layout_constraintEnd_toStartOf="@+id/guideline7"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="909dp" />
+
+            <Button
+                android:id="@+id/btnClaim"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="claim"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="@id/guideline7"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/btnTDClear"
+                android:backgroundTint="#2D5FFF"/>
+            <ProgressBar
+                android:id="@+id/pgbTDProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#2D5FFF"
+                app:layout_constraintBottom_toBottomOf="@id/btnClaim"
+                app:layout_constraintEnd_toEndOf="@id/btnClaim"
+                app:layout_constraintStart_toStartOf="@+id/btnClaim"
+                app:layout_constraintTop_toTopOf="@+id/btnClaim" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,13 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="MyButtonTheme" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/outline_button</item>
+        <item name="android:textColor">#FB0000</item>
+    </style>
+
+
     <style name="accentPurple" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorAccent">@color/purple_light</item>
     </style>
@@ -20,6 +27,5 @@
         <item name="android:textColor">#99000000</item>
         <item name="android:textSize">16sp</item>
     </style>
-
 
 </resources>

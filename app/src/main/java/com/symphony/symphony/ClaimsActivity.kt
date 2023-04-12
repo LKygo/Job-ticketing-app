@@ -7,6 +7,7 @@ import com.symphony.symphony.databinding.ActivityClaimsBinding
 
 class ClaimsActivity : AppCompatActivity() {
     private lateinit var binding : ActivityClaimsBinding
+    private lateinit var ticketNo : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityClaimsBinding.inflate(layoutInflater)
@@ -16,12 +17,11 @@ class ClaimsActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.my_toolbar)
         setSupportActionBar(toolbar)
-//
-//        binding.edtKMCovered.isEnabled = false
-//        binding.txvKMCovered.alpha = 0.5f
-//
-//        binding.edtFarePaid.isEnabled = true
-//        binding.txvPsvFare.alpha = 1f
+
+        val bundle: Bundle? = intent.extras
+        ticketNo = bundle?.getString("ticketNo").toString()
+
+//        binding.txvCTicketNOValue.text = ticketNo
 
         binding.ClaimsRadioGroup.setOnCheckedChangeListener { group, checkedId ->
             if (checkedId == binding.RadioPsv.id) {

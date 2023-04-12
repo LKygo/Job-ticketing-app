@@ -100,9 +100,6 @@ class TechnicianDashboard : AppCompatActivity() {
         binding.txvName.text = userName.toString()
         val bundle: Bundle? = intent.extras
 
-
-
-
         tAdapter!!.setOnItemClickListener(object : TicketsAdapter.onItemClickListener {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onItemClick(position: Int) {

@@ -133,6 +133,12 @@ class TicketActivity : AppCompatActivity() {
             }
         }
 
+        binding.btnClaim.setOnClickListener {
+            val intent = Intent(this, ClaimsActivity::class.java)
+            intent.putExtra("ticketNo", ticketNo)
+            startActivity(intent)
+        }
+
         binding.btnTDClear.setOnClickListener {
             binding.edtTDActionsTakenValue.setText("")
             binding.edtTDFindingsValue.setText("")
