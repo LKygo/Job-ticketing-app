@@ -1,7 +1,6 @@
 package com.symphony.symphony
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.symphony.symphony.databinding.ActivityClaimsBinding
@@ -17,27 +16,37 @@ class ClaimsActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.my_toolbar)
         setSupportActionBar(toolbar)
-
+//
+//        binding.edtKMCovered.isEnabled = false
+//        binding.txvKMCovered.alpha = 0.5f
+//
+//        binding.edtFarePaid.isEnabled = true
+//        binding.txvPsvFare.alpha = 1f
 
         binding.ClaimsRadioGroup.setOnCheckedChangeListener { group, checkedId ->
             if (checkedId == binding.RadioPsv.id) {
                 // show views for PSV option
-                binding.txvPsvFare.visibility = View.VISIBLE
-                binding.edtFarePaid.visibility = View.VISIBLE
-                binding.txvKMCovered.visibility = View.GONE
-                binding.edtKMCovered.visibility = View.GONE
+                binding.edtKMCovered.isEnabled = false
+                binding.txvKMCovered.alpha = 0.5f
+
+                binding.edtFarePaid.isEnabled = true
+                binding.txvPsvFare.alpha = 1f
+
             } else if (checkedId == binding.RadioPrivate.id) {
                 // show views for Private option
-                binding.txvPsvFare.visibility = View.GONE
-                binding.edtFarePaid.visibility = View.GONE
-                binding.txvKMCovered.visibility = View.VISIBLE
-                binding.edtKMCovered.visibility = View.VISIBLE
+                binding.edtFarePaid.isEnabled = false
+                binding.txvPsvFare.alpha = 0.5f
+
+                binding.edtKMCovered.isEnabled = true
+                binding.txvKMCovered.alpha = 1f
+
             } else {
                 // show default views
-                binding.txvPsvFare.visibility = View.VISIBLE
-                binding.edtFarePaid.visibility = View.VISIBLE
-                binding.txvKMCovered.visibility = View.GONE
-                binding.edtKMCovered.visibility = View.GONE
+                binding.edtKMCovered.isEnabled = false
+                binding.txvKMCovered.alpha = 0.5f
+
+                binding.edtFarePaid.isEnabled = true
+                binding.txvPsvFare.alpha = 1f
             }
         }
 

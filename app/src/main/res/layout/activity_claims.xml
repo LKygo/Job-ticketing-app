@@ -129,12 +129,14 @@
             </RadioGroup>
 
 
+
             <TextView
                 android:id="@+id/txvPsvFare"
                 style="@style/subheadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Fare paid"
+                android:layout_marginTop="@dimen/_8sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ClaimsRadioGroup" />
 
@@ -146,6 +148,7 @@
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:background="@drawable/edit_text2"
                 android:gravity="center_vertical"
+                app:layout_goneMarginEnd="@dimen/_8sdp"
                 android:text="0.00"
                 android:inputType="number"
                 app:layout_constraintEnd_toStartOf="@id/guideline7"
@@ -159,8 +162,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Distance Covered"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="parent"
+                android:alpha="0.5"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                app:layout_constraintStart_toEndOf="@id/guideline7"
                 app:layout_constraintTop_toBottomOf="@id/ClaimsRadioGroup" />
 
             <EditText
@@ -168,14 +173,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:layout_marginEnd="@dimen/_8sdp"
                 android:background="@drawable/edit_text2"
                 android:gravity="center_vertical"
+                android:layout_marginStart="@dimen/_8sdp"
                 android:text="0"
-                android:visibility="gone"
+                android:enabled="false"
                 android:inputType="number"
-                app:layout_constraintEnd_toStartOf="@id/guideline7"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline7"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txvKMCovered" />
 
 
