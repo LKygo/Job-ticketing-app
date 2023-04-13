@@ -338,7 +338,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/txvOthers" />
 
             <Button
-                android:id="@+id/btnTDClear"
+                android:id="@+id/btnClearClaims"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -358,10 +358,10 @@
                 android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="@id/guideline7"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/btnTDClear"
+                app:layout_constraintTop_toTopOf="@id/btnClearClaims"
                 android:backgroundTint="#2D5FFF"/>
             <ProgressBar
-                android:id="@+id/pgbTDProgress"
+                android:id="@+id/pgbClaims"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#2D5FFF"
