@@ -47,6 +47,7 @@ class ClaimsActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         progressB = binding.pgbClaims
+        progressB.visibility = View.GONE
         btnClaim = binding.btnClaim
         val bundle: Bundle? = intent.extras
         ticketNo = bundle?.getString("ticketNo").toString()
@@ -64,6 +65,7 @@ class ClaimsActivity : AppCompatActivity() {
 
                 binding.edtFarePaid.isEnabled = true
                 binding.txvPsvFare.alpha = 1f
+                binding.edtFarePaid.requestFocus()
 
             } else if (checkedId == binding.RadioPrivate.id) {
                 // show views for Private option
@@ -72,6 +74,8 @@ class ClaimsActivity : AppCompatActivity() {
 
                 binding.edtKMCovered.isEnabled = true
                 binding.txvKMCovered.alpha = 1f
+                binding.edtKMCovered.requestFocus()
+
 
             } else {
                 // show default views
@@ -98,7 +102,7 @@ class ClaimsActivity : AppCompatActivity() {
         }
 
         binding.btnClearClaims.setOnClickListener {
-            binding.edtFarePaid.setText("0.00")
+            binding.edtFarePaid.setText("")
             binding.edtKMCovered.setText("")
             binding.edtAccomodation.setText("")
             binding.edtPetties.setText("")
@@ -129,6 +133,8 @@ class ClaimsActivity : AppCompatActivity() {
     ) {
 
         progressB.visibility = View.VISIBLE
+        btnClaim.isEnabled = false
+        btnClaim.visibility = View.GONE
         val url = "https://backend.api.symphony.co.ke/claims"
 
         // Create a JSON object to hold your data
@@ -159,7 +165,7 @@ class ClaimsActivity : AppCompatActivity() {
                 this@ClaimsActivity, "Successfully claimed", Toast.LENGTH_SHORT
             ).show()
 
-            binding.edtFarePaid.setText("0.00")
+            binding.edtFarePaid.setText("")
             binding.edtKMCovered.setText("")
             binding.edtAccomodation.setText("")
             binding.edtPetties.setText("")
