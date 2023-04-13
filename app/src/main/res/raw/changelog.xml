@@ -7,7 +7,7 @@
     </release>
 
     <release versionCode="115" versionName="v1.1.5" date="06/04/2023">
-        <new type="summary">Added functionality to upload job card picture. On ticket screen, click on the gallery icon with a plus to attach picture of job card</new>
+        <new type="summary">Improved job card quality on upload. Quality of job card picture will be as good as hardware used</new>
         <new type="summary">Added successful job card selection indicator on ticket details screen</new>
         <bugfix>Improved priority indicator colour codes. Priority scale colours have been improved to avoid confusion</bugfix>
         <bugfix>Fixed layout appearance for Ticket activity on smaller screens</bugfix>
