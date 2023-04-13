@@ -11,6 +11,7 @@ import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -160,13 +161,37 @@ class TechnicianDashboard : AppCompatActivity() {
             }
         })
 
-        binding.imgLogout.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+
         binding.imgProfile.setOnClickListener {
             requestGalleryPermission()
+        }
+
+        binding.menuButton.setOnClickListener {
+                view ->
+            val popupMenu = PopupMenu(this, view)
+            popupMenu.inflate(R.menu.menu)
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.action_changelog -> {
+                        // Handle the Settings menu item click
+                        ChangelogBuilder()
+                            .withUseBulletList(true)
+                            .withManagedShowOnStart(false)
+                            .withSummary(true, true)
+                            .withTitle("What's new?")
+                            .buildAndShowDialog(this, false)
+
+                        true
+                    }
+                    R.id.action_logout -> {
+                        // Handle the Help menu item click
+                        logout()
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popupMenu.show()
         }
 
     }
@@ -325,6 +350,13 @@ class TechnicianDashboard : AppCompatActivity() {
                 }
             })
         queue.add(request)
+
+    }
+
+    fun logout(){
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
 
     }
 

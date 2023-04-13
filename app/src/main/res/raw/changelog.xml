@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release versionCode="116" versionName="v1.1.6" date="13/04/2023">
+        <new type="summary">Added a claims module. To place a claim, update a ticket with the required details then click on the blue claim button</new>
+        <new type="summary">Added an options menu in place of an immediate sign out</new>
+
+
+    </release>
 
     <release versionCode="115" versionName="v1.1.5" date="06/04/2023">
         <new type="summary">Added update profile picture. Just click on the profile picture circle, grant gallery permission and select an image</new>
