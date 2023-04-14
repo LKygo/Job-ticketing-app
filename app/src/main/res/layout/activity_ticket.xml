@@ -192,8 +192,8 @@
             <TextView
                 android:id="@+id/txvTDStartValue"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/_36sdp"
-                android:layout_marginStart="@dimen/_16sdp"
+                android:minHeight="@dimen/_36sdp"
+                android:layout_height="wrap_content"                android:layout_marginStart="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:background="@drawable/edit_text2"
@@ -217,7 +217,8 @@
             <TextView
                 android:id="@+id/txvTDEndValue"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/_36sdp"
+                android:minHeight="@dimen/_36sdp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginEnd="@dimen/_16sdp"
                 android:background="@drawable/edit_text2"
@@ -252,8 +253,8 @@
             <EditText
                 android:id="@+id/edtTDJobCardNoValue"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/_36sdp"
-                android:layout_marginStart="@dimen/_16sdp"
+                android:minHeight="@dimen/_36sdp"
+                android:layout_height="wrap_content"                android:layout_marginStart="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:background="@drawable/edit_text2"
@@ -287,8 +288,8 @@
             <EditText
                 android:id="@+id/edtTDSerialNoValue"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/_36sdp"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:minHeight="@dimen/_36sdp"
+                android:layout_height="wrap_content"                android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginEnd="@dimen/_16sdp"
                 android:background="@drawable/edit_text2"
                 android:gravity="center_vertical"
@@ -463,7 +464,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:backgroundTint="#8A0000"
                 android:text="Clear"
-                app:layout_constraintTop_toBottomOf="@+id/imgCamera"
+                app:layout_constraintTop_toBottomOf="@+id/imgJobCardValidation"
                 app:layout_constraintEnd_toStartOf="@+id/btnClaim"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:layout_editor_absoluteY="909dp" />
