@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cdvCardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    android:elevation="24dp"
+    app:cardCornerRadius="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imgUrgencyColumn2"
+            android:layout_width="@dimen/_9sdp"
+            android:layout_height="0dp"
+            android:background="@drawable/urgency_yellow"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cnsConstraint2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TextView
+                android:id="@+id/txvTicketNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_32sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="Ticket No:"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txvTicketValue"
+                android:textSize="@dimen/_10ssp"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                app:layout_constraintStart_toEndOf="@+id/txvTicketNo"
+                app:layout_constraintTop_toTopOf="@+id/txvTicketNo"
+                tools:text="123456789" />
+
+            <TextView
+                android:id="@+id/txvDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_14sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:text="Assigned on:"
+                android:textSize="@dimen/_10ssp"
+
+                app:layout_constraintEnd_toEndOf="@+id/txvTicketNo"
+                app:layout_constraintTop_toBottomOf="@+id/txvTicketNo" />
+
+            <TextView
+                android:id="@+id/txvDateValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_10ssp"
+
+                app:layout_constraintStart_toStartOf="@+id/txvTicketValue"
+                app:layout_constraintTop_toTopOf="@+id/txvDate"
+                tools:text="31/01/2023" />
+
+            <TextView
+                android:id="@+id/txvFault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_14sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:text="Fault:"
+                android:textSize="@dimen/_10ssp"
+
+                app:layout_constraintEnd_toEndOf="@+id/txvCustomer"
+                app:layout_constraintTop_toBottomOf="@+id/txvCustomerValue" />
+
+            <TextView
+                android:id="@+id/txvFaultValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:textSize="@dimen/_10ssp"
+
+                android:layout_marginBottom="@dimen/_8sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/txvDateValue"
+                app:layout_constraintTop_toTopOf="@+id/txvFault"
+                tools:text="UPS maintenance" />
+
+
+            <TextView
+                android:id="@+id/txvCustomer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_14sdp"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:text="Customer:"
+                android:textSize="@dimen/_10ssp"
+
+                app:layout_constraintEnd_toEndOf="@+id/txvDate"
+                app:layout_constraintTop_toBottomOf="@+id/txvDate" />
+
+            <TextView
+                android:id="@+id/txvCustomerValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:textSize="@dimen/_10ssp"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/txvFaultValue"
+                app:layout_constraintTop_toBottomOf="@+id/txvFaultValue"
+                app:layout_constraintTop_toTopOf="@+id/txvCustomer"
+                tools:text="KCB" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/txvOpenedOn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_57sdp"
+            android:text="Site:"
+            android:textSize="@dimen/_10ssp"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cnsConstraint2" />
+
+        <TextView
+            android:id="@+id/txvOpenedOnValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:textSize="@dimen/_10ssp"
+
+            app:layout_constraintBaseline_toBaselineOf="@id/txvOpenedOn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/txvOpenedOn"
+            tools:text="12/12/2000" />
+
+        <TextView
+            android:id="@+id/txvUpdatedOn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:text="Last updated:"
+            android:textSize="@dimen/_10ssp"
+
+            android:layout_marginStart="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="@+id/txvOpenedOn"
+            app:layout_constraintTop_toBottomOf="@+id/txvOpenedOn" />
+
+        <TextView
+            android:id="@+id/txvUpdatedOnValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_10ssp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/txvOpenedOnValue"
+            app:layout_constraintTop_toTopOf="@+id/txvUpdatedOn"
+            tools:text="12/12/2000" />
+
+
+        <TextView
+            android:id="@+id/txvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="8dp"
+            android:text="Status:"
+            app:layout_constraintEnd_toEndOf="@id/txvUpdatedOn"
+            app:layout_constraintTop_toBottomOf="@+id/txvUpdatedOn" />
+
+        <TextView
+            android:id="@+id/txvStatusValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/txvUpdatedOnValue"
+            app:layout_constraintTop_toTopOf="@+id/txvStatus"
+            tools:text="Pending" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/dvdButton"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_marginHorizontal="@dimen/_14sdp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imgUrgencyColumn2"
+            app:layout_constraintTop_toBottomOf="@id/txvStatusValue" />
+
+        <Button
+            android:id="@+id/btnStartTicket"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:background="@drawable/button"
+            android:text="Start ticket"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dvdButton" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="20dp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>
