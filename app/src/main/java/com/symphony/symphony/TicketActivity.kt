@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android.volley.NetworkError
@@ -66,6 +67,17 @@ class TicketActivity : AppCompatActivity() {
         binding = ActivityTicketBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        val toolbar = findViewById<Toolbar>(R.id.my_toolbar)
+        setSupportActionBar(toolbar)
+
+        // Enable the back button on the toolbar
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+// Define the action when the back button is pressed
+        toolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
 
         val bundle: Bundle? = intent.extras
 

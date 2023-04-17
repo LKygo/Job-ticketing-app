@@ -8,25 +8,26 @@
     android:layout_height="match_parent"
     tools:context=".TicketActivity">
 
-    <TextView
-        android:id="@+id/txvTicketDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="8dp"
-        android:text="Ticket Details"
-        android:textColor="#CE000000"
-        android:textSize="@dimen/_20ssp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/dvdTicketDivider"
-        app:layout_constraintStart_toStartOf="parent" />
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:titleTextColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/baseline_arrow_back_24"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="Ticket"
+        app:titleTextAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/dvdTicketDivider"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_50sdp"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar" />
+
 
 
     <ScrollView
