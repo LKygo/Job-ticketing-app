@@ -183,7 +183,7 @@ class TechnicianDashboard : AppCompatActivity() {
                             .withUseBulletList(true)
                             .withManagedShowOnStart(false)
                             .withSummary(true, true)
-                            .withTitle("What's new in v${versionName}?")
+                            .withTitle("What's new?")
                             .buildAndShowDialog(this, false)
 
                         true
