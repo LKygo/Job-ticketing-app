@@ -193,11 +193,14 @@ class ClaimsActivity : AppCompatActivity() {
                     binding.edtKMCovered.isEnabled = false
                     binding.txvKMCovered.alpha = 0.5f
                     binding.edtKMCovered.setText("") // set the value to 0
-
+                    kmClaim = 0
 
                     binding.edtFarePaid.isEnabled = true
                     binding.txvPsvFare.alpha = 1f
                     binding.edtFarePaid.requestFocus()
+
+                    calculateMileage()
+
 
                 } else if (checkedId == binding.RadioPrivate.id) {
                     // show views for Private option
@@ -209,6 +212,7 @@ class ClaimsActivity : AppCompatActivity() {
                     binding.edtKMCovered.isEnabled = true
                     binding.txvKMCovered.alpha = 1f
                     binding.edtKMCovered.requestFocus()
+                    calculateMileage()
 
 
                 } else {
@@ -220,6 +224,9 @@ class ClaimsActivity : AppCompatActivity() {
 
                     binding.edtFarePaid.isEnabled = true
                     binding.txvPsvFare.alpha = 1f
+
+                    calculateMileage()
+
                 }
             }
             btnClaim.setOnClickListener {

@@ -63,13 +63,18 @@ class TechnicianDashboard : AppCompatActivity() {
         } catch (e: Exception) {
             Log.d("inflate", e.toString())
         }
+        val packageName = packageName // get the package name of your app
+        val packageInfo = packageManager.getPackageInfo(packageName, 0) // get package info for your app
+        val versionName = packageInfo.versionName // get the version name of your app
+
+
 
         ChangelogBuilder()
             .withUseBulletList(true)
             .withMinVersionToShow(113)
             .withManagedShowOnStart(true)
             .withSummary(true, true)
-            .withTitle("What's new?")
+            .withTitle("What's new in v${versionName}?")
             .buildAndShowDialog(this, false)
 
         // Load the profile picture from internal storage
@@ -178,7 +183,7 @@ class TechnicianDashboard : AppCompatActivity() {
                             .withUseBulletList(true)
                             .withManagedShowOnStart(false)
                             .withSummary(true, true)
-                            .withTitle("What's new?")
+                            .withTitle("What's new in v${versionName}?")
                             .buildAndShowDialog(this, false)
 
                         true
