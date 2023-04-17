@@ -273,7 +273,7 @@ android:hint="ksh 0.00"
                 app:layout_constraintTop_toBottomOf="@id/edtPetties" />
 
             <EditText
-                android:id="@+id/edtlunch"
+                android:id="@+id/edtLunch"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
@@ -321,7 +321,7 @@ android:hint="ksh 0.00"
                 android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_16sdp"
                 app:layout_constraintStart_toEndOf="@id/guideline7"
-                app:layout_constraintTop_toBottomOf="@id/edtlunch" />
+                app:layout_constraintTop_toBottomOf="@id/edtLunch" />
 
             <EditText
                 android:id="@+id/edtOthers"
@@ -336,6 +336,56 @@ android:hint="ksh 0.00"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txvOthers" />
 
+
+            <TextView
+                android:id="@+id/txvKmClaim"
+                style="@style/subheadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Km Claim"
+                android:layout_marginTop="@dimen/_16sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edtLaundry" />
+
+            <TextView
+                android:id="@+id/txvKmClaimValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:background="@drawable/edit_text2"
+                android:gravity="center_vertical"
+                app:layout_goneMarginEnd="@dimen/_8sdp"
+                android:hint="ksh 0.00"
+                app:layout_constraintEnd_toStartOf="@id/guideline7"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvKmClaim" />
+
+            <TextView
+                android:id="@+id/txvTotalClaim"
+                style="@style/subheadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Claim"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                app:layout_constraintStart_toEndOf="@id/guideline7"
+                app:layout_constraintTop_toBottomOf="@id/edtOthers" />
+
+            <TextView
+                android:id="@+id/txvTotalClaimValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/edit_text2"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:hint="ksh 0.00"
+                app:layout_constraintStart_toStartOf="@id/guideline7"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvTotalClaim" />
+
+
+
             <Button
                 android:id="@+id/btnClearClaims"
                 android:layout_width="wrap_content"
@@ -344,7 +394,7 @@ android:hint="ksh 0.00"
                 android:backgroundTint="#8A0000"
                 android:text="Clear"
                 android:textColor="@color/white"
-                app:layout_constraintTop_toBottomOf="@+id/edtLaundry"
+                app:layout_constraintTop_toBottomOf="@+id/txvKmClaimValue"
                 app:layout_constraintEnd_toStartOf="@+id/guideline7"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:layout_editor_absoluteY="909dp" />
@@ -368,6 +418,12 @@ android:hint="ksh 0.00"
                 app:layout_constraintEnd_toEndOf="@id/btnClaim"
                 app:layout_constraintStart_toStartOf="@+id/btnClaim"
                 app:layout_constraintTop_toTopOf="@+id/btnClaim" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/_70sdp"
+                app:layout_constraintTop_toBottomOf="@id/btnClearClaims" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
