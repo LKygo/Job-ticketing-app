@@ -1,6 +1,8 @@
 package com.symphony.symphony
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -8,7 +10,6 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -63,6 +64,13 @@ class ResetPass : AppCompatActivity() {
                 btnReq.isClickable = true // enable the sign in button
                 // Handle the API response on success.
                 Toast.makeText(applicationContext, response, Toast.LENGTH_LONG).show()
+
+                Handler().postDelayed({
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }, 2000L)
+
 
             }, Response.ErrorListener { error ->
 
