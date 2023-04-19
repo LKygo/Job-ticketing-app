@@ -29,7 +29,6 @@
         app:layout_constraintTop_toBottomOf="@+id/my_toolbar" />
 
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,10 +63,10 @@
                 android:background="@drawable/edit_text2"
                 android:gravity="center_vertical"
                 android:text="202222121313241"
+                app:layout_constraintBottom_toBottomOf="@+id/txvTDClientValue"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/txvTDClientValue"
-                app:layout_constraintBottom_toBottomOf="@+id/txvTDClientValue" />
+                app:layout_constraintTop_toTopOf="@+id/txvTDClientValue" />
 
             <TextView
                 android:id="@+id/txvTDClient"
@@ -89,9 +88,9 @@
                 android:layout_marginEnd="@dimen/_16sdp"
                 android:background="@drawable/edit_text2"
                 android:gravity="center_vertical"
-                android:text="KCB"
-
                 android:minHeight="@dimen/_36sdp"
+
+                android:text="KCB"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/txvTDClient"
                 app:layout_constraintTop_toBottomOf="@+id/txvTDTicketNO" />
@@ -143,12 +142,12 @@
                 android:id="@+id/txvTDServiceDateValue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:minHeight="@dimen/_36sdp"
                 android:layout_marginStart="@dimen/_16sdp"
-                android:layout_marginEnd="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
                 android:background="@drawable/edit_text2"
                 android:gravity="center_vertical"
+                android:minHeight="@dimen/_36sdp"
                 android:text="14/02/2023"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
@@ -171,10 +170,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:minHeight="@dimen/_36sdp"
                 android:layout_marginEnd="@dimen/_16sdp"
                 android:background="@drawable/edit_text2"
                 android:gravity="center_vertical"
+                android:minHeight="@dimen/_36sdp"
                 android:text="Nairobi"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/txvTDLocation"
@@ -194,12 +193,13 @@
             <TextView
                 android:id="@+id/txvTDStartValue"
                 android:layout_width="0dp"
-                android:minHeight="@dimen/_36sdp"
-                android:layout_height="wrap_content"                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:background="@drawable/edit_text2"
                 android:gravity="center_vertical"
+                android:minHeight="@dimen/_36sdp"
                 android:text="0900 hrs"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
@@ -219,12 +219,12 @@
             <TextView
                 android:id="@+id/txvTDEndValue"
                 android:layout_width="0dp"
-                android:minHeight="@dimen/_36sdp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginEnd="@dimen/_16sdp"
                 android:background="@drawable/edit_text2"
                 android:gravity="center_vertical"
+                android:minHeight="@dimen/_36sdp"
                 android:text="Autofill"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/txvTDEnd"
@@ -255,12 +255,13 @@
             <EditText
                 android:id="@+id/edtTDJobCardNoValue"
                 android:layout_width="0dp"
-                android:minHeight="@dimen/_36sdp"
-                android:layout_height="wrap_content"                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:background="@drawable/edit_text2"
                 android:gravity="center_vertical"
+                android:minHeight="@dimen/_36sdp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txvTDSJobCardNo" />
@@ -290,11 +291,12 @@
             <EditText
                 android:id="@+id/edtTDSerialNoValue"
                 android:layout_width="0dp"
-                android:minHeight="@dimen/_36sdp"
-                android:layout_height="wrap_content"                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginEnd="@dimen/_16sdp"
                 android:background="@drawable/edit_text2"
                 android:gravity="center_vertical"
+                android:minHeight="@dimen/_36sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/txvTDEnd"
                 app:layout_constraintTop_toBottomOf="@+id/txvTDSerialNo" />
@@ -430,33 +432,33 @@
 
 
             <ImageView
-                android:id="@+id/imgCamera"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp"
+                android:id="@+id/btnAttach"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/add_image"
-                app:layout_constraintTop_toBottomOf="@+id/txvTDJCPicture"
+                android:background="@drawable/attachment"
                 app:layout_constraintStart_toStartOf="@+id/edtTDRecommendationsValue"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDJCPicture"
                 tools:layout_editor_absoluteY="842dp" />
 
             <TextView
                 android:id="@+id/txvCameraHint"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                app:layout_constraintTop_toTopOf="@id/imgCamera"
-                app:layout_constraintStart_toEndOf="@id/imgCamera"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:text="Attach picture of jobcard"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:text="Click on the gallery image to select picture of jobcard"
-                android:layout_marginHorizontal="@dimen/_16sdp" />
+                app:layout_constraintStart_toEndOf="@id/btnAttach"
+                app:layout_constraintTop_toTopOf="@id/btnAttach" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgJobCardValidation"
                 android:layout_width="@dimen/_10sdp"
                 android:layout_height="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp"
                 android:background="@drawable/remove"
-                app:layout_constraintTop_toBottomOf="@id/txvCameraHint"
                 app:layout_constraintStart_toStartOf="@id/txvCameraHint"
-                android:layout_marginTop="@dimen/_3sdp"/>
+                app:layout_constraintTop_toBottomOf="@id/txvCameraHint" />
 
 
             <Button
@@ -466,20 +468,20 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:backgroundTint="#8A0000"
                 android:text="Clear"
-                app:layout_constraintTop_toBottomOf="@+id/imgJobCardValidation"
                 app:layout_constraintEnd_toStartOf="@+id/btnClaim"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgJobCardValidation"
                 tools:layout_editor_absoluteY="909dp" />
 
             <Button
                 android:id="@+id/btnClaim"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="#2D5FFF"
                 android:text="claim"
-                app:layout_constraintStart_toStartOf="@id/guideline3"
                 app:layout_constraintEnd_toEndOf="@id/guideline3"
-                app:layout_constraintTop_toTopOf="@id/btnTDClear"
-                android:backgroundTint="#2D5FFF"/>
+                app:layout_constraintStart_toStartOf="@id/guideline3"
+                app:layout_constraintTop_toTopOf="@id/btnTDClear" />
 
             <Button
                 android:id="@+id/btnTDUpdate"

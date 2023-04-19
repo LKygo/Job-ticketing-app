@@ -471,7 +471,7 @@
 
 
             <ImageView
-                android:id="@+id/imgCamera"
+                android:id="@+id/btnAttach"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -488,8 +488,8 @@
                 android:text="Click on the gallery image to select picture of jobcard"
                 android:textSize="@dimen/_10ssp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/imgCamera"
-                app:layout_constraintTop_toTopOf="@id/imgCamera" />
+                app:layout_constraintStart_toEndOf="@id/btnAttach"
+                app:layout_constraintTop_toTopOf="@id/btnAttach" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgJobCardValidation"

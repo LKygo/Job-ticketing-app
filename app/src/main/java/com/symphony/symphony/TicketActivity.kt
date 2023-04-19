@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.webkit.MimeTypeMap
@@ -16,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.android.volley.NetworkError
 import com.android.volley.NetworkResponse
 import com.android.volley.Response
@@ -26,6 +29,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.symphony.symphony.databinding.ActivityTicketBinding
 import org.json.JSONObject
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -54,6 +58,7 @@ class TicketActivity : AppCompatActivity() {
     private var filePath: Uri? = null
     private val reference: StorageReference = FirebaseStorage.getInstance().reference
     private val GALLERY_PERMISSION_CODE = 22
+    private val REQUEST_IMAGE_CAPTURE = 39
 
 
     companion object {
@@ -106,10 +111,10 @@ class TicketActivity : AppCompatActivity() {
         created_at = date
 
 
-        val takePic = binding.imgCamera
+        val takePic = binding.btnAttach
         takePic.setOnClickListener {
-
-            requestGalleryPermission()
+            requestCameraPermission()
+            //            requestGalleryPermission()
         }
 
         updateT.setOnClickListener {
@@ -163,6 +168,8 @@ class TicketActivity : AppCompatActivity() {
 
 
     }
+
+//
 
     private fun uploadToFirebase(uri: Uri) {
 
@@ -226,6 +233,22 @@ class TicketActivity : AppCompatActivity() {
         return mime.getExtensionFromMimeType(contentResolver.getType(mUri))
     }
 
+    private fun requestCameraPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.CAMERA),
+                REQUEST_IMAGE_CAPTURE
+            )
+        } else {
+            openCamera()
+        }
+    }
+
 
     private fun requestGalleryPermission() {
         if (ContextCompat.checkSelfPermission(
@@ -250,6 +273,24 @@ class TicketActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
+
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                GALLERY_PERMISSION_CODE
+            )
+        } else {
+            openGallery()
+        }
+
+
+
         if (requestCode == GALLERY_PERMISSION_CODE && grantResults.isNotEmpty()
             && grantResults[0] == PackageManager.PERMISSION_GRANTED
         ) {
@@ -264,6 +305,39 @@ class TicketActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun openCamera() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            takePictureIntent.resolveActivity(this.packageManager)?.also {
+                val storageDirs = ContextCompat.getExternalFilesDirs(
+                    this, Environment.DIRECTORY_PICTURES
+                )
+                val storageDir = storageDirs[0]
+
+                val photoFile: File? = File(
+                    storageDir, "JPEG_${
+                        SimpleDateFormat(
+                            "yyyyMMdd_HHmmss", Locale.getDefault()
+                        ).format(Date())
+                    }.jpg"
+                ).apply {
+                    createNewFile()
+                }
+
+                photoFile?.let {
+                    val photoURI: Uri = FileProvider.getUriForFile(
+                        this,
+                        "${BuildConfig.APPLICATION_ID}.file-provider",
+                        it
+                    )
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                    // Save the file path
+                    filePath = photoURI
+                }
+            }
+        }
+    }
 
     private fun openGallery() {
         if (ContextCompat.checkSelfPermission(
