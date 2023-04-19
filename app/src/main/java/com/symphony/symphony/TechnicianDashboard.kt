@@ -15,6 +15,7 @@ import android.widget.PopupMenu
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
@@ -64,7 +65,8 @@ class TechnicianDashboard : AppCompatActivity() {
             Log.d("inflate", e.toString())
         }
         val packageName = packageName // get the package name of your app
-        val packageInfo = packageManager.getPackageInfo(packageName, 0) // get package info for your app
+        val packageInfo =
+            packageManager.getPackageInfo(packageName, 0) // get package info for your app
         val versionName = packageInfo.versionName // get the version name of your app
 
 
@@ -171,8 +173,7 @@ class TechnicianDashboard : AppCompatActivity() {
             requestGalleryPermission()
         }
 
-        binding.menuButton.setOnClickListener {
-                view ->
+        binding.menuButton.setOnClickListener { view ->
             val popupMenu = PopupMenu(this, view)
             popupMenu.inflate(R.menu.menu)
             popupMenu.setOnMenuItemClickListener { menuItem ->
@@ -188,11 +189,13 @@ class TechnicianDashboard : AppCompatActivity() {
 
                         true
                     }
+
                     R.id.action_logout -> {
                         // Handle the Help menu item click
-                        logout()
+                        showSignOutDialog()
                         true
                     }
+
                     else -> false
                 }
             }
@@ -216,6 +219,22 @@ class TechnicianDashboard : AppCompatActivity() {
         } else {
             openGallery()
         }
+    }
+
+    private fun showSignOutDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Confirmation")
+        builder.setMessage("Are you sure you want to sign out?")
+        builder.setPositiveButton("Sign out") { dialog, which ->
+            // User clicked Yes button
+            logout()
+        }
+        builder.setNegativeButton("Cancel") { dialog, which ->
+            // User clicked No button
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
     }
 
     override fun onRequestPermissionsResult(
@@ -276,7 +295,6 @@ class TechnicianDashboard : AppCompatActivity() {
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
-
 
 
     private fun uploadProfile() {
@@ -358,10 +376,10 @@ class TechnicianDashboard : AppCompatActivity() {
 
     }
 
-    fun logout(){
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
+    fun logout() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
 
     }
 

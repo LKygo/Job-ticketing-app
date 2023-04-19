@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release versionCode="120" versionName="v1.2.0" date="13/04/2023">
-        <new type="summary">Added a claims module. To place a claim, update a ticket with the required details then click on the blue claim button</new>
-        <new type="summary">Added an options menu in place of an immediate sign out</new>
-        <new type="summary">Added ability to see new changes with a "What's new?" option</new>
-        <new type="summary">Added back navigation on successive screens</new>
+    <release versionCode="210" versionName="v2.1.0" date="19/04/2023">
+        <new type="summary">Can now choose to take job card pictures directly or upload from gallery</new>
+        <new type="summary">Added sign out confirmation dialogue</new>
+
+    </release>
+
+    <release versionCode="200" versionName="v2.0.0" date="13/04/2023">
+        <new type="summary">New  claims module. To place a claim, update a ticket with the required details then click on the blue claim button</new>
+        <new type="summary">Options menu instead of an immediate sign out</new>
+        <new type="summary">Now see new changes with a "What's new?" option</new>
+        <new type="summary">Included back navigation on successive screens</new>
 
     </release>
 
     <release versionCode="115" versionName="v1.1.5" date="06/04/2023">
-        <new type="summary">Improved job card quality on upload. Quality of job card picture will be as good as hardware used</new>
+        <improvement type="summary">Improved job card quality on upload. Quality of job card picture will be as good as hardware used</improvement>
         <new type="summary">Added successful job card selection indicator on ticket details screen</new>
         <bugfix>Improved priority indicator colour codes. Priority scale colours have been improved to avoid confusion</bugfix>
         <bugfix>Fixed layout appearance for Ticket activity on smaller screens</bugfix>
