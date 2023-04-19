@@ -183,6 +183,7 @@ class TechnicianDashboard : AppCompatActivity() {
                         ChangelogBuilder()
                             .withUseBulletList(true)
                             .withManagedShowOnStart(false)
+                            .withMinVersionToShow(113)
                             .withSummary(true, true)
                             .withTitle("What's new?")
                             .buildAndShowDialog(this, false)
@@ -297,9 +298,7 @@ class TechnicianDashboard : AppCompatActivity() {
     }
 
 
-    private fun uploadProfile() {
-        val profilePic: ByteArray
-    }
+
 
 
     private fun getData(id: String) {
