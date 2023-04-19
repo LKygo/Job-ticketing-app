@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_14sdp"
                 android:layout_marginTop="@dimen/_6sdp"
-                android:text="Assigned on:"
+                android:text="Access on:"
                 app:layout_constraintEnd_toEndOf="@+id/txvTicketNo"
                 app:layout_constraintTop_toBottomOf="@+id/txvTicketNo" />
 

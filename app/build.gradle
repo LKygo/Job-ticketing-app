@@ -72,6 +72,9 @@ dependencies {
 //  Volley library
     implementation "com.android.volley:volley:1.2.1"
     implementation 'org.apache.httpcomponents:httpmime:4.5.13'
+//Google smart lock
+//    implementation 'com.google.android.gms:play-services-auth:20.5.0'
+//    implementation 'com.google.android.gms:play-services-identity:20.1.0'
 
 //Change log
     implementation 'com.github.MFlisar:changelog:1.1.7'

@@ -12,8 +12,10 @@ import android.util.Log
 import android.view.View
 import android.webkit.MimeTypeMap
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
@@ -113,7 +115,7 @@ class TicketActivity : AppCompatActivity() {
 
         val takePic = binding.btnAttach
         takePic.setOnClickListener {
-            requestCameraPermission()
+            showImageSourceDialog()
             //            requestGalleryPermission()
         }
 
@@ -266,6 +268,31 @@ class TicketActivity : AppCompatActivity() {
         }
     }
 
+    private fun showImageSourceDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.attach_image, null)
+
+        val alertDialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        val btnCamera = dialogView.findViewById<ImageView>(R.id.btn_camera)
+        val btnGallery = dialogView.findViewById<ImageView>(R.id.btn_gallery)
+
+        btnCamera.setOnClickListener {
+            // Handle camera button click
+            requestCameraPermission()
+            alertDialog.dismiss()
+        }
+
+        btnGallery.setOnClickListener {
+            // Handle gallery button click
+            requestGalleryPermission()
+            alertDialog.dismiss()
+        }
+
+        alertDialog.show()
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -334,6 +361,8 @@ class TicketActivity : AppCompatActivity() {
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
                     // Save the file path
                     filePath = photoURI
+                    binding.imgJobCardValidation.setBackgroundResource(R.drawable.check)
+
                 }
             }
         }
