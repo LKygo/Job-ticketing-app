@@ -21,11 +21,12 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import com.android.volley.AuthFailureError
 import com.android.volley.NetworkError
 import com.android.volley.NetworkResponse
+import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.HttpHeaderParser
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.firebase.storage.FirebaseStorage
@@ -535,43 +536,34 @@ class TicketActivity : AppCompatActivity() {
         val queue = Volley.newRequestQueue(this)
         val url = "https://backend.api.symphony.co.ke/checkClaims"
 
-        val requestBody = "{\"ticketNo\":\"000000\"}"
-        Log.d("Claims", ticketNo)
-        val request = object : StringRequest(
-            Method.GET, url,
-            Response.Listener<String> { response ->
-                // handle successful response
 
+        val requestBody = JSONObject().apply {
+            put("ticketNo", ticketNo)
+        }
+
+        val request = JsonObjectRequest(
+            Request.Method.POST, url, requestBody,
+            { response ->
+                // handle successful response
                 btnClaim.isClickable = true
                 btnClaim.visibility = View.VISIBLE
                 claimsProgress.visibility = View.GONE
-                Toast.makeText(this@TicketActivity, response.toString(), Toast.LENGTH_SHORT).show()
-
-                Log.d("Claims", "Response message: $response")
+                Toast.makeText(this@TicketActivity, response.getString("message"), Toast.LENGTH_SHORT).show()
+                Log.d("Claims", response.toString())
             },
-            Response.ErrorListener { error ->
+            { error ->
                 // handle error
-
                 btnClaim.isClickable = true
                 btnClaim.visibility = View.VISIBLE
                 claimsProgress.visibility = View.GONE
                 Toast.makeText(this@TicketActivity, error.toString(), Toast.LENGTH_SHORT).show()
-
                 val errorMessage = error.message
-                Log.e("Claims", "Error message: $errorMessage")
+                Log.e("Claims", error.toString())
             }
-        ) {
-            override fun getBodyContentType(): String {
-                return "application/json; charset=utf-8"
-            }
-
-            @Throws(AuthFailureError::class)
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray(Charsets.UTF_8)
-            }
-        }
+        )
 
         queue.add(request)
+
 
     }
 
