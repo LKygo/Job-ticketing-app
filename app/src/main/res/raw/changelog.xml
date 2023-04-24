@@ -4,11 +4,11 @@
     <release versionCode="210" versionName="v2.1.0" date="19/04/2023">
         <new type="summary">Can now choose to take job card pictures directly or upload from gallery</new>
         <new type="summary">Added sign out confirmation dialogue</new>
+        <new type="summary">New sorting mechanism according to time</new>
 
     </release>
 
     <release versionCode="200" versionName="v2.0.0" date="13/04/2023">
-        <new type="summary">New  claims module. To place a claim, update a ticket with the required details then click on the blue claim button</new>
         <new type="summary">Options menu instead of an immediate sign out</new>
         <new type="summary">Now see new changes with a "What's new?" option</new>
         <new type="summary">Included back navigation on successive screens</new>

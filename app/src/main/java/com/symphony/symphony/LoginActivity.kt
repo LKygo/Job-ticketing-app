@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.gms.auth.api.credentials.Credentials
 import com.symphony.symphony.databinding.ActivityLoginBinding
 import java.security.MessageDigest
 
@@ -22,6 +23,10 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var forgotPass: TextView
     private lateinit var lnLayout: View
     private lateinit var hashedPassword: String
+
+    private val RC_SAVE = 1
+    private val RC_READ = 2
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -53,7 +58,13 @@ class LoginActivity : AppCompatActivity() {
                     .show()
 
 
-            } else loginNew()
+            } else loginNew().also{
+                val credentialsClient = Credentials.getClient(this)
+                val credential = com.google.android.gms.auth.api.credentials.Credential.Builder(
+                    "user@example.com")
+                    .setPassword("password123")
+                    .build()
+            }
         }
 
     }
@@ -155,6 +166,56 @@ class LoginActivity : AppCompatActivity() {
         editor.apply()
     }
 
+
+//    private fun readCredentials(domain: String) {
+//        val options = HintRequest.Builder()
+//            .setAccountTypes(domain)
+//            .setPasswordLoginSupported(true)
+//            .build()
+//
+//        val client = Credentials.getClient(this)
+//        val intent = client.getHintPickerIntent(options)
+//        try {
+//            startIntentSenderForResult(intent.intentSender, RC_READ, null, 0, 0, 0)
+//        } catch (e: IntentSender.SendIntentException) {
+//            Log.e("MainActivity", "Error reading credentials: $e")
+//        }
+//    }
+//    private fun saveCredentials(email: String, password: String) {
+//        val credentialsClient = Credentials.getClient(this)
+//        val credential = Credential.Builder(email)
+//            .setPassword(password)
+//            .build()
+//        val request = SaveRequest.Builder()
+//            .setCredentials(listOf(credential))
+//            .build()
+//        credentialsClient.save(request).addOnCompleteListener { task ->
+//            if (task.isSuccessful) {
+//                Log.d("Login", "Credentials saved")
+//            } else {
+//                Log.e("Login", "Error saving credentials: ${task.exception?.message}")
+//            }
+//        }
+//    }
+//    private fun getSavedCredentials() {
+//        val credentialsClient = Credentials.getClient(this)
+//        credentialsClient.getSavedCredentials(CredentialPickerConfig.Builder().build()).addOnCompleteListener { task ->
+//            if (task.isSuccessful) {
+//                val credentials = task.result
+//                if (credentials.isNotEmpty()) {
+//                    val credential = credentials[0]
+//                    val email = credential.id
+//                    val password = credential.password
+//                    Log.d("Login", "Retrieved credentials: $email, $password")
+//                    // TODO: Use the retrieved credentials to log in
+//                } else {
+//                    Log.d("Login", "No saved credentials found")
+//                }
+//            } else {
+//                Log.e("Login", "Error getting saved credentials: ${task.exception?.message}")
+//            }
+//        }
+//    }
 
 }
 

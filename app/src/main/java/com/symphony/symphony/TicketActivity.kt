@@ -21,6 +21,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.android.volley.AuthFailureError
 import com.android.volley.NetworkError
 import com.android.volley.NetworkResponse
 import com.android.volley.Response
@@ -57,6 +58,8 @@ class TicketActivity : AppCompatActivity() {
     private lateinit var action_taken: String
     private lateinit var recommendations: String
     private lateinit var attachment: String
+    private lateinit var btnClaim: Button
+    private lateinit var claimsProgress: ProgressBar
     private var filePath: Uri? = null
     private val reference: StorageReference = FirebaseStorage.getInstance().reference
     private val GALLERY_PERMISSION_CODE = 22
@@ -93,6 +96,9 @@ class TicketActivity : AppCompatActivity() {
         progressB = binding.pgbTDProgress
         progressB.visibility = View.GONE
         updateT = binding.btnTDUpdate
+        btnClaim = binding.btnClaim
+        claimsProgress = binding.claimsProgress!!
+        claimsProgress.visibility = View.GONE
 
         ticketNo = bundle?.getString("ticketNo").toString()
         customer = bundle?.getString("customer").toString()
@@ -153,9 +159,9 @@ class TicketActivity : AppCompatActivity() {
         }
 
         binding.btnClaim.setOnClickListener {
-            val intent = Intent(this, ClaimsActivity::class.java)
-            intent.putExtra("ticketNo", ticketNo)
-            startActivity(intent)
+            checkServiceEntry()
+
+
         }
 
         binding.btnTDClear.setOnClickListener {
@@ -300,40 +306,58 @@ class TicketActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
+        when (requestCode) {
+            GALLERY_PERMISSION_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission granted, open gallery
+                    openGallery()
+                } else {
+                    // Permission denied, show toast and request permission again when required
+                    Toast.makeText(
+                        this,
+                        "Gallery permission required to take pictures",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
 
+            REQUEST_IMAGE_CAPTURE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission granted, open camera
+                    openCamera()
+                } else {
+                    // Permission denied, show toast and request permission again when required
+                    Toast.makeText(
+                        this,
+                        "Camera permission required to take pictures",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(android.Manifest.permission.CAMERA),
+                        REQUEST_IMAGE_CAPTURE
+                    )
+
+                }
+            }
+        }
+    }
+
+    private fun openCamera() {
 
         if (ContextCompat.checkSelfPermission(
                 this,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
+                android.Manifest.permission.CAMERA
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
                 this,
-                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
-                GALLERY_PERMISSION_CODE
+                arrayOf(android.Manifest.permission.CAMERA),
+                REQUEST_IMAGE_CAPTURE
             )
-        } else {
-            openGallery()
         }
 
-
-
-        if (requestCode == GALLERY_PERMISSION_CODE && grantResults.isNotEmpty()
-            && grantResults[0] == PackageManager.PERMISSION_GRANTED
-        ) {
-            openGallery()
-        } else {
-            // Permission denied, handle the case here
-            Toast.makeText(
-                this,
-                "Gallery permission required to take pictures",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    }
-
-
-    private fun openCamera() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             takePictureIntent.resolveActivity(this.packageManager)?.also {
                 val storageDirs = ContextCompat.getExternalFilesDirs(
@@ -361,8 +385,9 @@ class TicketActivity : AppCompatActivity() {
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
                     // Save the file path
                     filePath = photoURI
-                    binding.imgJobCardValidation.setBackgroundResource(R.drawable.check)
-
+                    if (filePath != null) {
+                        binding.imgJobCardValidation.setBackgroundResource(R.drawable.check)
+                    }
                 }
             }
         }
@@ -384,6 +409,12 @@ class TicketActivity : AppCompatActivity() {
                 "Gallery permission required to take pictures",
                 Toast.LENGTH_SHORT
             ).show()
+
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                GALLERY_PERMISSION_CODE
+            )
         }
     }
 
@@ -394,7 +425,7 @@ class TicketActivity : AppCompatActivity() {
 
         if (resultCode == Activity.RESULT_OK && requestCode == GALLERY_PERMISSION_CODE) {
             filePath = data?.data!!
-            binding.imgJobCardValidation.setBackgroundResource(R.drawable.check)
+
 
         }
     }
@@ -499,6 +530,51 @@ class TicketActivity : AppCompatActivity() {
         Volley.newRequestQueue(this@TicketActivity).add(request)
 
     }
+
+    fun checkServiceEntry() {
+        val queue = Volley.newRequestQueue(this)
+        val url = "https://backend.api.symphony.co.ke/checkClaims"
+
+        val requestBody = "{\"ticketNo\":\"000000\"}"
+        Log.d("Claims", ticketNo)
+        val request = object : StringRequest(
+            Method.GET, url,
+            Response.Listener<String> { response ->
+                // handle successful response
+
+                btnClaim.isClickable = true
+                btnClaim.visibility = View.VISIBLE
+                claimsProgress.visibility = View.GONE
+                Toast.makeText(this@TicketActivity, response.toString(), Toast.LENGTH_SHORT).show()
+
+                Log.d("Claims", "Response message: $response")
+            },
+            Response.ErrorListener { error ->
+                // handle error
+
+                btnClaim.isClickable = true
+                btnClaim.visibility = View.VISIBLE
+                claimsProgress.visibility = View.GONE
+                Toast.makeText(this@TicketActivity, error.toString(), Toast.LENGTH_SHORT).show()
+
+                val errorMessage = error.message
+                Log.e("Claims", "Error message: $errorMessage")
+            }
+        ) {
+            override fun getBodyContentType(): String {
+                return "application/json; charset=utf-8"
+            }
+
+            @Throws(AuthFailureError::class)
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray(Charsets.UTF_8)
+            }
+        }
+
+        queue.add(request)
+
+    }
+
 
 
 }

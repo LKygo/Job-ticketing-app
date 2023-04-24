@@ -173,6 +173,35 @@ class TechnicianDashboard : AppCompatActivity() {
             requestGalleryPermission()
         }
 
+        binding.menuSort.setOnClickListener {view ->
+            val popupMenu = PopupMenu(this, view)
+            popupMenu.inflate(R.menu.sort_menu)
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.mnuNewestFirst -> {
+                        // Handle the Settings menu item click
+                     tickets.sortByDescending { it.openedOn }
+
+                        tAdapter?.notifyDataSetChanged()
+
+                        Toast.makeText(this, "Sort according to newest ticket", Toast.LENGTH_SHORT).show()
+                        true
+                    }
+
+                    R.id.mnuOldestFirst -> {
+                        // Handle the Help menu item click
+                        tickets.sortBy { it.openedOn }
+
+                        tAdapter?.notifyDataSetChanged()
+                        Toast.makeText(this, "Sort according to oldest ticket", Toast.LENGTH_SHORT).show()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+            popupMenu.show()
+        }
         binding.menuButton.setOnClickListener { view ->
             val popupMenu = PopupMenu(this, view)
             popupMenu.inflate(R.menu.menu)
@@ -204,6 +233,7 @@ class TechnicianDashboard : AppCompatActivity() {
         }
 
     }
+
 
 
     private fun requestGalleryPermission() {
@@ -329,7 +359,8 @@ class TechnicianDashboard : AppCompatActivity() {
                         val urgency = ticket.getString("urgency")
                         val state = urgencyControl(urgency)
                         val createdAt = ticket.getString("created_at")
-                        val openedOn = ticket.getString("updated_at")
+                        val unformattedOpenedOn = ticket.getString("updated_at")
+                        val openedOn = formatDateString(unformattedOpenedOn)
                         val status = ticket.getString("status")
 
                         tickets.add(
@@ -463,6 +494,9 @@ class TechnicianDashboard : AppCompatActivity() {
             else -> "Hello"
         }
     }
+
+
 }
+
 
 
