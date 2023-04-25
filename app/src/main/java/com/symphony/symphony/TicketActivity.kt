@@ -300,17 +300,22 @@ class TicketActivity : AppCompatActivity() {
 
         val btnCamera = dialogView.findViewById<ImageView>(R.id.btn_camera)
         val btnGallery = dialogView.findViewById<ImageView>(R.id.btn_gallery)
+        binding.btnAttach.setBackgroundResource(R.drawable.attachment_filled)
 
         btnCamera.setOnClickListener {
             // Handle camera button click
             requestCameraPermission()
             alertDialog.dismiss()
+            binding.btnAttach.setBackgroundResource(R.drawable.attachment)
+
         }
 
         btnGallery.setOnClickListener {
             // Handle gallery button click
             requestGalleryPermission()
             alertDialog.dismiss()
+            binding.btnAttach.setBackgroundResource(R.drawable.attachment)
+
         }
 
         alertDialog.show()

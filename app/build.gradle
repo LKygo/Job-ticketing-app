@@ -51,6 +51,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'com.google.firebase:firebase-storage-ktx:20.1.0'
     implementation 'com.google.firebase:firebase-database-ktx:20.1.0'
+    implementation 'androidx.preference:preference:1.2.0'
     def lottieVersion = "4.1.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"
     implementation 'androidx.core:core-ktx:1.9.0'

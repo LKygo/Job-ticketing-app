@@ -11,6 +11,8 @@ import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.PopupMenu
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -25,10 +27,14 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.android.volley.AuthFailureError
 import com.android.volley.NetworkError
+import com.android.volley.NoConnectionError
+import com.android.volley.ParseError
+import com.android.volley.Response
 import com.android.volley.ServerError
 import com.android.volley.TimeoutError
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.michaelflisar.changelog.ChangelogBuilder
 import com.symphony.symphony.databinding.ActivityTechnicianDashboardBinding
@@ -48,6 +54,7 @@ class TechnicianDashboard : AppCompatActivity() {
     private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var errorLayout: View
     private lateinit var recyclerView: RecyclerView
+    private lateinit var btnreset: Button
 
 
     companion object {
@@ -173,18 +180,19 @@ class TechnicianDashboard : AppCompatActivity() {
             requestGalleryPermission()
         }
 
-        binding.menuSort.setOnClickListener {view ->
+        binding.menuSort.setOnClickListener { view ->
             val popupMenu = PopupMenu(this, view)
             popupMenu.inflate(R.menu.sort_menu)
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.mnuNewestFirst -> {
                         // Handle the Settings menu item click
-                     tickets.sortByDescending { it.openedOn }
+                        tickets.sortByDescending { it.openedOn }
 
                         tAdapter?.notifyDataSetChanged()
 
-                        Toast.makeText(this, "Sort according to newest ticket", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Sort according to newest ticket", Toast.LENGTH_SHORT)
+                            .show()
                         true
                     }
 
@@ -193,7 +201,8 @@ class TechnicianDashboard : AppCompatActivity() {
                         tickets.sortBy { it.openedOn }
 
                         tAdapter?.notifyDataSetChanged()
-                        Toast.makeText(this, "Sort according to oldest ticket", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Sort according to oldest ticket", Toast.LENGTH_SHORT)
+                            .show()
                         true
                     }
 
@@ -202,6 +211,7 @@ class TechnicianDashboard : AppCompatActivity() {
             }
             popupMenu.show()
         }
+
         binding.menuButton.setOnClickListener { view ->
             val popupMenu = PopupMenu(this, view)
             popupMenu.inflate(R.menu.menu)
@@ -220,6 +230,12 @@ class TechnicianDashboard : AppCompatActivity() {
                         true
                     }
 
+                    R.id.action_resetpass -> {
+                        // Handle the Help menu item click
+                        showResetPassDialog()
+                        true
+                    }
+
                     R.id.action_logout -> {
                         // Handle the Help menu item click
                         showSignOutDialog()
@@ -233,7 +249,6 @@ class TechnicianDashboard : AppCompatActivity() {
         }
 
     }
-
 
 
     private fun requestGalleryPermission() {
@@ -266,6 +281,112 @@ class TechnicianDashboard : AppCompatActivity() {
         }
         val dialog = builder.create()
         dialog.show()
+    }
+
+    private fun showResetPassDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.reset_password, null)
+
+        val alertDialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+        alertDialog.show()
+
+        alertDialog.setOnShowListener {
+            val btnreset = dialogView.findViewById<Button>(R.id.btnResetP)
+            btnreset?.setOnClickListener {
+                val oldPass = alertDialog.findViewById<EditText>(R.id.oldPassReset)?.text.toString()
+                val newPass = alertDialog.findViewById<EditText>(R.id.newPassReset)?.text.toString()
+                val confirmPass =
+                    alertDialog.findViewById<EditText>(R.id.confirmPassReset)?.text.toString()
+
+
+                val sharedPref = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+                val id = sharedPref.getString("userId", null)
+
+                if (id != null) {
+                    if (oldPass.isEmpty() || newPass.isEmpty() || confirmPass.isEmpty()) {
+                        Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                    } else {
+
+                        if (newPass !== oldPass) {
+                            Toast.makeText(this, "Passwords don't match", Toast.LENGTH_SHORT).show()
+                        } else {
+                            resetPass(id, oldPass, newPass)
+                        }
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    private fun resetPass(id: String, oldPass: String, newPass: String) {
+
+        val btnResetPass = findViewById<Button>(R.id.btnResetP)
+        val progressReset = findViewById<ProgressBar>(R.id.progressBReset)
+
+//        Set disable views and show progress
+        btnResetPass.isClickable = false
+        btnResetPass.text = ""
+        progressReset.visibility = View.VISIBLE
+
+
+        // Instantiate the RequestQueue.
+        val queue = Volley.newRequestQueue(this)
+
+        // Set up the resetPass endpoint URL and request parameters.
+        val url = "https://backend.api.symphony.co.ke/login"
+        val params = HashMap<String, String>()
+        params["id"] = id
+        params["oldPass"] = oldPass
+        params["newPass"] = newPass
+
+
+        // Create a new POST request with the login endpoint URL and parameters.
+        val stringRequest =
+            object : StringRequest(Method.POST, url, Response.Listener<String> { response ->
+
+                progressReset.visibility = View.GONE // hide the progress bar
+                btnResetPass.text = "reset"
+                btnResetPass.isClickable = true // enable the sign in button
+
+
+                // Handle the API response on success.
+                Toast.makeText(applicationContext, "Password successfully reset", Toast.LENGTH_LONG)
+                    .show()
+                Log.d("reset", response.toString())
+            }, Response.ErrorListener { error ->
+
+
+                progressReset.visibility = View.GONE // hide the progress bar
+                btnResetPass.text = "reset"
+                btnResetPass.isClickable = true // enable the sign in button
+
+                // Handle the API response on error.
+                val errorMessage = when (error) {
+                    is NoConnectionError -> "No internet connection"
+                    is TimeoutError -> "Connection timed out"
+                    is ServerError -> "No user under this ID"
+                    is AuthFailureError -> "Authentication failure"
+                    is NetworkError -> "Network error"
+                    is ParseError -> "Parse error"
+                    else -> "Unknown error"
+                }
+                Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_LONG).show()
+                Log.d("reset", error.toString())
+
+            }) {
+
+                // Set the POST request parameters.
+                override fun getParams(): Map<String, String> {
+                    return params
+                }
+            }
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest)
+
     }
 
     override fun onRequestPermissionsResult(
@@ -326,9 +447,6 @@ class TechnicianDashboard : AppCompatActivity() {
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
-
-
-
 
 
     private fun getData(id: String) {

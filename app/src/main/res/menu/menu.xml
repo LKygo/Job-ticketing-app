@@ -8,8 +8,15 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/action_resetpass"
+        android:title="Reset password"
+        android:icon="@drawable/logout_outline"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_logout"
         android:title="Sign out"
         android:icon="@drawable/logout_outline"
         app:showAsAction="always" />
+
+
 </menu>
