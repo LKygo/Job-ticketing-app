@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+
+    <release versionCode="211" versionName="v2.1.1" date="25/04/2023">
+        <new type="summary">New claims model. Update ticket details then click on the claim button to make a claim</new>
+        <bugfix>Fixed broken job card selection indicator</bugfix>
+        <bugfix>Bug fixes and performance improvements</bugfix>
+
+
+    </release>
     <release versionCode="210" versionName="v2.1.0" date="19/04/2023">
         <new type="summary">Can now choose to take job card pictures directly or upload from gallery</new>
         <new type="summary">Added sign out confirmation dialogue</new>

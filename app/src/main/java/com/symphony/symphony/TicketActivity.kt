@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -21,14 +22,20 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.android.volley.AuthFailureError
 import com.android.volley.NetworkError
 import com.android.volley.NetworkResponse
+import com.android.volley.NoConnectionError
+import com.android.volley.ParseError
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.ServerError
+import com.android.volley.TimeoutError
 import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.symphony.symphony.databinding.ActivityTicketBinding
@@ -123,7 +130,6 @@ class TicketActivity : AppCompatActivity() {
         val takePic = binding.btnAttach
         takePic.setOnClickListener {
             showImageSourceDialog()
-            //            requestGalleryPermission()
         }
 
         updateT.setOnClickListener {
@@ -160,7 +166,17 @@ class TicketActivity : AppCompatActivity() {
         }
 
         binding.btnClaim.setOnClickListener {
-            checkServiceEntry()
+
+            btnClaim.isClickable = false
+            btnClaim.visibility = View.GONE
+            claimsProgress.visibility = View.VISIBLE
+
+            Snackbar.make(view, "Checking whether ticket has been updated", Snackbar.LENGTH_SHORT).show()
+
+           Handler().postDelayed({
+               checkServiceEntry()
+
+           },2000L)
 
 
         }
@@ -426,6 +442,7 @@ class TicketActivity : AppCompatActivity() {
 
         if (resultCode == Activity.RESULT_OK && requestCode == GALLERY_PERMISSION_CODE) {
             filePath = data?.data!!
+            binding.imgJobCardValidation.setBackgroundResource(R.drawable.check)
 
 
         }
@@ -537,9 +554,9 @@ class TicketActivity : AppCompatActivity() {
         val url = "https://backend.api.symphony.co.ke/checkClaims"
 
 
-        val requestBody = JSONObject().apply {
-            put("ticketNo", ticketNo)
-        }
+        val requestBody = JSONObject()
+        requestBody.put("ticketNo", ticketNo)
+
 
         val request = JsonObjectRequest(
             Request.Method.POST, url, requestBody,
@@ -548,7 +565,13 @@ class TicketActivity : AppCompatActivity() {
                 btnClaim.isClickable = true
                 btnClaim.visibility = View.VISIBLE
                 claimsProgress.visibility = View.GONE
-                Toast.makeText(this@TicketActivity, response.getString("message"), Toast.LENGTH_SHORT).show()
+
+
+                val intent = Intent(this, ClaimsActivity::class.java)
+                intent.putExtra("ticketNo", ticketNo)
+                startActivity(intent)
+
+                Toast.makeText(this@TicketActivity, "Redirecting you...", Toast.LENGTH_SHORT).show()
                 Log.d("Claims", response.toString())
             },
             { error ->
@@ -556,19 +579,28 @@ class TicketActivity : AppCompatActivity() {
                 btnClaim.isClickable = true
                 btnClaim.visibility = View.VISIBLE
                 claimsProgress.visibility = View.GONE
-                Toast.makeText(this@TicketActivity, error.toString(), Toast.LENGTH_SHORT).show()
-                val errorMessage = error.message
-                Log.e("Claims", error.toString())
+
+                val errorMessage = when (error) {
+                    is NoConnectionError -> "No internet connection"
+                    is TimeoutError -> "Connection timed out"
+                    is ServerError -> "Please update ticket to claim"
+                    is AuthFailureError -> "Authentication failure"
+                    is NetworkError -> "Network error"
+                    is ParseError -> "Parse error"
+                    else -> "Unknown error"
+                }
+
+                val statusCode = error.networkResponse?.statusCode ?: -1
+                val errorString = String(error.networkResponse?.data ?: ByteArray(0))
+
+                val message = errorMessage
+
+                Toast.makeText(this@TicketActivity, message, Toast.LENGTH_LONG).show()
+                Log.e("Claims", message)
             }
         )
-
         queue.add(request)
-
-
     }
-
-
-
 }
 
 
