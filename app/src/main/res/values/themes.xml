@@ -20,7 +20,7 @@
     </style>
 
 
-    <style name="accentPurple" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="accentPurple" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorAccent">@color/purple_light</item>
     </style>
     <style name="subheadingText">

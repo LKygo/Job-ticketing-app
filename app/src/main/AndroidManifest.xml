@@ -34,10 +34,10 @@
             android:label="@string/title_activity_settings" />
         <activity
             android:name=".ClaimsActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".ResetPass"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".TicketActivity"
             android:exported="false" />
@@ -53,10 +53,10 @@
         <activity
             android:name=".LoginActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".TechnicianDashboard"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />

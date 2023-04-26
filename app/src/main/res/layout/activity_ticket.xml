@@ -302,6 +302,44 @@
                 app:layout_constraintStart_toStartOf="@+id/txvTDEnd"
                 app:layout_constraintTop_toBottomOf="@+id/txvTDSerialNo" />
 
+            <TextView
+                android:id="@+id/txvTDModel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:text="Model"
+                android:textColor="#99000000"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintStart_toStartOf="@id/txvTDStart"
+                app:layout_constraintTop_toBottomOf="@+id/edtTDJobCardNoValue" />
+
+            <TextView
+                android:id="@+id/txvAsteriscsM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:text=" *"
+                android:textColor="#FD0000"
+                android:textSize="@dimen/_16ssp"
+                app:layout_constraintBaseline_toBaselineOf="@id/txvTDModel"
+                app:layout_constraintStart_toEndOf="@+id/txvTDModel" />
+
+            <EditText
+                android:id="@+id/edtModelValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/edit_text2"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/_36sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvTDModel" />
+
+
+
+
 
             <TextView
                 android:id="@+id/txvTDFindings"
@@ -312,7 +350,7 @@
                 android:textColor="#99000000"
                 android:textSize="@dimen/_14ssp"
                 app:layout_constraintStart_toStartOf="@id/txvTDStart"
-                app:layout_constraintTop_toBottomOf="@+id/edtTDJobCardNoValue" />
+                app:layout_constraintTop_toBottomOf="@+id/edtModelValue" />
 
             <TextView
                 android:id="@+id/txvAsteriscs"

@@ -1,8 +1,11 @@
 package com.symphony.symphony
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
+import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -27,6 +30,7 @@ class LoginActivity : AppCompatActivity() {
     private val RC_SAVE = 1
     private val RC_READ = 2
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -67,6 +71,34 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+        val pass = binding.edtPassword
+        var isPasswordVisible = false // keep track of current state
+
+        pass.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawable = pass.compoundDrawables[2] // index 2 is for end drawable
+                if (drawable != null && event.x >= pass.width - pass.paddingEnd - drawable.bounds.width()) {
+                    // The touch event is inside the bounds of the drawable
+                    isPasswordVisible = !isPasswordVisible // toggle state
+                    if (isPasswordVisible) {
+                        // show password
+                        pass.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                        pass.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_visibility_off_24, 0)
+                    } else {
+                        // hide password
+                        pass.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                        pass.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_visibility_24, 0)
+                    }
+                    true
+                } else {
+                    false
+                }
+            } else {
+                false
+            }
+        }
+
+
     }
 
 
@@ -74,7 +106,7 @@ class LoginActivity : AppCompatActivity() {
 
 
         signIn.isClickable = false
-        signIn.visibility = View.GONE
+        signIn.text = ""
         progressBar.visibility = View.VISIBLE
         val email = binding.edtEmail.text.toString()
         val password = binding.edtPassword.text.toString()
@@ -94,7 +126,7 @@ class LoginActivity : AppCompatActivity() {
             object : StringRequest(Method.POST, url, Response.Listener<String> { response ->
 
                 progressBar.visibility = View.GONE // hide the progress bar
-                signIn.visibility = View.VISIBLE
+                signIn.text = "sign in"
                 signIn.isClickable = true // enable the sign in button
 
                 // Parse the response to get the user ID
@@ -117,7 +149,7 @@ class LoginActivity : AppCompatActivity() {
                 finish()
             }, Response.ErrorListener { error ->
                 progressBar.visibility = View.GONE // hide the progress bar
-                signIn.visibility = View.VISIBLE
+                signIn.text = "sign in"
                 signIn.isClickable = true // enable the sign in button
                 // Handle the API response on error.
                 val errorMessage = error.networkResponse?.statusCode?.let {

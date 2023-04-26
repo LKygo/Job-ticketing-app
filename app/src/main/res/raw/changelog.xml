@@ -2,8 +2,10 @@
 <changelog>
 
 
+
     <release versionCode="211" versionName="v2.1.1" date="25/04/2023">
         <new type="summary">New claims model. Update ticket details then click on the claim button to make a claim</new>
+        <new type="summary">New in app password reset functionality. To access, click on the options menu on the top right</new>
         <bugfix>Fixed broken job card selection indicator</bugfix>
         <bugfix>Bug fixes and performance improvements</bugfix>
 

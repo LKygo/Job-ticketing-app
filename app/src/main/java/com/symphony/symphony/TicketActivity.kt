@@ -67,6 +67,7 @@ class TicketActivity : AppCompatActivity() {
     private lateinit var recommendations: String
     private lateinit var attachment: String
     private lateinit var btnClaim: Button
+    private lateinit var model : String
     private lateinit var claimsProgress: ProgressBar
     private var filePath: Uri? = null
     private val reference: StorageReference = FirebaseStorage.getInstance().reference
@@ -123,7 +124,8 @@ class TicketActivity : AppCompatActivity() {
         binding.txvTDLocationValue.text = city
         binding.txvTDStartValue.text = sTime
 
-        start_time = sTime
+
+        start_time = "${servicedate} $sTime"
         created_at = date
 
 
@@ -135,7 +137,9 @@ class TicketActivity : AppCompatActivity() {
         updateT.setOnClickListener {
             val currentTime = Date()
             val formatter = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-            end_time = formatter.format(currentTime)
+            val endt = formatter.format(currentTime)
+            end_time = "$servicedate $endt"
+            model = binding.edtModelValue!!.text.toString()
             jobcardno = binding.edtTDJobCardNoValue.text.toString()
             serialNo = binding.edtTDSerialNoValue.text.toString()
             findings = binding.edtTDFindingsValue.text.toString()
@@ -143,7 +147,7 @@ class TicketActivity : AppCompatActivity() {
             recommendations = binding.edtTDRecommendationsValue.text.toString()
 
 
-            if (jobcardno.isEmpty() || serialNo.isEmpty() || findings.isEmpty() || action_taken.isEmpty() || recommendations.isEmpty()) {
+            if (jobcardno.isEmpty() || serialNo.isEmpty() || findings.isEmpty() ||model.isEmpty() ||  action_taken.isEmpty() || recommendations.isEmpty()) {
 
                 Toast.makeText(
                     this,
@@ -187,6 +191,7 @@ class TicketActivity : AppCompatActivity() {
             binding.edtTDSerialNoValue.setText("")
             binding.edtTDJobCardNoValue.setText("")
             binding.edtTDRecommendationsValue.setText("")
+            binding.edtModelValue?.setText("")
             filePath = null
             binding.imgJobCardValidation.setBackgroundResource(R.drawable.remove)
         }
@@ -216,6 +221,7 @@ class TicketActivity : AppCompatActivity() {
                         servicedate,
                         start_time,
                         end_time,
+                        model,
                         serialNo,
                         city,
                         findings,
@@ -460,6 +466,7 @@ class TicketActivity : AppCompatActivity() {
         service_date: String,
         start_time: String,
         end_time: String,
+        model: String,
         serial_no: String,
         city: String,
         findings: String,
@@ -480,6 +487,7 @@ class TicketActivity : AppCompatActivity() {
         jsonObject.put("service_date", service_date)
         jsonObject.put("start_time", start_time)
         jsonObject.put("end_time", end_time)
+        jsonObject.put("model", model)
         jsonObject.put("serial_no", serial_no)
         jsonObject.put("city", city)
         jsonObject.put("findings", findings)
@@ -507,6 +515,7 @@ class TicketActivity : AppCompatActivity() {
             binding.edtTDSerialNoValue.setText("")
             binding.edtTDJobCardNoValue.setText("")
             binding.edtTDRecommendationsValue.setText("")
+            binding.edtModelValue?.setText("")
             filePath = null
             binding.imgJobCardValidation.setBackgroundResource(R.drawable.remove)
 
