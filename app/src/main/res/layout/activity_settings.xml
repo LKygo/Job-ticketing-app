@@ -72,7 +72,7 @@
             android:id="@+id/edtCurrentPass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_60sdp"
+            android:layout_marginTop="@dimen/_40sdp"
             android:background="@drawable/edit_text"
             android:drawableEnd="@drawable/baseline_visibility_24"
             android:hint="Current password"
@@ -80,7 +80,7 @@
             android:paddingVertical="@dimen/_9sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/txvDHAccount" />
+            app:layout_constraintTop_toBottomOf="@+id/txvDHAccount" />
 
         <EditText
             android:id="@+id/edtNewPassword"
