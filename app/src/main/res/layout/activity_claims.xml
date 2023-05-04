@@ -105,69 +105,93 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#0DFFFFFF">
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/txvModeOT"
-                        style="@style/subheadingText"
-                        android:layout_width="wrap_content"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cnlMOT"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_6sdp"
-                        android:text="Mode of transport"
-                        app:layout_constraintBottom_toBottomOf="@id/ClaimsRadioGroup"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/ClaimsRadioGroup" />
-
-                    <RadioGroup
-                        android:id="@+id/ClaimsRadioGroup"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_16sdp"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:layout_marginEnd="@dimen/_16sdp"
-                        android:layout_marginBottom="@dimen/_12sdp"
-                        android:orientation="horizontal"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/txvModeOT"
+                        android:background="#0DFFFFFF"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <RadioButton
-                            android:id="@+id/RadioPsv"
+                        <TextView
+                            android:id="@+id/txvModeOT"
+                            style="@style/subheadingText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="start"
-                            android:layout_marginEnd="@dimen/_8sdp"
-                            android:text="Public" />
+                            android:layout_marginStart="@dimen/_6sdp"
+                            android:text="Mode of transport"
+                            app:layout_constraintBottom_toBottomOf="@id/ClaimsRadioGroup"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/ClaimsRadioGroup" />
 
-                        <RadioButton
-                            android:id="@+id/RadioPrivate"
+                        <RadioGroup
+                            android:id="@+id/ClaimsRadioGroup"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:text="Private" />
-                    </RadioGroup>
+                            android:layout_marginStart="@dimen/_16sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:layout_marginEnd="@dimen/_16sdp"
+                            android:layout_marginBottom="@dimen/_12sdp"
+                            android:orientation="horizontal"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/txvModeOT"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <RadioButton
+                                android:id="@+id/RadioPsv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start"
+                                android:layout_marginEnd="@dimen/_8sdp"
+                                android:text="Public" />
+
+                            <RadioButton
+                                android:id="@+id/RadioPrivate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:text="Private" />
+                        </RadioGroup>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/txvSelectZone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Please select zone:"
+                        style="@style/subheadingText"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/cnlMOT" />
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/chipGroup"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/ClaimsRadioGroup"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txvSelectZone"
                         app:singleSelection="true">
 
                         <com.google.android.material.chip.Chip
+                            android:id="@+id/chipNairobi"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_16sdp"
                             android:text="within Nairobi" />
 
                         <com.google.android.material.chip.Chip
+                            android:id="@+id/chipOther"
                             android:layout_width="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_16sdp"
                             android:layout_height="wrap_content"
                             android:text="Out of Nairobi" />
                     </com.google.android.material.chip.ChipGroup>
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -205,22 +229,21 @@
                 android:alpha="0.5"
                 android:text="Distance Covered"
                 android:visibility="gone"
-                app:layout_constraintStart_toEndOf="@id/guideline7"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cdvRadio" />
 
             <EditText
                 android:id="@+id/edtKMCovered"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/edit_text2"
-                android:enabled="false"
                 android:hint="0.00 kms"
                 android:inputType="number"
                 android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/guideline7"
+                app:layout_constraintEnd_toStartOf="@id/guideline7"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txvKMCovered" />
 
 
@@ -381,8 +404,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_16sdp"
                 android:text="Km Claim"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/edtLaundry" />
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/guideline7"
+                app:layout_constraintTop_toBottomOf="@id/cdvRadio" />
 
             <TextView
                 android:id="@+id/txvKmClaimValue"
@@ -393,10 +417,10 @@
                 android:background="@drawable/edit_text2"
                 android:gravity="center_vertical"
                 android:hint="ksh 0.00"
-                app:layout_constraintEnd_toStartOf="@id/guideline7"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txvKmClaim"
-                app:layout_goneMarginEnd="@dimen/_8sdp" />
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/guideline7"
+                app:layout_constraintTop_toBottomOf="@+id/txvKmClaim" />
 
             <TextView
                 android:id="@+id/txvTotalClaim"
@@ -404,22 +428,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_16sdp"
                 android:text="Total Claim"
-                app:layout_constraintStart_toEndOf="@id/guideline7"
-                app:layout_constraintTop_toBottomOf="@id/edtOthers" />
+                android:textStyle="bold"
+                android:textSize="@dimen/_16sdp"
+                app:layout_constraintStart_toStartOf="@id/txvTotalClaimValue"
+                app:layout_constraintTop_toTopOf="@+id/txvTotalClaimValue"
+                app:layout_constraintBottom_toBottomOf="@id/txvTotalClaimValue"/>
 
             <TextView
                 android:id="@+id/txvTotalClaimValue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:minHeight="@dimen/_36sdp"
+                android:layout_marginTop="@dimen/_16sdp"
                 android:background="@drawable/edit_text2"
                 android:hint="ksh 0.00"
+                android:textAlignment="viewEnd"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/guideline7"
-                app:layout_constraintTop_toBottomOf="@+id/txvTotalClaim" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edtLaundry" />
 
 
             <Button
@@ -432,7 +459,7 @@
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toStartOf="@+id/guideline7"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txvKmClaimValue"
+                app:layout_constraintTop_toBottomOf="@+id/txvTotalClaimValue"
                 tools:layout_editor_absoluteY="909dp" />
 
             <Button
