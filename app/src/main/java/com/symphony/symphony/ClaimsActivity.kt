@@ -47,6 +47,8 @@ class ClaimsActivity : AppCompatActivity() {
     private var claimAmount = 0
     private var kmClaim = 0
 
+    // Declare a variable to hold the selected chip ID
+    private var selectedChipId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityClaimsBinding.inflate(layoutInflater)
@@ -83,7 +85,10 @@ class ClaimsActivity : AppCompatActivity() {
                 calculateTotalClaimValue()
             }
 
-            override fun afterTextChanged(p0: Editable?) {}
+            override fun afterTextChanged(p0: Editable?) {
+                calculateMileage()
+                calculateTotalClaimValue()
+            }
         })
         binding.edtFarePaid.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
@@ -273,6 +278,13 @@ class ClaimsActivity : AppCompatActivity() {
 
         }
 
+// Set the checked change listener outside the calculateMileage() function
+        binding.chipGroup.setOnCheckedChangeListener { group, checkedId ->
+            // Update the selected chip ID
+            selectedChipId = checkedId
+            // Calculate the mileage based on the new selection
+            calculateMileage()
+        }
         viewGone()
 
     }
@@ -388,7 +400,50 @@ class ClaimsActivity : AppCompatActivity() {
 
     }
 
+    // Update the calculateMileage() function to use the selected chip ID
     private fun calculateMileage() {
+        when (selectedChipId) {
+            R.id.chipOther -> calculateMileageOutside()
+            R.id.chipNairobi -> {
+                val kmCoveredStr = binding.edtKMCovered.text.toString()
+                val kmCovered = kmCoveredStr.toIntOrNull() ?: 0
+                kmClaim = kmCovered * 40
+                mileageClaim.text = kmClaim.toString()
+            }
+            else -> {
+                Toast.makeText(this, "Please select zone", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+//    private fun calculateMileage() {
+//
+//        val chipG = binding.chipGroup
+//        chipG.setOnCheckedChangeListener { group, checkedIds ->
+//
+//            val checkedChip = group.findViewById<Chip>(checkedIds)
+//            checkedChip?.let {
+//                when (checkedChip.id) {
+//                    R.id.chipOther -> calculateMileageOutside()
+//
+//                    R.id.chipNairobi -> {
+//                        val kmCoveredStr = binding.edtKMCovered.text.toString()
+//                        val kmCovered = kmCoveredStr.toIntOrNull() ?: 0
+//
+//                        kmClaim = kmCovered * 40
+//                        mileageClaim.text = kmClaim.toString()
+//                    }
+//
+//                    else -> {
+//                        Toast.makeText(this, "Please select zone", Toast.LENGTH_SHORT).show()
+//                    }
+//                }
+//            }
+//        }
+//    }
+
+
+    private fun calculateMileageOutside() {
         val kmCoveredStr = binding.edtKMCovered.text.toString()
         if (kmCoveredStr.isEmpty()) {
             mileageClaim.text = "0"
@@ -445,6 +500,7 @@ class ClaimsActivity : AppCompatActivity() {
         }
 
     }
+
     private fun mileageView() {
         selectZone.visibility = View.VISIBLE
         zoneChip.visibility = View.VISIBLE
@@ -464,7 +520,6 @@ class ClaimsActivity : AppCompatActivity() {
             topToBottom = R.id.txvTotalClaimValue
         }
     }
-
 
 
 }
