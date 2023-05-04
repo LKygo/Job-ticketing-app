@@ -283,6 +283,7 @@
                 app:layout_constraintStart_toEndOf="@id/guideline7"
                 app:layout_constraintTop_toTopOf="@id/txvAccomodation" />
 
+
             <EditText
                 android:id="@+id/edtPetties"
                 android:layout_width="0dp"
@@ -293,9 +294,9 @@
                 android:hint="ksh 0.00"
                 android:inputType="number"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="@id/guideline7"
                 app:layout_constraintTop_toBottomOf="@+id/txvPetties" />
-
 
             <TextView
                 android:id="@+id/txvDinner"
@@ -431,8 +432,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_8sdp"
                 android:text="Total Claim"
-                android:textStyle="bold"
-                android:textSize="@dimen/_16sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14sdp"
                 app:layout_constraintStart_toStartOf="@id/txvTotalClaimValue"
                 app:layout_constraintTop_toTopOf="@+id/txvTotalClaimValue"
                 app:layout_constraintBottom_toBottomOf="@id/txvTotalClaimValue"/>
@@ -453,11 +454,12 @@
 
             <Button
                 android:id="@+id/btnClearClaims"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:backgroundTint="#8A0000"
                 android:text="Clear"
+                android:layout_marginHorizontal="@dimen/_16sdp"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toStartOf="@+id/guideline7"
                 app:layout_constraintStart_toStartOf="parent"
@@ -466,10 +468,11 @@
 
             <Button
                 android:id="@+id/btnClaim"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#2D5FFF"
                 android:text="claim"
+                android:layout_marginHorizontal="@dimen/_16sdp"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/guideline7"

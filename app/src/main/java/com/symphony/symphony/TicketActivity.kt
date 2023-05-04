@@ -172,8 +172,9 @@ class TicketActivity : AppCompatActivity() {
         binding.btnClaim.setOnClickListener {
 
             btnClaim.isClickable = false
-            btnClaim.visibility = View.GONE
+            btnClaim.text = ""
             claimsProgress.visibility = View.VISIBLE
+            claimsProgress.elevation = 10f
 
             Snackbar.make(view, "Checking whether ticket has been updated", Snackbar.LENGTH_SHORT).show()
 
@@ -247,8 +248,9 @@ class TicketActivity : AppCompatActivity() {
 
         }.addOnProgressListener {
             progressB.visibility = View.VISIBLE
+            progressB.elevation = 10f
             updateT.isClickable = false
-            updateT.visibility = View.GONE
+            updateT.text = ""
         }.addOnFailureListener { exception ->
             Log.e("Firebase", "Upload failed", exception)
 
@@ -478,6 +480,7 @@ class TicketActivity : AppCompatActivity() {
     ) {
 
         progressB.visibility = View.VISIBLE
+        progressB.elevation = 10f
         val url = "https://backend.api.symphony.co.ke/upload"
 
         // Create a JSON object to hold your data
@@ -504,7 +507,7 @@ class TicketActivity : AppCompatActivity() {
             // Handle successful response from server
 
             updateT.isClickable = true
-            updateT.visibility = View.VISIBLE
+            updateT.text = "Update"
             progressB.visibility = View.GONE
             Toast.makeText(
                 this@TicketActivity, "Successfully updated Ticket", Toast.LENGTH_SHORT
@@ -524,7 +527,7 @@ class TicketActivity : AppCompatActivity() {
             // Handle error response from server
 
             updateT.isClickable = true
-            updateT.visibility = View.VISIBLE
+            updateT.text = "Update"
             progressB.visibility = View.GONE
             Toast.makeText(
                 this@TicketActivity, "Failed to update Ticket", Toast.LENGTH_SHORT
@@ -577,7 +580,7 @@ class TicketActivity : AppCompatActivity() {
             { response ->
                 // handle successful response
                 btnClaim.isClickable = true
-                btnClaim.visibility = View.VISIBLE
+                btnClaim.text = "Claim"
                 claimsProgress.visibility = View.GONE
 
 
@@ -591,7 +594,7 @@ class TicketActivity : AppCompatActivity() {
             { error ->
                 // handle error
                 btnClaim.isClickable = true
-                btnClaim.visibility = View.VISIBLE
+                btnClaim.text = "Claim"
                 claimsProgress.visibility = View.GONE
 
                 val errorMessage = when (error) {

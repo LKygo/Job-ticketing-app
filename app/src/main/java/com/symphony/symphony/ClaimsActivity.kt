@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -77,19 +78,7 @@ class ClaimsActivity : AppCompatActivity() {
         binding.txvCTicketNOValue.text = ticketNo
 
 
-        binding.edtKMCovered.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                calculateMileage()
-                calculateTotalClaimValue()
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                calculateMileage()
-                calculateTotalClaimValue()
-            }
-        })
         binding.edtFarePaid.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence?,
@@ -215,11 +204,44 @@ class ClaimsActivity : AppCompatActivity() {
             } else if (checkedId == binding.RadioPrivate.id) {
                 // show views for Private option
                 mileageView()
+                Toast.makeText(this, "Select zone to input distance", Toast.LENGTH_SHORT).show()
 
                 binding.edtFarePaid.setText("") // set the value to 0
-                binding.edtKMCovered.requestFocus()
                 calculateMileage()
 
+                binding.edtKMCovered.addTextChangedListener(object : TextWatcher {
+                    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+                    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                        calculateMileage()
+                        calculateTotalClaimValue()
+                    }
+
+                    override fun afterTextChanged(p0: Editable?) {
+                        calculateMileage()
+                        calculateTotalClaimValue()
+                    }
+                })
+
+
+                // Set the checked change listener outside the calculateMileage() function
+                binding.chipGroup.setOnCheckedChangeListener { group, checkedId ->
+                    if (checkedId == -1) {
+
+                        Toast.makeText(this, "Select zone to input distance", Toast.LENGTH_LONG).show()
+                        binding.edtKMCovered.setText("") // set the value to 0
+                        kmClaim = 0
+                        binding.edtKMCovered.isEnabled = false
+
+                    } else {
+                        // Update the selected chip ID
+                        selectedChipId = checkedId
+                        binding.edtKMCovered.requestFocus()
+
+                        // Calculate the mileage based on the new selection
+                        calculateMileage()
+                    }
+                }
 
             } else {
                 // show default views
@@ -243,25 +265,24 @@ class ClaimsActivity : AppCompatActivity() {
             others = binding.edtOthers.text.toString()
 
 
-            updateClaims(
-                ticketNo,
-                claimNo,
-                psvFare,
-                accommodation,
-                petties,
-                dinner,
-                lunch,
-                km,
-                kmClaim,
-                laundry,
-                others,
-                claimAmount
+            if (km.isEmpty() && psvFare.isEmpty()){
+              showUpdateDialog()
+            }else{
+                updateClaims(
+                    ticketNo,
+                    claimNo,
+                    psvFare,
+                    accommodation,
+                    petties,
+                    dinner,
+                    lunch,
+                    km,
+                    kmClaim,
+                    laundry,
+                    others,
+                    claimAmount
 
-            )
-            Log.d(
-                "Claims",
-                "$ticketNo, $claimNo, $psvFare, $km, ${kmClaim.toString()}, $accommodation, $petties, $dinner, $lunch, $laundry, $others, ${claimAmount.toString()}"
-            )
+                )              }
         }
 
         binding.btnClearClaims.setOnClickListener {
@@ -278,13 +299,6 @@ class ClaimsActivity : AppCompatActivity() {
 
         }
 
-// Set the checked change listener outside the calculateMileage() function
-        binding.chipGroup.setOnCheckedChangeListener { group, checkedId ->
-            // Update the selected chip ID
-            selectedChipId = checkedId
-            // Calculate the mileage based on the new selection
-            calculateMileage()
-        }
         viewGone()
 
     }
@@ -304,10 +318,10 @@ class ClaimsActivity : AppCompatActivity() {
         others: String,
         claimAmount: Int,
     ) {
-
         progressB.visibility = View.VISIBLE
+        progressB.elevation = 10f
         btnClaim.isClickable = false
-        btnClaim.visibility = View.GONE
+        btnClaim.text = ""
         val url = "https://backend.api.symphony.co.ke/claims"
 
         // Create a JSON object to hold your data
@@ -332,7 +346,7 @@ class ClaimsActivity : AppCompatActivity() {
             // Handle successful response from server
 
             btnClaim.isClickable = true
-            btnClaim.visibility = View.VISIBLE
+            btnClaim.text = "Claim"
             progressB.visibility = View.GONE
             Toast.makeText(
                 this@ClaimsActivity, "Successfully claimed", Toast.LENGTH_SHORT
@@ -360,7 +374,7 @@ class ClaimsActivity : AppCompatActivity() {
 
 
             btnClaim.isClickable = true
-            btnClaim.visibility = View.VISIBLE
+            btnClaim.text = "Claim"
             progressB.visibility = View.GONE
             Toast.makeText(
                 this@ClaimsActivity, "Failed to make Claim", Toast.LENGTH_SHORT
@@ -400,49 +414,30 @@ class ClaimsActivity : AppCompatActivity() {
 
     }
 
-    // Update the calculateMileage() function to use the selected chip ID
+    // Calculating mileage on condition of chip selected
     private fun calculateMileage() {
         when (selectedChipId) {
-            R.id.chipOther -> calculateMileageOutside()
+            R.id.chipOther -> {
+
+                binding.edtKMCovered.isEnabled = true
+                calculateMileageOutside()
+            }
+
             R.id.chipNairobi -> {
+
+                binding.edtKMCovered.isEnabled = true
                 val kmCoveredStr = binding.edtKMCovered.text.toString()
                 val kmCovered = kmCoveredStr.toIntOrNull() ?: 0
                 kmClaim = kmCovered * 40
                 mileageClaim.text = kmClaim.toString()
             }
-            else -> {
-                Toast.makeText(this, "Please select zone", Toast.LENGTH_SHORT).show()
-            }
+
+            else -> {}
         }
     }
 
-//    private fun calculateMileage() {
-//
-//        val chipG = binding.chipGroup
-//        chipG.setOnCheckedChangeListener { group, checkedIds ->
-//
-//            val checkedChip = group.findViewById<Chip>(checkedIds)
-//            checkedChip?.let {
-//                when (checkedChip.id) {
-//                    R.id.chipOther -> calculateMileageOutside()
-//
-//                    R.id.chipNairobi -> {
-//                        val kmCoveredStr = binding.edtKMCovered.text.toString()
-//                        val kmCovered = kmCoveredStr.toIntOrNull() ?: 0
-//
-//                        kmClaim = kmCovered * 40
-//                        mileageClaim.text = kmClaim.toString()
-//                    }
-//
-//                    else -> {
-//                        Toast.makeText(this, "Please select zone", Toast.LENGTH_SHORT).show()
-//                    }
-//                }
-//            }
-//        }
-//    }
 
-
+//    Mileage outside of Nairobi
     private fun calculateMileageOutside() {
         val kmCoveredStr = binding.edtKMCovered.text.toString()
         if (kmCoveredStr.isEmpty()) {
@@ -492,6 +487,7 @@ class ClaimsActivity : AppCompatActivity() {
         binding.txvPsvFare.visibility = View.VISIBLE
         binding.edtFarePaid.visibility = View.VISIBLE
 
+//        Updating constraints dynamically
         binding.txvAccomodation.updateLayoutParams<ConstraintLayout.LayoutParams> {
             topToBottom = R.id.edtFarePaid
         }
@@ -501,6 +497,7 @@ class ClaimsActivity : AppCompatActivity() {
 
     }
 
+//    Display mileage views
     private fun mileageView() {
         selectZone.visibility = View.VISIBLE
         zoneChip.visibility = View.VISIBLE
@@ -509,10 +506,14 @@ class ClaimsActivity : AppCompatActivity() {
         binding.txvKmClaimValue.visibility = View.VISIBLE
         binding.txvKMCovered.visibility = View.VISIBLE
         binding.edtKMCovered.visibility = View.VISIBLE
+        binding.edtKMCovered.isEnabled = false
+
 
         binding.txvPsvFare.visibility = View.GONE
         binding.edtFarePaid.visibility = View.GONE
 
+
+//        Updating constraints dynamically
         binding.txvAccomodation.updateLayoutParams<ConstraintLayout.LayoutParams> {
             topToBottom = R.id.edtKMCovered
         }
@@ -520,6 +521,36 @@ class ClaimsActivity : AppCompatActivity() {
             topToBottom = R.id.txvTotalClaimValue
         }
     }
+
+    private fun showUpdateDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Confirmation")
+        builder.setMessage("Both PSV fare and km covered are blank. Are you sure you want to proceed?")
+        builder.setPositiveButton("update") { dialog, which ->
+            // User clicked Yes button
+            updateClaims(
+                ticketNo,
+                claimNo,
+                psvFare,
+                accommodation,
+                petties,
+                dinner,
+                lunch,
+                km,
+                kmClaim,
+                laundry,
+                others,
+                claimAmount
+
+            )      }
+        builder.setNegativeButton("Cancel") { dialog, which ->
+            // User clicked No button
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
 
 
 }
