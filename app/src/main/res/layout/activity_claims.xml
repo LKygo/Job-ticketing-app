@@ -91,70 +91,108 @@
                 app:layout_constraintStart_toEndOf="@id/guideline7"
                 app:layout_constraintTop_toBottomOf="@+id/txvClaimNO" />
 
-            <TextView
-                android:id="@+id/txvModeOT"
-                style="@style/subheadingText"
-                android:layout_width="wrap_content"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cdvRadio"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_18sdp"
-                android:text="Mode of transport"
+                android:layout_marginHorizontal="@dimen/_1sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:elevation="@dimen/_44sdp"
+                app:cardCornerRadius="@dimen/_3sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txvCTicketNOValue" />
+                app:layout_constraintTop_toBottomOf="@id/txvClaimNOValue">
 
-            <RadioGroup
-                android:id="@+id/ClaimsRadioGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_16sdp"
-                android:layout_marginEnd="@dimen/_16sdp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txvModeOT">
-
-                <RadioButton
-                    android:id="@+id/RadioPsv"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_marginEnd="@dimen/_48sdp"
-                    android:text="Public" />
+                    android:background="#0DFFFFFF">
 
-                <RadioButton
-                    android:id="@+id/RadioPrivate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:text="Private" />
-            </RadioGroup>
+                    <TextView
+                        android:id="@+id/txvModeOT"
+                        style="@style/subheadingText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_6sdp"
+                        android:text="Mode of transport"
+                        app:layout_constraintBottom_toBottomOf="@id/ClaimsRadioGroup"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/ClaimsRadioGroup" />
 
+                    <RadioGroup
+                        android:id="@+id/ClaimsRadioGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_16sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_marginEnd="@dimen/_16sdp"
+                        android:layout_marginBottom="@dimen/_12sdp"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/txvModeOT"
+                        app:layout_constraintTop_toTopOf="parent">
 
+                        <RadioButton
+                            android:id="@+id/RadioPsv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:text="Public" />
+
+                        <RadioButton
+                            android:id="@+id/RadioPrivate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:text="Private" />
+                    </RadioGroup>
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/ClaimsRadioGroup"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="within Nairobi" />
+
+                        <com.google.android.material.chip.Chip
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Out of Nairobi" />
+                    </com.google.android.material.chip.ChipGroup>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/txvPsvFare"
                 style="@style/subheadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
                 android:text="Fare paid"
-                android:layout_marginTop="@dimen/_12sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ClaimsRadioGroup" />
+                app:layout_constraintTop_toBottomOf="@id/cdvRadio" />
 
             <EditText
                 android:id="@+id/edtFarePaid"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:layout_marginEnd="@dimen/_8sdp"
                 android:background="@drawable/edit_text2"
                 android:gravity="center_vertical"
-                app:layout_goneMarginEnd="@dimen/_8sdp"
-android:hint="ksh 0.00"
+                android:hint="ksh 0.00"
                 android:inputType="number"
-                app:layout_constraintEnd_toStartOf="@id/guideline7"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txvPsvFare" />
+                app:layout_constraintTop_toBottomOf="@+id/txvPsvFare"
+                app:layout_goneMarginEnd="@dimen/_8sdp" />
 
 
             <TextView
@@ -162,27 +200,28 @@ android:hint="ksh 0.00"
                 style="@style/subheadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Distance Covered"
-                android:alpha="0.5"
                 android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_12sdp"
+                android:alpha="0.5"
+                android:text="Distance Covered"
+                android:visibility="gone"
                 app:layout_constraintStart_toEndOf="@id/guideline7"
-                app:layout_constraintTop_toBottomOf="@id/ClaimsRadioGroup" />
+                app:layout_constraintTop_toBottomOf="@id/cdvRadio" />
 
             <EditText
                 android:id="@+id/edtKMCovered"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/edit_text2"
-                android:layout_marginStart="@dimen/_8sdp"
-                android:hint="0.00 kms"
                 android:enabled="false"
+                android:hint="0.00 kms"
                 android:inputType="number"
-                app:layout_constraintStart_toStartOf="@id/guideline7"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline7"
                 app:layout_constraintTop_toBottomOf="@+id/txvKMCovered" />
-
 
 
             <TextView
@@ -190,8 +229,8 @@ android:hint="ksh 0.00"
                 style="@style/subheadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Accomodation"
                 android:layout_marginTop="@dimen/_16sdp"
+                android:text="Accomodation"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/edtFarePaid" />
 
@@ -203,12 +242,12 @@ android:hint="ksh 0.00"
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:background="@drawable/edit_text2"
                 android:gravity="center_vertical"
-                app:layout_goneMarginEnd="@dimen/_8sdp"
                 android:hint="ksh 0.00"
                 android:inputType="number"
                 app:layout_constraintEnd_toStartOf="@id/guideline7"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txvAccomodation" />
+                app:layout_constraintTop_toBottomOf="@+id/txvAccomodation"
+                app:layout_goneMarginEnd="@dimen/_8sdp" />
 
 
             <TextView
@@ -216,23 +255,22 @@ android:hint="ksh 0.00"
                 style="@style/subheadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Petties"
                 android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_16sdp"
+                android:text="Petties"
                 app:layout_constraintStart_toEndOf="@id/guideline7"
-                app:layout_constraintTop_toBottomOf="@id/edtKMCovered" />
+                app:layout_constraintTop_toTopOf="@id/txvAccomodation" />
 
             <EditText
                 android:id="@+id/edtPetties"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/edit_text2"
-                android:layout_marginStart="@dimen/_8sdp"
                 android:hint="ksh 0.00"
                 android:inputType="number"
-                app:layout_constraintStart_toStartOf="@id/guideline7"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline7"
                 app:layout_constraintTop_toBottomOf="@+id/txvPetties" />
 
 
@@ -241,8 +279,8 @@ android:hint="ksh 0.00"
                 style="@style/subheadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dinner"
                 android:layout_marginTop="@dimen/_16sdp"
+                android:text="Dinner"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/edtAccomodation" />
 
@@ -254,21 +292,21 @@ android:hint="ksh 0.00"
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:background="@drawable/edit_text2"
                 android:gravity="center_vertical"
-                app:layout_goneMarginEnd="@dimen/_8sdp"
                 android:hint="ksh 0.00"
                 android:inputType="number"
                 app:layout_constraintEnd_toStartOf="@id/guideline7"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txvDinner" />
+                app:layout_constraintTop_toBottomOf="@+id/txvDinner"
+                app:layout_goneMarginEnd="@dimen/_8sdp" />
 
             <TextView
                 android:id="@+id/txvLunch"
                 style="@style/subheadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lunch"
                 android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_16sdp"
+                android:text="Lunch"
                 app:layout_constraintStart_toEndOf="@id/guideline7"
                 app:layout_constraintTop_toBottomOf="@id/edtPetties" />
 
@@ -276,13 +314,13 @@ android:hint="ksh 0.00"
                 android:id="@+id/edtLunch"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/edit_text2"
-                android:layout_marginStart="@dimen/_8sdp"
                 android:hint="ksh 0.00"
                 android:inputType="number"
-                app:layout_constraintStart_toStartOf="@id/guideline7"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline7"
                 app:layout_constraintTop_toBottomOf="@+id/txvLunch" />
 
             <TextView
@@ -290,8 +328,8 @@ android:hint="ksh 0.00"
                 style="@style/subheadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Laundry"
                 android:layout_marginTop="@dimen/_16sdp"
+                android:text="Laundry"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/edtDinner" />
 
@@ -303,13 +341,12 @@ android:hint="ksh 0.00"
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:background="@drawable/edit_text2"
                 android:gravity="center_vertical"
-                app:layout_goneMarginEnd="@dimen/_8sdp"
                 android:hint="ksh 0.00"
                 android:inputType="number"
                 app:layout_constraintEnd_toStartOf="@id/guideline7"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txvLaundry" />
-
+                app:layout_constraintTop_toBottomOf="@+id/txvLaundry"
+                app:layout_goneMarginEnd="@dimen/_8sdp" />
 
 
             <TextView
@@ -317,9 +354,9 @@ android:hint="ksh 0.00"
                 style="@style/subheadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Others"
                 android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_16sdp"
+                android:text="Others"
                 app:layout_constraintStart_toEndOf="@id/guideline7"
                 app:layout_constraintTop_toBottomOf="@id/edtLunch" />
 
@@ -327,13 +364,13 @@ android:hint="ksh 0.00"
                 android:id="@+id/edtOthers"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/edit_text2"
-                android:layout_marginStart="@dimen/_8sdp"
                 android:hint="ksh 0.00"
                 android:inputType="number"
-                app:layout_constraintStart_toStartOf="@id/guideline7"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline7"
                 app:layout_constraintTop_toBottomOf="@+id/txvOthers" />
 
 
@@ -342,8 +379,8 @@ android:hint="ksh 0.00"
                 style="@style/subheadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Km Claim"
                 android:layout_marginTop="@dimen/_16sdp"
+                android:text="Km Claim"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/edtLaundry" />
 
@@ -355,20 +392,20 @@ android:hint="ksh 0.00"
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:background="@drawable/edit_text2"
                 android:gravity="center_vertical"
-                app:layout_goneMarginEnd="@dimen/_8sdp"
                 android:hint="ksh 0.00"
                 app:layout_constraintEnd_toStartOf="@id/guideline7"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txvKmClaim" />
+                app:layout_constraintTop_toBottomOf="@+id/txvKmClaim"
+                app:layout_goneMarginEnd="@dimen/_8sdp" />
 
             <TextView
                 android:id="@+id/txvTotalClaim"
                 style="@style/subheadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Total Claim"
                 android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_16sdp"
+                android:text="Total Claim"
                 app:layout_constraintStart_toEndOf="@id/guideline7"
                 app:layout_constraintTop_toBottomOf="@id/edtOthers" />
 
@@ -376,14 +413,13 @@ android:hint="ksh 0.00"
                 android:id="@+id/txvTotalClaimValue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/edit_text2"
-                android:layout_marginStart="@dimen/_8sdp"
                 android:hint="ksh 0.00"
-                app:layout_constraintStart_toStartOf="@id/guideline7"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline7"
                 app:layout_constraintTop_toBottomOf="@+id/txvTotalClaim" />
-
 
 
             <Button
@@ -394,21 +430,22 @@ android:hint="ksh 0.00"
                 android:backgroundTint="#8A0000"
                 android:text="Clear"
                 android:textColor="@color/white"
-                app:layout_constraintTop_toBottomOf="@+id/txvKmClaimValue"
                 app:layout_constraintEnd_toStartOf="@+id/guideline7"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvKmClaimValue"
                 tools:layout_editor_absoluteY="909dp" />
 
             <Button
                 android:id="@+id/btnClaim"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="#2D5FFF"
                 android:text="claim"
                 android:textColor="@color/white"
-                app:layout_constraintStart_toStartOf="@id/guideline7"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/btnClearClaims"
-                android:backgroundTint="#2D5FFF"/>
+                app:layout_constraintStart_toStartOf="@id/guideline7"
+                app:layout_constraintTop_toTopOf="@id/btnClearClaims" />
+
             <ProgressBar
                 android:id="@+id/pgbClaims"
                 android:layout_width="wrap_content"
