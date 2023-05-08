@@ -205,7 +205,7 @@ class TicketActivity : AppCompatActivity() {
     private fun uploadToFirebase(uri: Uri) {
 
 
-        val fileRef = reference.child("${System.currentTimeMillis()}" + "." + getFileExtension(uri))
+        val fileRef = reference.child("TicketNo: $ticketNo /$servicedate/$end_time")
         fileRef.putFile(uri).addOnSuccessListener { taskSnapshot ->
             taskSnapshot.storage.downloadUrl.addOnSuccessListener { downloadUrl ->
                 // Use downloadUrl as needed

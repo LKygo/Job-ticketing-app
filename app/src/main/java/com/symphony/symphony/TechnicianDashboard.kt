@@ -135,9 +135,19 @@ class TechnicianDashboard : AppCompatActivity() {
         if (userID != null) {
             getData(userID)
         } else {
-            Toast.makeText(
-                this, "No userId found. Please logout and log in again", Toast.LENGTH_SHORT
-            ).show()
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("User ID null")
+            builder.setMessage("No user Id found. Please sign out and sign in again to fix this error")
+            builder.setPositiveButton("Sign out") { dialog, which ->
+                // User clicked Yes button
+                logout()
+            }
+            builder.setNegativeButton("Cancel") { dialog, which ->
+                // User clicked No button
+                dialog.dismiss()
+            }
+            val dialog = builder.create()
+            dialog.show()
         }
 
         swipeRefresh.setOnRefreshListener {
