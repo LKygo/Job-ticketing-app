@@ -338,9 +338,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/txvTDModel" />
 
 
-
-
-
             <TextView
                 android:id="@+id/txvTDFindings"
                 android:layout_width="wrap_content"
@@ -495,69 +492,55 @@
                 android:id="@+id/imgJobCardValidation"
                 android:layout_width="@dimen/_10sdp"
                 android:layout_height="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_12sdp"
                 android:background="@drawable/remove"
                 app:layout_constraintStart_toStartOf="@id/txvCameraHint"
                 app:layout_constraintTop_toBottomOf="@id/txvCameraHint" />
 
+            <LinearLayout
+                android:id="@+id/lnlButtons"
+                android:weightSum="3"
+                app:layout_constraintTop_toBottomOf="@+id/imgJobCardValidation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/btnTDClear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:backgroundTint="#8A0000"
-                android:text="Clear"
-                app:layout_constraintEnd_toStartOf="@id/btnClaim"
-                app:layout_constraintHorizontal_bias="0.491"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imgJobCardValidation" />
+                <Button
+                    android:id="@+id/btnTDClear"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#8A0000"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:text="Clear"
+                    android:layout_weight="1" />
 
-            <Button
-                android:id="@+id/btnClaim"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#2D5FFF"
-                android:text="claim"
-                app:layout_constraintEnd_toEndOf="@id/guideline3"
-                app:layout_constraintStart_toStartOf="@id/guideline3"
-                app:layout_constraintTop_toTopOf="@id/btnTDClear" />
+                <Button
+                    android:id="@+id/btnClaim"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#2D5FFF"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:text="claim"
+                    android:layout_weight="1"
+                    />
 
-            <ProgressBar
-                android:id="@+id/claimsProgress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/btnClaim"
-                app:layout_constraintBottom_toBottomOf="@id/btnClaim"
-                app:layout_constraintStart_toStartOf="@id/btnClaim"
-                app:layout_constraintEnd_toEndOf="@id/btnClaim"
-                android:backgroundTint="#2D5FFF"
-                />
 
-            <Button
-                android:id="@+id/btnTDUpdate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#C41BCA00"
-                android:text="Update"
-                app:layout_constraintEnd_toEndOf="@id/edtTDRecommendationsValue"
-                app:layout_constraintStart_toEndOf="@id/btnClaim"
-                app:layout_constraintTop_toTopOf="@+id/btnTDClear" />
+                <Button
+                    android:id="@+id/btnTDUpdate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#C41BCA00"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:text="Update"
+                    android:layout_weight="1"/>
 
-            <ProgressBar
-                android:id="@+id/pgbTDProgress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@id/btnTDUpdate"
-                app:layout_constraintEnd_toEndOf="@id/btnTDUpdate"
-                app:layout_constraintStart_toStartOf="@id/btnTDUpdate"
-                app:layout_constraintTop_toTopOf="@id/btnTDUpdate" />
+
+            </LinearLayout>
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/_70sdp"
-                app:layout_constraintTop_toBottomOf="@id/btnTDClear" />
+                app:layout_constraintTop_toBottomOf="@id/lnlButtons" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
