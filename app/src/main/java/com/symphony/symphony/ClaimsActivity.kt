@@ -3,6 +3,7 @@ package com.symphony.symphony
 import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -364,7 +365,10 @@ class ClaimsActivity : AppCompatActivity() {
             mileageClaim.text = "0"
             binding.ClaimsRadioGroup.clearCheck()
 
-            progressDialog.dismiss()
+
+            Handler().postDelayed({
+                progressDialog.dismiss()
+            },2000L)
         }, { error ->
             // Handle error response from server
 
@@ -375,7 +379,9 @@ class ClaimsActivity : AppCompatActivity() {
 
 
             btnClaim.isClickable = true
-            progressDialog.dismiss()
+            Handler().postDelayed({
+                progressDialog.dismiss()
+            },2000L)
             Toast.makeText(
                 this@ClaimsActivity, "Failed to make Claim", Toast.LENGTH_SHORT
             ).show()
@@ -526,6 +532,9 @@ class ClaimsActivity : AppCompatActivity() {
         builder.setTitle("Confirmation")
         builder.setMessage("Both PSV fare and km covered are blank. Are you sure you want to proceed?")
         builder.setPositiveButton("update") { dialog, which ->
+            progressDialog = showProgressDialog(this, "Filing claim")
+
+
             // User clicked Yes button
             updateClaims(
                 ticketNo,
@@ -544,7 +553,7 @@ class ClaimsActivity : AppCompatActivity() {
             )      }
         builder.setNegativeButton("Cancel") { dialog, which ->
             // User clicked No button
-            dialog.dismiss()
+              dialog.dismiss()
         }
         val dialog = builder.create()
         dialog.show()
