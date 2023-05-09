@@ -478,16 +478,6 @@
                 app:layout_constraintStart_toStartOf="@id/guideline7"
                 app:layout_constraintTop_toTopOf="@id/btnClearClaims" />
 
-            <ProgressBar
-                android:id="@+id/pgbClaims"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#2D5FFF"
-                app:layout_constraintBottom_toBottomOf="@id/btnClaim"
-                app:layout_constraintEnd_toEndOf="@id/btnClaim"
-                app:layout_constraintStart_toStartOf="@+id/btnClaim"
-                app:layout_constraintTop_toTopOf="@+id/btnClaim" />
-
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

@@ -1,5 +1,7 @@
 package com.symphony.symphony
 
+import android.app.ProgressDialog
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateLayoutParams
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable.ProgressDrawableSize
 import com.android.volley.NetworkError
 import com.android.volley.NetworkResponse
 import com.android.volley.Response
@@ -30,7 +33,6 @@ import java.nio.charset.Charset
 class ClaimsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityClaimsBinding
     private lateinit var ticketNo: String
-    private lateinit var progressB: ProgressBar
     private lateinit var btnClaim: Button
     private lateinit var ticket_no: String
     private lateinit var claimNo: String
@@ -45,6 +47,7 @@ class ClaimsActivity : AppCompatActivity() {
     private lateinit var zoneChip: ChipGroup
     private lateinit var others: String
     private lateinit var mileageClaim: TextView
+    private lateinit var progressDialog : ProgressDialog
     private var claimAmount = 0
     private var kmClaim = 0
 
@@ -69,8 +72,6 @@ class ClaimsActivity : AppCompatActivity() {
         }
 
 
-        progressB = binding.pgbClaims
-        progressB.visibility = View.GONE
         btnClaim = binding.btnClaim
         val bundle: Bundle? = intent.extras
         ticketNo = bundle?.getString("ticketNo").toString()
@@ -268,6 +269,9 @@ class ClaimsActivity : AppCompatActivity() {
             if (km.isEmpty() && psvFare.isEmpty()){
               showUpdateDialog()
             }else{
+
+                progressDialog = showProgressDialog(this, "Filing claim")
+
                 updateClaims(
                     ticketNo,
                     claimNo,
@@ -318,10 +322,8 @@ class ClaimsActivity : AppCompatActivity() {
         others: String,
         claimAmount: Int,
     ) {
-        progressB.visibility = View.VISIBLE
-        progressB.elevation = 10f
+
         btnClaim.isClickable = false
-        btnClaim.text = ""
         val url = "https://backend.api.symphony.co.ke/claims"
 
         // Create a JSON object to hold your data
@@ -346,10 +348,8 @@ class ClaimsActivity : AppCompatActivity() {
             // Handle successful response from server
 
             btnClaim.isClickable = true
-            btnClaim.text = "Claim"
-            progressB.visibility = View.GONE
             Toast.makeText(
-                this@ClaimsActivity, "Successfully claimed", Toast.LENGTH_SHORT
+                this@ClaimsActivity, "Successfully  filed claim", Toast.LENGTH_SHORT
             ).show()
 
             binding.edtFarePaid.setText("")
@@ -364,6 +364,7 @@ class ClaimsActivity : AppCompatActivity() {
             mileageClaim.text = "0"
             binding.ClaimsRadioGroup.clearCheck()
 
+            progressDialog.dismiss()
         }, { error ->
             // Handle error response from server
 
@@ -374,8 +375,7 @@ class ClaimsActivity : AppCompatActivity() {
 
 
             btnClaim.isClickable = true
-            btnClaim.text = "Claim"
-            progressB.visibility = View.GONE
+            progressDialog.dismiss()
             Toast.makeText(
                 this@ClaimsActivity, "Failed to make Claim", Toast.LENGTH_SHORT
             ).show()
@@ -508,7 +508,6 @@ class ClaimsActivity : AppCompatActivity() {
         binding.edtKMCovered.visibility = View.VISIBLE
         binding.edtKMCovered.isEnabled = false
 
-
         binding.txvPsvFare.visibility = View.GONE
         binding.edtFarePaid.visibility = View.GONE
 
@@ -551,6 +550,14 @@ class ClaimsActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    fun showProgressDialog(context: Context, message: String): ProgressDialog {
+        val progressDialog = ProgressDialog(context)
+        progressDialog.setMessage(message)
+        progressDialog.isIndeterminate = true
+        progressDialog.setCancelable(false)
+        progressDialog.show()
+        return progressDialog
+    }
 
 
 }

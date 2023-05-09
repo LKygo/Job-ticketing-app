@@ -3,6 +3,7 @@ package com.symphony.symphony
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.ContentResolver
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -70,7 +71,6 @@ class TicketActivity : AppCompatActivity() {
     private lateinit var attachment: String
     private lateinit var btnClaim: Button
     private lateinit var model : String
-//    private lateinit var claimsProgress: ProgressBar
     private var filePath: Uri? = null
     private val reference: StorageReference = FirebaseStorage.getInstance().reference
     private val GALLERY_PERMISSION_CODE = 22
@@ -104,17 +104,11 @@ class TicketActivity : AppCompatActivity() {
 
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         servicedate = dateFormat.format(Date())
-//        progressB = binding.pgbTDProgress
-//        progressB.visibility = View.GONE
+
         updateT = binding.btnTDUpdate
         btnClaim = binding.btnClaim
-//        claimsProgress = binding.claimsProgress!!
-//        claimsProgress.visibility = View.GONE
 
-//        Show progress dialog
-        progressDialog = ProgressDialog(this)
-        progressDialog.setCancelable(false)
-        progressDialog.setMessage("Checking whether ticket has been updated")
+
 
         ticketNo = bundle?.getString("ticketNo").toString()
         customer = bundle?.getString("customer").toString()
@@ -163,6 +157,7 @@ class TicketActivity : AppCompatActivity() {
                 ).show()
             } else {
                 if (filePath != null) {
+                    progressDialog = showProgressDialog(this, "Updating ticket")
                     uploadToFirebase(filePath!!)
                 } else {
 
@@ -178,8 +173,8 @@ class TicketActivity : AppCompatActivity() {
 
         binding.btnClaim.setOnClickListener {
 
+        progressDialog = showProgressDialog(this, "Checking whether ticket has been updated")
 
-            progressDialog.show()
 
 
            Handler().postDelayed({
@@ -218,7 +213,6 @@ class TicketActivity : AppCompatActivity() {
                 Toast.makeText(this, "Job card picture Uploaded successfully", Toast.LENGTH_SHORT)
                     .show()
 
-//                Handler().postDelayed({
                 try {
                     sendTicketDetails(
                         ticketNo,
@@ -240,21 +234,18 @@ class TicketActivity : AppCompatActivity() {
                 } catch (e: java.lang.Exception) {
                     Log.d("FunPost", e.toString())
                 }
-//                }, 1000L)
+
 
 
             }.addOnFailureListener { exception ->
                 // Handle any errors
                 Toast.makeText(this, exception.message, Toast.LENGTH_SHORT).show()
-//                Log.e("Attachment", "Error getting download URL: ${exception.message}", exception)
             }
 
 
         }.addOnProgressListener {
-//            progressB.visibility = View.VISIBLE
-//            progressB.elevation = 10f
+
             updateT.isClickable = false
-            updateT.text = ""
         }.addOnFailureListener { exception ->
             Log.e("Firebase", "Upload failed", exception)
 
@@ -483,8 +474,7 @@ class TicketActivity : AppCompatActivity() {
         created_at: String,
     ) {
 
-//        progressB.visibility = View.VISIBLE
-//        progressB.elevation = 10f
+
         val url = "https://backend.api.symphony.co.ke/upload"
 
         // Create a JSON object to hold your data
@@ -503,7 +493,6 @@ class TicketActivity : AppCompatActivity() {
         jsonObject.put("attachment", attachment)
         jsonObject.put("updated_by", updated_by)
         jsonObject.put("created_at", created_at)
-        Log.d("Volley", "JSON object: $jsonObject")
 
 
 // Request to server's URL
@@ -511,8 +500,7 @@ class TicketActivity : AppCompatActivity() {
             // Handle successful response from server
 
             updateT.isClickable = true
-            updateT.text = "Update"
-//            progressB.visibility = View.GONE
+            progressDialog.dismiss()
             Toast.makeText(
                 this@TicketActivity, "Successfully updated Ticket", Toast.LENGTH_SHORT
             ).show()
@@ -531,8 +519,7 @@ class TicketActivity : AppCompatActivity() {
             // Handle error response from server
 
             updateT.isClickable = true
-            updateT.text = "Update"
-//            progressB.visibility = View.GONE
+            progressDialog.dismiss()
             Toast.makeText(
                 this@TicketActivity, "Failed to update Ticket", Toast.LENGTH_SHORT
             ).show()
@@ -619,6 +606,16 @@ class TicketActivity : AppCompatActivity() {
         )
         queue.add(request)
     }
+
+    fun showProgressDialog(context: Context, message: String): ProgressDialog {
+        val progressDialog = ProgressDialog(context)
+        progressDialog.setMessage(message)
+        progressDialog.isIndeterminate = true
+        progressDialog.setCancelable(false)
+        progressDialog.show()
+        return progressDialog
+    }
+
 }
 
 
