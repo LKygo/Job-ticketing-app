@@ -115,7 +115,7 @@ class LoginActivity : AppCompatActivity() {
         val queue = Volley.newRequestQueue(this)
 
         // Set up the login endpoint URL and request parameters.
-        val url = "https://backend.api.symphony.co.ke/login"
+        val url = Enter URL to login API"
         val params = HashMap<String, String>()
         params["email"] = email
         params["password"] = password
