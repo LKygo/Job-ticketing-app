@@ -51,7 +51,7 @@ class ResetPass : AppCompatActivity() {
         val queue = Volley.newRequestQueue(this)
 
 // Set up the login endpoint URL and request parameters.
-        val url = "https://backend.api.symphony.co.ke/resetpass"
+        val url = "Enter your reset password ApI link"
         val params = HashMap<String, String>()
         params["email"] = email
 
