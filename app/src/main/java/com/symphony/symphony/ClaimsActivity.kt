@@ -322,7 +322,7 @@ class ClaimsActivity : AppCompatActivity() {
         progressB.elevation = 10f
         btnClaim.isClickable = false
         btnClaim.text = ""
-        val url = "https://backend.api.symphony.co.ke/claims"
+        val url = "Enter APi Link to upload data"
 
         // Create a JSON object to hold your data
         val jsonObject = JSONObject()
