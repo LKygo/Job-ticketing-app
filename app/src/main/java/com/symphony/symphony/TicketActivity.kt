@@ -485,7 +485,7 @@ class TicketActivity : AppCompatActivity() {
 
 //        progressB.visibility = View.VISIBLE
 //        progressB.elevation = 10f
-        val url = "https://backend.api.symphony.co.ke/upload"
+        val url = "Enter you API link to uplooad data to"
 
         // Create a JSON object to hold your data
         val jsonObject = JSONObject()
@@ -572,7 +572,7 @@ class TicketActivity : AppCompatActivity() {
 
     fun checkServiceEntry() {
         val queue = Volley.newRequestQueue(this)
-        val url = "https://backend.api.symphony.co.ke/checkClaims"
+        val url = "Enter API link to verify something"
 
 
         val requestBody = JSONObject()
