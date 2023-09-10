@@ -361,7 +361,7 @@ class TechnicianDashboard : AppCompatActivity() {
 
     private fun getData(id: String) {
 
-        val url = "https://backend.api.symphony.co.ke/tickets?user_id=$id"
+        val url = "Enter your API URL to fetch data"
         val queue = Volley.newRequestQueue(this)
 
         val request =
